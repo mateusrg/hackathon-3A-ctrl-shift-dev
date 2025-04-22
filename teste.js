@@ -47,6 +47,10 @@ print(conta_${comentario}(lista))
 
 console.log(gerarDesafio1());
 
+function validarDesafio1(jsonDesafio, respostaPlayer) {
+    return jsonDesafio['resposta_correta'] === respostaPlayer;
+}
+
 function gerarDesafio2() {
     // número de vogais: 1 a 5
     const numVogais = Math.floor(Math.random() * 5) + 1;
