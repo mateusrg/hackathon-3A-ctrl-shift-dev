@@ -1,0 +1,60 @@
+* {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+.frame {
+    position: relative;
+}
+
+#game {
+    background-image: url('../../assets/nome/nome.png');
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#nome {
+    position: absolute;
+    width: calc(670 * var(--un));
+    top: calc(430 * var(--un));
+    left: calc(354 * var(--un));
+    font-size: calc(35 * var(--un));
+    color: #fff;
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+
+#confirmar {
+    position: absolute;
+    cursor: pointer;
+    border-radius: calc(20 * var(--un));
+    height: calc(98 * var(--un));
+    width: calc(385 * var(--un));
+    top: calc(641 * var(--un));
+    left: calc(508 * var(--un));
+    font-size: calc(35 * var(--un));
+    color: transparent;
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+
+#voltar {
+    position: absolute;
+    cursor: pointer;
+    border-radius: calc(20 * var(--un));
+    height: calc(98 * var(--un));
+    width: calc(385 * var(--un));
+    top: calc(763 * var(--un));
+    left: calc(508 * var(--un));
+    font-size: calc(35 * var(--un));
+    color: transparent;
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+

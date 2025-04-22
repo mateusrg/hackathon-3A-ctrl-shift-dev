@@ -1,0 +1,72 @@
+* {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+.frame {
+    position: relative;
+}
+
+#game {
+    background-image: url('../../assets/login/cadastro.png');
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#email {
+    position: absolute;
+    width: calc(500 * var(--un));
+    top: calc(358 * var(--un));
+    left: calc(455 * var(--un));
+    font-size: calc(35 * var(--un));
+    color: #fff;
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+
+#senha {
+    position: absolute;
+    width: calc(500 * var(--un));
+    top: calc(602 * var(--un));
+    left: calc(455 * var(--un));
+    font-size: calc(35 * var(--un));
+    color: #fff;
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+
+#ok {
+    position: absolute;
+    cursor: pointer;
+    border-radius: calc(20 * var(--un));
+    height: calc(118 * var(--un));
+    width: calc(242 * var(--un));
+    top: calc(750 * var(--un));
+    left: calc(413 * var(--un));
+    font-size: calc(35 * var(--un));
+    color: transparent;
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+
+#cadastrar {
+    position: absolute;
+    cursor: pointer;
+    border-radius: calc(20 * var(--un));
+    height: calc(118 * var(--un));
+    width: calc(302 * var(--un));
+    top: calc(750 * var(--un));
+    left: calc(693 * var(--un));
+    font-size: calc(35 * var(--un));
+    color: #fff;
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+

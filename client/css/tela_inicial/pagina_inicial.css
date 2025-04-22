@@ -1,0 +1,51 @@
+* {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+.frame {
+    position: relative;
+}
+
+#game {
+    background-image: url('../../assets/pagina_inicial/pagina_inicial_bg.png');
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#logo {
+    background-image: url('../../assets/pagina_inicial/logo.png');
+    width: calc(758 * var(--un));
+    aspect-ratio: 1/1;
+}
+
+#entorno-botoes {
+    display: flex;
+    flex-direction: column;
+    gap: calc(74 * var(--un));
+}
+
+.botao {
+    background-image: url('../../assets/pagina_inicial/botao_azul.png');
+    width: calc(600 * var(--un));
+    aspect-ratio: 4/1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: calc(50 * var(--un));
+    cursor: pointer;
+}
+
+#botao-editar {
+    position: absolute;
+    background-image: url('../../assets/pagina_inicial/botao_editar.png');
+    width: calc(108 * var(--un));
+    aspect-ratio: 1/1;
+    bottom: calc(18 * var(--un));
+    right: calc(18 * var(--un));
+    cursor: pointer;
+}

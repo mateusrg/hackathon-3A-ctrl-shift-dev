@@ -1,0 +1,104 @@
+* {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+.frame {
+    position: relative;
+}
+
+#game {
+    background-image: url('../../assets/dificuldade/dificuldade_background.png');
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#modal {
+    background-image: url('../../assets/dificuldade/modal.png');
+    width: calc(1149 * var(--un));
+    aspect-ratio: 1149 / 864;
+    position: relative;
+}
+
+#escolha {
+    font-size: calc(50 * var(--un));
+    margin-top: calc(51 * var(--un));
+    text-align: center;
+    color: #fff;
+}
+
+.subtitulo {
+    font-size: calc(25 * var(--un));
+    text-align: center;
+    color: #c80303;
+}
+
+#subtitulo-1 {
+    margin-top: calc(16 * var(--un));
+}
+
+#subtitulo-2 {
+    margin-top: 0;
+}
+
+.botao {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(480 * var(--un));
+    aspect-ratio: 4 / 1;
+    cursor: pointer;
+    font-size: calc(25 * var(--un));
+    text-align: center;
+}
+
+#linha-1 {
+    display: flex;
+    margin: calc(98 * var(--un)) calc(77 * var(--un)) 0 calc(77 * var(--un));
+    gap: calc(35 * var(--un));
+}
+
+#linha-2 {
+    display: flex;
+    margin: calc(75 * var(--un)) calc(77 * var(--un)) 0 calc(77 * var(--un));
+    gap: calc(35 * var(--un));
+}
+
+#botao-junior {
+    background-image: url('../../assets/dificuldade/verde.png');
+    padding: 0 calc(152 * var(--un));
+}
+
+#botao-pleno {
+    background-image: url('../../assets/dificuldade/azul.png');
+    padding: 0 calc(140 * var(--un));
+}
+
+#botao-senior {
+    background-image: url('../../assets/dificuldade/amarelo.png');
+    padding: 0 calc(127 * var(--un));
+}
+
+#botao-tech-lead {
+    background-image: url('../../assets/dificuldade/vermelho.png');
+    padding: 0 calc(90 * var(--un));
+}
+
+#voltar {
+    margin: 0 auto;
+    margin-top: calc(132 * var(--un));
+    background-image: url('../../assets/dificuldade/voltar.png');
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(350 * var(--un));
+    height: calc(100 * var(--un));
+    cursor: pointer;
+    font-size: calc(30 * var(--un));
+    text-align: center;
+}

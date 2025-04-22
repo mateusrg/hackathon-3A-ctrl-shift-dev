@@ -1,0 +1,416 @@
+* {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+html,
+body {
+    background-image: url('../../assets/entorno/bg/computador.png');
+}
+
+.frame {
+    position: relative;
+    border-image: url('../../assets/entorno/borda/computador.png') 32 stretch;
+}
+
+#game {
+    background-image: url('../../assets/pc/pc.png');
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#cse {
+    position: absolute;
+    background-image: url('../../assets/hud/stats_CSE.png');
+    height: calc(140 * var(--un));
+    width: calc(614 * var(--un));
+    top: 0;
+    left: 0;
+}
+
+#icone-energia {
+    position: absolute;
+    background-image: url('../../assets/hud/energia.png');
+    height: calc(100 * var(--un));
+    width: calc(100 * var(--un));
+    top: calc(10 * var(--un));
+    left: calc(10 * var(--un));
+}
+
+#energia {
+    position: absolute;
+    color: #fff;
+    font-size: calc(40 * var(--un));
+    top: calc(41 * var(--un));
+    left: calc(104 * var(--un));
+}
+
+#icone-felicidade {
+    position: absolute;
+    background-image: url('../../assets/hud/felicidade/4.png');
+    height: calc(75 * var(--un));
+    width: calc(75 * var(--un));
+    top: calc(20 * var(--un));
+    left: calc(303 * var(--un));
+
+}
+
+#felicidade {
+    position: absolute;
+    color: #fff;
+    font-size: calc(40 * var(--un));
+    top: calc(41 * var(--un));
+    left: calc(390 * var(--un));
+}
+
+#csd {
+    position: absolute;
+    background-image: url('../../assets/hud/stats_CSD.png');
+    height: calc(140 * var(--un));
+    width: calc(366 * var(--un));
+    top: 0;
+    right: 0;
+}
+
+#tempo {
+    position: absolute;
+    font-size: calc(50 * var(--un));
+    color: #fff;
+    top: calc(36 * var(--un));
+    right: calc(44 * var(--un));
+}
+
+.seta-baixo {
+    position: absolute;
+    background-image: url('../../assets/hud/seta_baixo.png');
+    height: calc(135 * var(--un));
+    width: calc(230 * var(--un));
+    bottom: calc(13 * var(--un));
+    left: calc(590 * var(--un));
+    cursor: pointer;
+    z-index: 100;
+}
+
+.advertencia_cheia {
+    position: absolute;
+    background-image: url('../../assets/pc/advertencia_cheia.png');
+    height: calc(96 * var(--un));
+    width: calc(93 * var(--un));
+
+}
+
+.advertencia_vazia {
+    position: absolute;
+    background-image: url('../../assets/pc/advertencia_vazia.png');
+    height: calc(96 * var(--un));
+    width: calc(93 * var(--un));
+}
+
+#adv_1 {
+    top: calc(13 * var(--un));
+    left: calc(630 * var(--un));
+}
+
+#adv_2 {
+    top: calc(13 * var(--un));
+    left: calc(730 * var(--un));
+}
+
+#adv_3 {
+    top: calc(13 * var(--un));
+    left: calc(830 * var(--un));
+}
+
+#adv_4 {
+    top: calc(13 * var(--un));
+    left: calc(930 * var(--un));
+}
+
+#tb-windows {
+    position: absolute;
+    background-image: url('../../assets/pc/taskbar/windows.png');
+    height: calc(55 * var(--un));
+    width: calc(55 * var(--un));
+    bottom: calc(73 * var(--un));
+    left: calc(64 * var(--un));
+}
+
+#tb-reuniao {
+    position: absolute;
+    background-image: url('../../assets/pc/taskbar/reuniao.png');
+    height: calc(55 * var(--un));
+    width: calc(55 * var(--un));
+    bottom: calc(73 * var(--un));
+    left: calc(151 * var(--un));
+    z-index: 1;
+}
+
+
+#tb-pasta {
+    position: absolute;
+    background-image: url('../../assets/pc/taskbar/pasta.png');
+    height: calc(42 * var(--un));
+    width: calc(42 * var(--un));
+    bottom: calc(79 * var(--un));
+    left: calc(238 * var(--un));
+    z-index: 1;
+}
+
+#tb-lista {
+    position: absolute;
+    background-image: url('../../assets/pc/taskbar/lista.png');
+    height: calc(51 * var(--un));
+    width: calc(51 * var(--un));
+    bottom: calc(73 * var(--un));
+    left: calc(312 * var(--un));
+    z-index: 1;
+}
+
+#tb-jogo {
+    position: absolute;
+    background-image: url('../../assets/pc/taskbar/jogo.png');
+    height: calc(48 * var(--un));
+    width: calc(48 * var(--un));
+    bottom: calc(75 * var(--un));
+    left: calc(395 * var(--un));
+    z-index: 1;
+}
+
+#tb-tarefa {
+    position: absolute;
+    background-image: url('../../assets/pc/taskbar/tarefa.png');
+    height: calc(50 * var(--un));
+    width: calc(50 * var(--un));
+    bottom: calc(73 * var(--un));
+    left: calc(477 * var(--un));
+    z-index: 1;
+}
+
+.selecionado {
+    position: absolute;
+    background-image: url('../../assets/pc/taskbar/selecionado.png');
+    height: calc(62 * var(--un));
+    width: calc(80 * var(--un));
+    bottom: calc(68 * var(--un));
+    pointer-events: none;
+}
+
+.aberto {
+    position: absolute;
+    background-image: url('../../assets/pc/taskbar/aberto.png');
+    height: calc(4 * var(--un));
+    width: calc(16 * var(--un));
+    bottom: calc(70 * var(--un));
+    pointer-events: none;
+}
+
+#tb-reuniao-selecionado {
+    left: calc(136 * var(--un));
+}
+
+#tb-pasta-selecionado {
+    left: calc(216 * var(--un));
+}
+
+#tb-lista-selecionado {
+    left: calc(296 * var(--un));
+}
+
+#tb-jogo-selecionado {
+    left: calc(376 * var(--un));
+}
+
+#tb-tarefa-selecionado {
+    left: calc(460 * var(--un));
+}
+
+#tb-reuniao-aberto {
+    left: calc(167 * var(--un));
+}
+
+#tb-pasta-aberto {
+    left: calc(248 * var(--un));
+}
+
+#tb-lista-aberto {
+    left: calc(328 * var(--un));
+}
+
+#tb-jogo-aberto {
+    left: calc(409 * var(--un));
+}
+
+#tb-tarefa-aberto {
+    left: calc(490 * var(--un));
+}
+
+#tela-reuniao {
+    position: absolute;
+    background-image: url('../../assets/pc/tela_reuniao.png');
+    height: calc(714 * var(--un));
+    width: calc(1285 * var(--un));
+    top: calc(140 * var(--un));
+    left: calc(58 * var(--un));
+}
+
+#compartilhar-tela {
+    position: absolute;
+    background-image: url('../../assets/pc/reuniao/compartilhar_tela.png');
+    height: calc(72 * var(--un));
+    width: calc(104 * var(--un));
+    top: calc(285 * var(--un));
+    right: calc(140 * var(--un));
+}
+
+#camera-fechado {
+    position: absolute;
+    background-image: url('../../assets/pc/reuniao/camera_fechado.png');
+    height: calc(88 * var(--un));
+    width: calc(104 * var(--un));
+    top: calc(472 * var(--un));
+    right: calc(136 * var(--un));
+}
+
+#camera-aberto {
+    position: absolute;
+    background-image: url('../../assets/pc/reuniao/camera_aberto.png');
+    height: calc(72 * var(--un));
+    width: calc(104 * var(--un));
+    top: calc(480 * var(--un));
+    right: calc(136 * var(--un));
+}
+
+#microfone-fechado {
+    position: absolute;
+    background-image: url('../../assets/pc/reuniao/microfone_fechado.png');
+    height: calc(88 * var(--un));
+    width: calc(104 * var(--un));
+    top: calc(648 * var(--un));
+    right: calc(140 * var(--un));
+}
+
+#microfone-aberto {
+    position: absolute;
+    background-image: url('../../assets/pc/reuniao/microfone_aberto.png');
+    height: calc(88 * var(--un));
+    width: calc(104 * var(--un));
+    top: calc(648 * var(--un));
+    right: calc(140 * var(--un));
+}
+
+#minimizar-reuniao {
+    position: absolute;
+    height: calc(35 * var(--un));
+    width: calc(48 * var(--un));
+    top: calc(143 * var(--un));
+    right: calc(223 * var(--un));
+}
+
+#xis-reuniao {
+    position: absolute;
+    height: calc(35 * var(--un));
+    width: calc(77 * var(--un));
+    top: calc(143 * var(--un));
+    right: calc(119 * var(--un));
+}
+
+#tela-pasta {
+    position: absolute;
+    background-image: url('../../assets/pc/tela_pasta.png');
+    height: calc(714 * var(--un));
+    width: calc(1285 * var(--un));
+    top: calc(140 * var(--un));
+    left: calc(58 * var(--un));
+}
+
+#minimizar-pasta {
+    position: absolute;
+    height: calc(35 * var(--un));
+    width: calc(60 * var(--un));
+    top: calc(143 * var(--un));
+    right: calc(218 * var(--un));
+}
+
+#xis-pasta {
+    position: absolute;
+    height: calc(35 * var(--un));
+    width: calc(77 * var(--un));
+    top: calc(143 * var(--un));
+    right: calc(119 * var(--un));
+}
+
+#doc-1 {
+    position: absolute;
+    height: calc(225 * var(--un));
+    width: calc(230 * var(--un));
+    top: calc(323 * var(--un));
+    left: calc(185 * var(--un));
+}
+
+#doc-2 {
+    position: absolute;
+    height: calc(225 * var(--un));
+    width: calc(230 * var(--un));
+    top: calc(323 * var(--un));
+    left: calc(454 * var(--un));
+}
+
+#doc-3 {
+    position: absolute;
+    height: calc(225 * var(--un));
+    width: calc(230 * var(--un));
+    top: calc(323 * var(--un));
+    left: calc(725 * var(--un));
+}
+
+#doc-4 {
+    position: absolute;
+    height: calc(225 * var(--un));
+    width: calc(230 * var(--un));
+    top: calc(323 * var(--un));
+    left: calc(987 * var(--un));
+}
+
+#doc-5 {
+    position: absolute;
+    height: calc(225 * var(--un));
+    width: calc(230 * var(--un));
+    top: calc(573 * var(--un));
+    left: calc(185 * var(--un));
+}
+
+#documento-aberto {
+    position: absolute;
+    background-image: url('../../assets/pc/documento.png');
+    height: calc(680 * var(--un));
+    width: calc(470 * var(--un));
+    top: calc(161 * var(--un));
+    left: calc(471 * var(--un));
+}
+
+#documento-aberto-texto {
+    position: absolute;
+    font-size: calc(20 * var(--un));
+    top: calc(266 * var(--un));
+    left: calc(507 * var(--un));
+    color: black;
+}
+
+#documento-aberto-fechar {
+    position: absolute;
+    height: calc(35 * var(--un));
+    width: calc(72 * var(--un));
+    top: calc(163 * var(--un));
+    right: calc(471 * var(--un));
+}
+
+#documento-aberto-minimizar {
+    position: absolute;
+    height: calc(35 * var(--un));
+    width: calc(72 * var(--un));
+    top: calc(163 * var(--un));
+    right: calc(550 * var(--un));
+}
