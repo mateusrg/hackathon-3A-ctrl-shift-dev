@@ -71,8 +71,143 @@ function validarDesafio2(palavraDoJogador, resultadoEsperado) {
     return produto === resultadoEsperado;
 }
 
-
 console.log(gerarDesafio2());
-console.log(validarDesafio2("exemplo", 60));
+
+function gerarDesafio3() {
+    const tamanhoLista = Math.floor(Math.random() * 4) + 5;
+    const divisor = Math.floor(Math.random() * 4) + 2;
+
+    const usados = new Set();
+    const lista = [];
+
+    while (lista.length < tamanhoLista) {
+        const quociente = Math.floor(Math.random() * 20) + 1; // 1 a 20
+        const valor = quociente * divisor;
+
+        if (!usados.has(valor)) {
+            lista.push(valor);
+            usados.add(valor);
+        }
+    }
+
+    const indiceCorreto = Math.floor(Math.random() * lista.length);
+    const resultadoEsperado = lista[indiceCorreto] / divisor;
+
+    const codigoPython = `
+lista = [${lista.join(', ')}]
+print(lista[???] / ${divisor})`.trim();
+
+    return {
+        codigo_python: codigoPython,
+        resposta_correta: indiceCorreto,
+        parametros: {
+            lista,
+            divisor,
+            resultadoEsperado
+        }
+    };
+}
+
+function validarDesafio3(respostaIndice, desafio) {
+    const { lista, divisor, resultadoEsperado } = desafio.parametros;
+    return lista[respostaIndice] / divisor === resultadoEsperado;
+}
+
+console.log(gerarDesafio3());
+
+function gerarDesafio4() {
+    const quantidade = Math.floor(Math.random() * 4) + 4;
+    const mediaInteira = Math.floor(Math.random() * 11) + 10;
+
+    const somaEsperada = mediaInteira * quantidade;
+
+    const lista = [];
+    for (let i = 0; i < quantidade - 1; i++) {
+        const valor = Math.floor(Math.random() * 21) + 5;
+        lista.push(valor);
+    }
+
+    const somaParcial = lista.reduce((a, b) => a + b, 0);
+    const valorFaltando = somaEsperada - somaParcial;
+
+    const valoresTexto = [...lista, "???"].join(', ');
+
+    const codigoPython = `
+def media_lista(nums):
+    soma = sum(nums)
+    media = soma / len(nums)
+    return media
+
+valores = [${valoresTexto}]
+print(media_lista(valores))`.trim();
+
+    return {
+        codigo_python: codigoPython,
+        resposta_correta: valorFaltando,
+        parametros: {
+            mediaDesejada: mediaInteira,
+            quantidade,
+            listaParcial: lista,
+            valorFaltando,
+            somaEsperada
+        }
+    };
+}
+
+function validarDesafio4(jsonDesafio, respostaPlayer) {
+    return jsonDesafio['resposta_correta'] === respostaPlayer;
+}
+
+console.log(gerarDesafio4());
+
+function gerarDesafio5() {
+    const palavras = [
+        "prato", "livro", "carro", "plano", "troca",
+        "festa", "janela", "velho", "porta", "gente",
+        "coisa", "tempo", "ponto", "corpo", "fruta",
+        "barco", "letra", "grito", "pleno", "folha"
+    ];
+
+    const palavraCorreta = palavras[Math.floor(Math.random() * palavras.length)];
+    const listaOriginal = palavraCorreta.split("");
+
+    const indiceErro = Math.floor(Math.random() * palavraCorreta.length);
+    const letraCorreta = listaOriginal[indiceErro];
+
+    const alfabeto = "abcdefghijklmnopqrstuvwxyz";
+    let letraErrada;
+    do {
+        letraErrada = alfabeto[Math.floor(Math.random() * alfabeto.length)];
+    } while (letraErrada === letraCorreta);
+
+    const listaComErro = [...listaOriginal];
+    listaComErro[indiceErro] = letraErrada;
+    const palavraErrada = listaComErro.join("");
+
+    const codigoPython = `
+def corrige(palavra):
+    lista = list(palavra)
+    lista[???] = '${letraCorreta}'
+    return ''.join(lista)
+
+print(corrige('${palavraErrada}'))`.trim();
+
+    return {
+        codigo_python: codigoPython,
+        resposta_correta: indiceErro,
+        parametros: {
+            palavraCorreta,
+            palavraErrada,
+            indiceErro,
+            letraCorreta
+        }
+    };
+}
+
+function validarDesafio5(jsonDesafio, respostaPlayer) {
+    return jsonDesafio['resposta_correta'] === respostaPlayer;
+}
+
+console.log(gerarDesafio5);
 
 // fazer "gerar" e "validar" para todos os 5 tipos em "tarefas.py"
