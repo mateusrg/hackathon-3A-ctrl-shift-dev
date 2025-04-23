@@ -33,6 +33,7 @@ print(conta_${comentario}(lista))
 
     return {
         codigo_python: codigoPython,
+        texto: "Imprima " + resultadoEsperado,
         resposta_correta: ajusteFinal,
         parametros: {
             criterio: ehPar ? "pares" : "ímpares",
@@ -45,7 +46,7 @@ print(conta_${comentario}(lista))
     };
 }
 
-console.log(gerarDesafio1());
+// console.log(gerarDesafio1());
 
 function validarDesafio1(jsonDesafio, respostaPlayer) {
     return jsonDesafio['resposta_correta'] === respostaPlayer;
@@ -59,7 +60,10 @@ function gerarDesafio2() {
 
     const resultado = numVogais * tamanhoPalavra;
 
-    return resultado;
+    return {
+        texto: "Retorne " + resultado,
+        resultado_esperado: resultado
+    }
 }
 
 
@@ -71,7 +75,7 @@ function validarDesafio2(palavraDoJogador, resultadoEsperado) {
     return produto === resultadoEsperado;
 }
 
-console.log(gerarDesafio2());
+// console.log(gerarDesafio2());
 
 function gerarDesafio3() {
     const tamanhoLista = Math.floor(Math.random() * 4) + 5;
@@ -99,6 +103,7 @@ print(lista[???] / ${divisor})`.trim();
 
     return {
         codigo_python: codigoPython,
+        texto: "Imprima " + resultadoEsperado,
         resposta_correta: indiceCorreto,
         parametros: {
             lista,
@@ -113,7 +118,7 @@ function validarDesafio3(respostaIndice, desafio) {
     return lista[respostaIndice] / divisor === resultadoEsperado;
 }
 
-console.log(gerarDesafio3());
+// console.log(gerarDesafio3());
 
 function gerarDesafio4() {
     const quantidade = Math.floor(Math.random() * 4) + 4;
@@ -143,6 +148,7 @@ print(media_lista(valores))`.trim();
 
     return {
         codigo_python: codigoPython,
+        texto: "Imprima " + mediaInteira,
         resposta_correta: valorFaltando,
         parametros: {
             mediaDesejada: mediaInteira,
@@ -158,7 +164,7 @@ function validarDesafio4(jsonDesafio, respostaPlayer) {
     return jsonDesafio['resposta_correta'] === respostaPlayer;
 }
 
-console.log(gerarDesafio4());
+// console.log(gerarDesafio4());
 
 function gerarDesafio5() {
     const palavras = [
@@ -194,6 +200,7 @@ print(corrige('${palavraErrada}'))`.trim();
 
     return {
         codigo_python: codigoPython,
+        texto: `Imprima "${palavraCorreta}"`,
         resposta_correta: indiceErro,
         parametros: {
             palavraCorreta,
@@ -208,6 +215,4 @@ function validarDesafio5(jsonDesafio, respostaPlayer) {
     return jsonDesafio['resposta_correta'] === respostaPlayer;
 }
 
-console.log(gerarDesafio5);
-
-// fazer "gerar" e "validar" para todos os 5 tipos em "tarefas.py"
+// console.log(gerarDesafio5());
