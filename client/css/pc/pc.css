@@ -180,6 +180,7 @@ body {
 }
 
 #tb-tarefa {
+    display: none;
     position: absolute;
     background-image: url('../../assets/pc/taskbar/tarefa.png');
     height: calc(50 * var(--un));
@@ -413,4 +414,322 @@ body {
     width: calc(72 * var(--un));
     top: calc(163 * var(--un));
     right: calc(550 * var(--un));
+}
+
+#tela-lista {
+    position: absolute;
+    background-image: url('../../assets/pc/tela_lista.png');
+    height: calc(714 * var(--un));
+    width: calc(1285 * var(--un));
+    top: calc(140 * var(--un));
+    left: calc(58 * var(--un));
+}
+
+#minimizar-lista {
+    position: absolute;
+    height: calc(35 * var(--un));
+    width: calc(60 * var(--un));
+    top: calc(143 * var(--un));
+    right: calc(218 * var(--un));
+}
+
+#xis-lista {
+    position: absolute;
+    height: calc(35 * var(--un));
+    width: calc(77 * var(--un));
+    top: calc(143 * var(--un));
+    right: calc(120 * var(--un));
+}
+
+#pontuacao-jogador {
+    position: absolute;
+    font-size: calc(25 * var(--un));
+    color: #fff;
+    top: calc(225 * var(--un));
+    right: calc(163 * var(--un));
+}
+
+.icone-tarefa {
+    position: absolute;
+    height: calc(70 * var(--un));
+    width: calc(77 * var(--un));
+    left: calc(200 * var(--un));
+}
+
+.texto-tarefa {
+    position: absolute;
+    font-size: calc(25 * var(--un));
+    color: #fff;
+    left: calc(305 * var(--un));
+}
+
+.pontuacao-ganha-tarefa {
+    position: absolute;
+    color: #fff;
+    font-size: calc(20 * var(--un));
+    right: calc(357 * var(--un));
+}
+
+.pontuacao-perdida-tarefa {
+    position: absolute;
+    color: #fff;
+    font-size: calc(20 * var(--un));
+    right: calc(228 * var(--un));
+}
+
+.item-lista {
+    position: absolute;
+    height: calc(100 * var(--un));
+    width: calc(1086 * var(--un));
+    left: calc(157 * var(--un));
+    border-radius: calc(20 * var(--un));
+    cursor: pointer;
+}
+
+#icone-tarefa-1 {
+    top: calc(324 * var(--un));
+}
+
+#icone-tarefa-2 {
+    top: calc(452 * var(--un));
+}
+
+#icone-tarefa-3 {
+    top: calc(580 * var(--un));
+}
+
+#icone-tarefa-4 {
+    top: calc(712 * var(--un));
+}
+
+#texto-tarefa-1 {
+    top: calc(347 * var(--un));
+}
+
+#texto-tarefa-2 {
+    top: calc(477 * var(--un));
+}
+
+#texto-tarefa-3 {
+    top: calc(605 * var(--un));
+}
+
+#texto-tarefa-4 {
+    top: calc(735 * var(--un));
+}
+
+#pontuacao-ganha-tarefa-1 {
+    top: calc(350 * var(--un));
+}
+
+#pontuacao-ganha-tarefa-2 {
+    top: calc(480 * var(--un));
+}
+
+#pontuacao-ganha-tarefa-3 {
+    top: calc(608 * var(--un));
+}
+
+#pontuacao-ganha-tarefa-4 {
+    top: calc(738 * var(--un));
+}
+
+#pontuacao-perdida-tarefa-1 {
+    top: calc(350 * var(--un));
+}
+
+#pontuacao-perdida-tarefa-2 {
+    top: calc(480 * var(--un));
+}
+
+#pontuacao-perdida-tarefa-3 {
+    top: calc(608 * var(--un));
+}
+
+#pontuacao-perdida-tarefa-4 {
+    top: calc(738 * var(--un));
+}
+
+#item-lista-1 {
+    top: calc(309 * var(--un));
+}
+
+#item-lista-2 {
+    top: calc(439 * var(--un));
+}
+
+#item-lista-3 {
+    top: calc(569 * var(--un));
+}
+
+#item-lista-4 {
+    top: calc(697 * var(--un));
+}
+
+#tela-tarefa-1 {
+    position: absolute;
+    background-image: url('../../assets/pc/tarefas/1/tela.png');
+    height: calc(714 * var(--un));
+    width: calc(1285 * var(--un));
+    top: calc(140 * var(--un));
+    left: calc(58 * var(--un));
+}
+
+#botao-trocar-t1 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(88 * var(--un));
+    width: calc(347 * var(--un));
+    left: calc(150 * var(--un));
+    bottom: calc(220 * var(--un));
+    cursor: pointer;
+}
+
+#botao-testar-t1 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(88 * var(--un));
+    width: calc(347 * var(--un));
+    left: calc(527 * var(--un));
+    bottom: calc(220 * var(--un));
+    cursor: pointer;
+}
+
+#botao-entregar-t1 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(88 * var(--un));
+    width: calc(347 * var(--un));
+    left: calc(904 * var(--un));
+    bottom: calc(220 * var(--un));
+    cursor: pointer;
+}
+
+.icone-t1 {
+    height: calc(110 * var(--un));
+    width: calc(110 * var(--un));
+}
+
+#elemento1-t1 {
+    position: absolute;
+    padding: calc(29 * var(--un));
+    height: calc(171 * var(--un));
+    width: calc(171 * var(--un));
+    top: calc(410 * var(--un));
+    left: calc(182 * var(--un));
+}
+
+#elemento2-t1 {
+    position: absolute;
+    padding: calc(29 * var(--un));
+    height: calc(171 * var(--un));
+    width: calc(171 * var(--un));
+    top: calc(410 * var(--un));
+    left: calc(402 * var(--un));
+}
+
+#elemento3-t1 {
+    position: absolute;
+    padding: calc(29 * var(--un));
+    height: calc(171 * var(--un));
+    width: calc(171 * var(--un));
+    top: calc(410 * var(--un));
+    left: calc(622 * var(--un));
+}
+
+#elemento4-t1 {
+    position: absolute;
+    padding: calc(29 * var(--un));
+    height: calc(171 * var(--un));
+    width: calc(171 * var(--un));
+    top: calc(410 * var(--un));
+    left: calc(841 * var(--un));
+}
+
+#elemento5-t1 {
+    position: absolute;
+    padding: calc(29 * var(--un));
+    height: calc(171 * var(--un));
+    width: calc(171 * var(--un));
+    top: calc(410 * var(--un));
+    left: calc(1060 * var(--un));
+}
+
+#trocar-esmaecido-t1 {
+    position: absolute;
+    background-image: url('../../assets/pc/tarefas/1/escurecedor.png');
+    height: calc(88 * var(--un));
+    width: calc(347 * var(--un));
+}
+
+#testar-esmaecido-t1 {
+    position: absolute;
+    background-image: url('../../assets/pc/tarefas/1/escurecedor.png');
+    height: calc(88 * var(--un));
+    width: calc(347 * var(--un));
+}
+
+.elemento-esmaecido-t1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: url('../../assets/pc/tarefas/1/escurecedor_elemento.png');
+    height: calc(171 * var(--un));
+    width: calc(171 * var(--un));
+}
+
+#countdown-t1 {
+    position: absolute;
+    font-size: calc(20 * var(--un));
+    color: #fff;
+    top: calc(315 * var(--un));
+    left: calc(540 * var(--un));
+}
+
+#comparacao-t1 {
+    position: absolute;
+    font-size: calc(30 * var(--un));
+    color: #fff;
+    top: calc(305 * var(--un));
+    left: calc(640 * var(--un));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icone-comparacao-t1 {
+    height: calc(47 * var(--un));
+    width: calc(47 * var(--un));
+}
+
+#minimizar-tarefa {
+    position: absolute;
+    height: calc(35 * var(--un));
+    width: calc(60 * var(--un));
+    top: calc(143 * var(--un));
+    right: calc(218 * var(--un));
+}
+
+#xis-tarefa {
+    position: absolute;
+    height: calc(35 * var(--un));
+    width: calc(77 * var(--un));
+    top: calc(143 * var(--un));
+    right: calc(120 * var(--un));
+}
+
+#sucesso-t1 {
+    position: absolute;
+    color: #00cf0a;
+    font-size: calc(40 * var(--un));
+    top: calc(305 * var(--un));
+    left: calc(540 * var(--un));
+}
+
+#falha-t1 {
+    position: absolute;
+    color: #df0000;
+    font-size: calc(40 * var(--un));
+    top: calc(305 * var(--un));
+    left: calc(540 * var(--un));
 }

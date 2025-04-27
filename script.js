@@ -7,8 +7,6 @@ function gerarDesafioTipo1() {
     return lista;
 }
 
-console.log(gerarDesafioTipo1());
-
 function gerarDesafioTipo4() {
     const cores = ["vermelho", "amarelo", "verde", "azul"];
     const randInt = (min, max) =>
@@ -73,5 +71,63 @@ function gerarDesafioTipo4() {
         botoes: botoesStr
     };
 }
+let questoes = [];
 
-console.log(gerarDesafioTipo4());
+function gerarDesafioTipo6() {
+  const fs = require('fs');
+
+  // Carrega e embaralha apenas na primeira chamada
+  if (!Array.isArray(questoes) || questoes.length === 0) {
+    const lista = JSON.parse(fs.readFileSync('questoes.json', 'utf-8')).questoes;
+
+    // Marca a primeira alternativa como correta e embaralha cada conjunto de alternativas
+    for (const pergunta of lista) {
+      pergunta.alternativas = pergunta.alternativas
+        .map((texto, indice) => ({ texto, correta: indice === 0 }))
+        .sort(() => Math.random() - 0.5);
+    }
+
+    // Embaralha a ordem das perguntas
+    for (let i = lista.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [lista[i], lista[j]] = [lista[j], lista[i]];
+    }
+
+    questoes = lista;
+  }
+
+  // Retira os próximos 3 desafios
+  const desafio = questoes.splice(0, 3);
+
+  // Embaralha as perguntas do subset
+  desafio.sort(() => Math.random() - 0.5);
+
+  // Embaralha novamente as alternativas de cada pergunta
+  for (const pergunta of desafio) {
+    pergunta.alternativas.sort(() => Math.random() - 0.5);
+  }
+
+  // Reinsere no pool para uso futuro (mantendo o ciclo)
+  questoes.push(...desafio);
+
+  return desafio;
+}
+
+
+function main() {
+    const desafio = gerarDesafioTipo6();
+    desafio.forEach((q) => {
+        console.log('Pergunta: ' + q['pergunta']);
+        console.log('Alternativa 1: ' + q['alternativas'][0]['texto']);
+        console.log('Alternativa 2: ' + q['alternativas'][1]['texto']);
+        console.log('Alternativa 3: ' + q['alternativas'][2]['texto']);
+        console.log('Alternativa 4: ' + q['alternativas'][3]['texto']);
+        const indiceCorreto = q['alternativas'].findIndex(a => a.correta);
+        console.log('Resposta correta: ' + q['alternativas'][indiceCorreto]['texto']);
+        console.log('\n');
+    });
+}
+main();
+
+// console.log(gerarDesafioTipo1());
+// console.log(gerarDesafioTipo4());

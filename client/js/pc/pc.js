@@ -72,6 +72,976 @@ switch (dificuldade) {
         document.querySelector('#adv_4').style.display = 'none';
 }
 
+// Funções de Geração e Validação de Desafio
+function gerarDesafioTipo1() {
+    const lista = [1, 2, 3, 4, 5];
+    for (let i = lista.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [lista[i], lista[j]] = [lista[j], lista[i]];
+    }
+    return lista;
+}
+
+function gerarDesafioTipo2() {
+    const tipo = Math.floor(Math.random() * 5) + 1;
+    switch (tipo) {
+        case 1: {
+            const ehPar = Math.random() < 0.5;
+            const criterioTexto = ehPar ? "num % 2 == 0" : "num % 2 != 0";
+            const comentario = ehPar ? "pares" : "ímpares";
+            const tamanho = Math.floor(Math.random() * 11) + 10;
+            const numeros = Array.from({ length: tamanho }, () =>
+                Math.floor(Math.random() * 1000) + 1
+            );
+            const incrementar = Math.floor(Math.random() * 5) + 1;
+            const ajusteFinal = Math.floor(Math.random() * 11) - 5;
+            const totalValidos = numeros.filter(n =>
+                ehPar ? n % 2 === 0 : n % 2 !== 0
+            ).length;
+            const resultadoEsperado = totalValidos * incrementar + ajusteFinal;
+            const codigo_python = `
+  def conta_${comentario}(numeros):
+      contador = 0
+      for num in numeros:
+          if ${criterioTexto}:
+              contador += ${incrementar}
+      return contador + ???
+  lista = [${numeros.join(", ")}]
+  print(conta_${comentario}(lista))
+  `.trim();
+            return {
+                codigo_python,
+                texto: "Imprima " + resultadoEsperado,
+                resposta_correta: ajusteFinal
+            };
+        }
+
+        case 2: {
+            const numVogais = Math.floor(Math.random() * 5) + 1;
+            const tamanhoPalavra = Math.floor(Math.random() * 6) + (numVogais + 1);
+            const resultado = numVogais * tamanhoPalavra;
+            const codigo_python = `
+  def produto_caracteres_vogais(palavra):
+      vogais = 'aeiouAEIOU'
+      contador_vogais = 0
+      for letra in palavra:
+          if letra in vogais:
+              contador_vogais += 1
+      return contador_vogais * len(palavra)
+  
+  print(produto_caracteres_vogais('???'))
+  `.trim();
+            return {
+                codigo_python,
+                texto: "Retorne " + resultado,
+                resposta_correta: resultado
+            };
+        }
+
+        case 3: {
+            const tamanhoLista = Math.floor(Math.random() * 4) + 5;
+            const divisor = Math.floor(Math.random() * 4) + 2;
+            const usados = new Set();
+            const lista = [];
+            while (lista.length < tamanhoLista) {
+                const q = Math.floor(Math.random() * 20) + 1;
+                const valor = q * divisor;
+                if (!usados.has(valor)) {
+                    lista.push(valor);
+                    usados.add(valor);
+                }
+            }
+            const indiceCorreto = Math.floor(Math.random() * lista.length);
+            const resultadoEsperado = lista[indiceCorreto] / divisor;
+            const codigo_python = `
+  lista = [${lista.join(", ")}]
+  print(lista[???] / ${divisor})
+  `.trim();
+            return {
+                codigo_python,
+                texto: "Imprima " + resultadoEsperado,
+                resposta_correta: indiceCorreto
+            };
+        }
+
+        case 4: {
+            const quantidade = Math.floor(Math.random() * 4) + 4;
+            const mediaInteira = Math.floor(Math.random() * 11) + 10;
+            const somaEsperada = mediaInteira * quantidade;
+            const listaParcial = [];
+            for (let i = 0; i < quantidade - 1; i++) {
+                listaParcial.push(Math.floor(Math.random() * 21) + 5);
+            }
+            const somaParcial = listaParcial.reduce((a, b) => a + b, 0);
+            const valorFaltando = somaEsperada - somaParcial;
+            const codigo_python = `
+  def media_lista(nums):
+      soma = sum(nums)
+      media = soma / len(nums)
+      return media
+  
+  valores = [${listaParcial.join(", ")}, ???]
+  print(media_lista(valores))
+  `.trim();
+            return {
+                codigo_python,
+                texto: "Imprima " + mediaInteira,
+                resposta_correta: valorFaltando
+            };
+        }
+
+        case 5: {
+            const palavras = [
+                "prato", "livro", "carro", "plano", "troca",
+                "festa", "janela", "velho", "porta", "gente",
+                "coisa", "tempo", "ponto", "corpo", "fruta",
+                "barco", "letra", "grito", "pleno", "folha"
+            ];
+            const palavraCorreta = palavras[Math.floor(Math.random() * palavras.length)];
+            const listaOrig = palavraCorreta.split("");
+            const indiceErro = Math.floor(Math.random() * listaOrig.length);
+            const letraCorreta = listaOrig[indiceErro];
+            const alfabeto = "abcdefghijklmnopqrstuvwxyz";
+            let letraErrada;
+            do {
+                letraErrada = alfabeto[Math.floor(Math.random() * alfabeto.length)];
+            } while (letraErrada === letraCorreta);
+            const listaComErro = [...listaOrig];
+            listaComErro[indiceErro] = letraErrada;
+            const palavraErrada = listaComErro.join("");
+            const codigo_python = `
+  def corrige(palavra):
+      lista = list(palavra)
+      lista[???] = '${letraCorreta}'
+      return ''.join(lista)
+  
+  print(corrige('${palavraErrada}'))
+  `.trim();
+            return {
+                codigo_python,
+                texto: `Imprima "${palavraCorreta}"`,
+                resposta_correta: indiceErro
+            };
+        }
+    }
+}
+
+function gerarDesafioTipo3() {
+    const tipo = Math.floor(Math.random() * 5) + 1;
+    switch (tipo) {
+        case 1: {
+            const tamanho = Math.floor(Math.random() * 4) + 3;
+            const valores = Array.from({ length: tamanho }, () =>
+                Math.floor(Math.random() * 9) + 1
+            );
+            const codigo_python = `
+  valores = [${valores.join(', ')}]
+  soma = 0
+  for v in valores:
+      soma += v
+  media = soma / len(valores)
+  print("Média: " + media)
+  `.trim();
+            return { codigo_python, resposta_correta: 6 };
+        }
+
+        case 2: {
+            const gerarValor = () => Math.floor(Math.random() * 10) + 1;
+            const gerarValorNumerador = () => Math.floor(Math.random() * 100) + 1;
+            const x1 = gerarValor();
+            const x2 = 0;
+            let x3;
+            do { x3 = gerarValor(); } while (x3 === x1);
+            const chamadas = [{ valor: x1 }, { valor: x2 }, { valor: x3 }]
+                .sort(() => Math.random() - 0.5);
+            const numerador = gerarValorNumerador();
+            const codigo_python = `
+  def calcula(x):
+      return ${numerador} / x
+  
+  ${chamadas.map(c => `print(calcula(${c.valor}))`).join('\n')}
+  `.trim();
+            const linhaComErro = 4 + chamadas.findIndex(c => c.valor === 0);
+            return { codigo_python, resposta_correta: linhaComErro };
+        }
+
+        case 3: {
+            const letras = "abcdefghijklmnopqrstuvwxyz";
+            const texto = Array.from({ length: 5 }, () =>
+                letras[Math.floor(Math.random() * letras.length)]
+            ).join('');
+            const letra = letras[Math.floor(Math.random() * texto.length)];
+            const chamadas = [
+                { tipo: "upper", codigo: `print(texto.upper())` },
+                { tipo: "append", codigo: `print(texto.append("${letra}"))` },
+                { tipo: "index", codigo: `print(texto[${Math.floor(Math.random() * 4)}])` }
+            ].sort(() => Math.random() - 0.5);
+            const codigo_python = `
+  texto = "${texto}"
+  ${chamadas.map(c => c.codigo).join('\n')}
+  `.trim();
+            const linhaComErro = 2 + chamadas.findIndex(c => c.tipo === "append");
+            return { codigo_python, resposta_correta: linhaComErro };
+        }
+
+        case 4: {
+            const nomes = [
+                "Ana", "João", "Maria", "Carlos", "Lucas", "Fernanda", "Pedro", "Gabriela",
+                "Rafael", "Larissa", "Mário", "Juliana", "Ricardo", "Vanessa", "Daniel",
+                "Renata", "Tiago", "Carla", "Rodrigo", "Beatriz"
+            ];
+            const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];
+            const dados = {
+                nome: nomeAleatorio,
+                idade: Math.floor(Math.random() * 60) + 18,
+                altura: (Math.random() * 0.5 + 1.5).toFixed(2)
+            };
+            const erroNaLinha = Math.floor(Math.random() * 3) + 3;
+            const chaves = ["nome", "idade", "altura"];
+            const chaveErrada = chaves[Math.floor(Math.random() * chaves.length)] + " ";
+            const linhas = [
+                `print(dados["nome"])`,
+                `print(dados["altura"])`,
+                `print(dados["idade"])`
+            ];
+            linhas[erroNaLinha - 3] = `print(dados["${chaveErrada}"])`;
+            const codigo_python = `
+  dados = { "nome": "${dados.nome}", "idade": ${dados.idade}, "altura": ${dados.altura} }
+  
+  ${linhas.join('\n')}
+  `.trim();
+            return { codigo_python, resposta_correta: erroNaLinha };
+        }
+
+        case 5: {
+            const nomes = [
+                "Jorge", "Ana", "Carlos", "Beatriz", "Fernando", "Marina", "Lucas", "Patrícia",
+                "Ricardo", "Letícia", "Roberto", "Gabriela", "Paulo", "Juliana", "Mateus",
+                "Amanda", "Eduardo", "Larissa", "Bruno", "Camila"
+            ];
+            const nome = nomes[Math.floor(Math.random() * nomes.length)];
+            const idade = Math.floor(Math.random() * (70 - 18 + 1)) + 18;
+            const funcoes = [
+                "boasVindas", "saudacao", "olaUsuario", "inicio", "cumprimento",
+                "adeus", "despedida", "fim", "tchauzinho", "encerramento"
+            ].sort(() => Math.random() - 0.5);
+            const func1 = funcoes[0], func2 = funcoes[1];
+            const bloco1 = [
+                `def ${func1}(): return`,
+                `print(f"Olá, {nome}!")`
+            ];
+            const bloco2 = [
+                `def ${func2}():`,
+                `print("Tchau!")`
+            ];
+            const ordem = Math.random() < 0.5 ? [bloco1, bloco2] : [bloco2, bloco1];
+            let linhas = [`nome = "${nome}"`, `idade = ${idade}`];
+            ordem.forEach(b => linhas.push(...b));
+            linhas.push(`${func1}()`);
+            const erroIndex = linhas.findIndex(l => l.startsWith("def") && !l.endsWith("return")) + 1;
+            const codigo_python = linhas.join("\n");
+            return { codigo_python, resposta_correta: erroIndex };
+        }
+    }
+}
+
+function gerarDesafioTipo4() {
+    const cores = ["vermelho", "amarelo", "verde", "azul"];
+    const randInt = (min, max) =>
+        Math.floor(Math.random() * (max - min + 1)) + min;
+
+    const valorFinal = randInt(5, 15);
+
+    const botoes = [];
+    for (let i = 0; i < 4; i++) {
+        const numOps = randInt(1, 2);
+        const ops = [];
+        for (let j = 0; j < numOps; j++) {
+            const target = cores[randInt(0, 3)];
+            const usaVariavel = Math.random() < 0.6;
+            const op1 = Math.random() < 0.5 ? "+=" : "-=";
+            if (usaVariavel) {
+                let source = cores[randInt(0, 3)];
+                while (source === target) source = cores[randInt(0, 3)];
+                const sourceOp = Math.random() < 0.5 ? "+" : "-";
+                const k = randInt(0, 5);
+                ops.push({ target, op1, expr: `${source} ${sourceOp} ${k}` });
+            } else {
+                const k = randInt(1, 7);
+                ops.push({ target, op1, expr: `${k}` });
+            }
+        }
+        botoes.push(ops);
+    }
+
+    const estado = {};
+    cores.forEach(c => (estado[c] = valorFinal));
+
+    const seqSol = [0, 1, 2, 3].sort(() => Math.random() - 0.5);
+
+    for (let idx = seqSol.length - 1; idx >= 0; idx--) {
+        const btn = botoes[seqSol[idx]];
+        for (let opIdx = btn.length - 1; opIdx >= 0; opIdx--) {
+            const { target, op1, expr } = btn[opIdx];
+
+            let valorExpr;
+            const m = expr.match(/^([a-z]+) ([+-]) (\d+)$/);
+            if (m) {
+                const [, varName, sign, num] = m;
+                valorExpr = sign === "+"
+                    ? estado[varName] + Number(num)
+                    : estado[varName] - Number(num);
+            } else {
+                valorExpr = Number(expr);
+            }
+
+            if (op1 === "+=") estado[target] -= valorExpr;
+            else estado[target] += valorExpr;
+        }
+    }
+
+    const botoesStr = botoes.map(ops =>
+        ops.map(o => `${o.target} ${o.op1} ${o.expr}`)
+    );
+
+    return {
+        valoresIniciais: estado,
+        botoes: botoesStr
+    };
+}
+
+function gerarDesafioTipo5() {
+    const tipo = Math.floor(Math.random() * 5) + 1;
+    switch (tipo) {
+        case 1: {
+            const lista = Array.from({ length: 3 }, () => Math.floor(Math.random() * 10) + 1);
+            const indice = Math.floor(Math.random() * lista.length);
+            const resposta = lista.length * lista[indice];
+            const codigo_python = `
+  lista = [${lista.join(', ')}]
+  x = len(lista) * lista[${indice}]
+  `;
+            return { codigo_python: codigo_python.trim(), resposta_correta: resposta };
+        }
+
+        case 2: {
+            const tamanho = Math.floor(Math.random() * 4) + 3;
+            const valores = Array.from(new Set(
+                Array.from({ length: tamanho }, () => Math.floor(Math.random() * 10) + 1)
+            ));
+            const limite = Math.floor(Math.random() * 6) + 2;
+            let soma = 0;
+            valores.forEach(v => { if (v > limite) soma += v; });
+            const codigo_python = `
+  valores = [${valores.join(', ')}]
+  soma = 0
+  for v in valores:
+      if v > ${limite}:
+          soma += v
+  print(soma)
+  `;
+            return { codigo_python: codigo_python.trim(), resposta_correta: soma };
+        }
+
+        case 3: {
+            const n = Math.floor(Math.random() * 51);
+            const resultado = (n % 2 === 0) ? n - 2 : n * 2;
+            const codigo_python = `
+  def misterio(n):
+      if n % 2 == 0:
+          return n - 2
+      return n * 2
+  
+  print(misterio(${n}))
+  `;
+            return { codigo_python: codigo_python.trim(), resposta_correta: resultado };
+        }
+
+        case 4: {
+            const tamanho = Math.floor(Math.random() * 4) + 3;
+            const lista = Array.from(new Set(
+                Array.from({ length: tamanho }, () => Math.floor(Math.random() * 20) + 1)
+            ));
+            const alvo = Math.floor(Math.random() * 20) + 1;
+            let retorno = -1;
+            for (let i = 0; i < lista.length; i++) {
+                if (lista[i] === alvo) {
+                    retorno = i;
+                    break;
+                }
+            }
+            const codigo_python = `
+  def busca(nums, alvo):
+      for i, n in enumerate(nums):
+          if n == alvo:
+              return i
+      return -1
+  
+  print(busca([${lista.join(', ')}], ${alvo}))
+  `;
+            return { codigo_python: codigo_python.trim(), resposta_correta: retorno };
+        }
+
+        case 5: {
+            const palavrasBase = [
+                "um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez",
+                "primeiro", "segundo", "terceiro", "quinto", "oitavo", "número", "valor", "chave", "resposta", "resultado"
+            ];
+            const chaves = palavrasBase.sort(() => Math.random() - 0.5).slice(0, 5);
+            const casos = {};
+            chaves.forEach(k => {
+                const ret = Math.random() < 0.5
+                    ? palavrasBase[Math.floor(Math.random() * palavrasBase.length)]
+                    : Math.floor(Math.random() * 100);
+                casos[k] = ret;
+            });
+            const entradas = [
+                ...chaves,
+                ...Array.from({ length: 5 }, () => Math.floor(Math.random() * 10)),
+                ...palavrasBase
+            ];
+            const entrada = entradas[Math.floor(Math.random() * entradas.length)];
+            const resposta = (entrada in casos) ? casos[entrada] : "padrão";
+            const fmt = v => (typeof v === "string" ? `"${v}"` : v);
+            const codigo_python = `
+  def resposta(valor):
+      match valor:
+  ${Object.entries(casos).map(([k, v]) =>
+                `        case ${fmt(k)}:\n            return ${fmt(v)}`
+            ).join('\n')}
+          case _:
+              return "padrão"
+  
+  print(resposta(${fmt(entrada)}))
+  `;
+            return { codigo_python: codigo_python.trim(), resposta_correta: resposta };
+        }
+    }
+}
+
+let questoes = [];
+
+const questoesJson = {
+    "questoes": [
+        {
+            "pergunta": "Em Python, qual método adiciona elemento ao final de uma lista?",
+            "alternativas": [
+                "append()",
+                "add()",
+                "push()",
+                "extend()"
+            ]
+        },
+        {
+            "pergunta": "Em Python, qual sintaxe permite incluir variáveis diretamente em strings usando {}?",
+            "alternativas": [
+                "f-string",
+                "str.format()",
+                "printf()",
+                "concatenação"
+            ]
+        },
+        {
+            "pergunta": "Em Python, qual função retorna pares de índice e valor ao iterar?",
+            "alternativas": [
+                "enumerate()",
+                "zip()",
+                "range()",
+                "items()"
+            ]
+        },
+        {
+            "pergunta": "Como se define uma função geradora em Python?",
+            "alternativas": [
+                "usar yield",
+                "def generator",
+                "usar return",
+                "lambda"
+            ]
+        },
+        {
+            "pergunta": "Qual decorator em Python torna método de classe?",
+            "alternativas": [
+                "@classmethod",
+                "@staticmethod",
+                "@property",
+                "@init__"
+            ]
+        },
+        {
+            "pergunta": "Qual operador desempacota dicionários em chamadas de função?",
+            "alternativas": [
+                "**",
+                "*",
+                "&",
+                "//"
+            ]
+        },
+        {
+            "pergunta": "Em JS, qual método retorna uma Promise com array de resultados quando todas resolvem?",
+            "alternativas": [
+                "Promise.all()",
+                "Promise.any()",
+                "Promise.race()",
+                "Promise.allSettled()"
+            ]
+        },
+        {
+            "pergunta": "Qual palavra-chave do JS declara variável com escopo de bloco?",
+            "alternativas": [
+                "let",
+                "var",
+                "const",
+                "static"
+            ]
+        },
+        {
+            "pergunta": "Em JavaScript, closure é:",
+            "alternativas": [
+                "função retém escopo",
+                "objeto imutável",
+                "método estático",
+                "variável global"
+            ]
+        },
+        {
+            "pergunta": "Qual método itera sobre array e retorna um novo array?",
+            "alternativas": [
+                "map()",
+                "filter()",
+                "forEach()",
+                "reduce()"
+            ]
+        },
+        {
+            "pergunta": "Qual evento dispara quando o DOM é totalmente carregado?",
+            "alternativas": [
+                "DOMContentLoaded",
+                "load",
+                "ready",
+                "init"
+            ]
+        },
+        {
+            "pergunta": "Como limitar resultados em MySQL para os 5 primeiros registros?",
+            "alternativas": [
+                "LIMIT 5",
+                "TOP 5",
+                "FIRST 5",
+                "FETCH 5"
+            ]
+        },
+        {
+            "pergunta": "Qual cláusula filtra resultados após agrupar dados?",
+            "alternativas": [
+                "HAVING",
+                "WHERE",
+                "GROUP BY",
+                "ORDER BY"
+            ]
+        },
+        {
+            "pergunta": "Em SQL, qual função substitui NULL por valor padrão?",
+            "alternativas": [
+                "COALESCE()",
+                "IFNULL()",
+                "NVL()",
+                "DEFAULT"
+            ]
+        },
+        {
+            "pergunta": "Como renomear uma coluna em uma consulta SELECT?",
+            "alternativas": [
+                "AS",
+                "TO",
+                "RENAME",
+                "ALIAS"
+            ]
+        },
+        {
+            "pergunta": "Qual tipo de índice MySQL é padrão em chaves primárias InnoDB?",
+            "alternativas": [
+                "BTREE",
+                "HASH",
+                "FULLTEXT",
+                "SPATIAL"
+            ]
+        },
+        {
+            "pergunta": "Qual atributo HTML define texto alternativo em <img>?",
+            "alternativas": [
+                "alt",
+                "src",
+                "title",
+                "caption"
+            ]
+        },
+        {
+            "pergunta": "Como centralizar itens no eixo principal em Flexbox?",
+            "alternativas": [
+                "justify-content",
+                "align-content",
+                "text-align",
+                "justify-items"
+            ]
+        },
+        {
+            "pergunta": "Qual propriedade CSS define cor de fundo de um elemento?",
+            "alternativas": [
+                "background-color",
+                "color-bg",
+                "bg-color",
+                "bg"
+            ]
+        },
+        {
+            "pergunta": "Em HTML5, qual tag semântica representa o rodapé de uma página?",
+            "alternativas": [
+                "<footer>",
+                "<section>",
+                "<div>",
+                "<nav>"
+            ]
+        },
+        {
+            "pergunta": "Como vincular arquivo CSS externo em HTML?",
+            "alternativas": [
+                "<link>",
+                "<style>",
+                "@import",
+                "<script>"
+            ]
+        }
+    ]
+};
+
+const perguntasJson = {
+    "perguntas": [
+        {
+            "titulo": "Crie um comando que selecione todas as informações do morador com id 5",
+            "alternativas": [
+                ["SELECT", "UPDATE", "INSERT INTO", "DELETE FROM"],
+                ["*", "nome", "id", "idade"],
+                ["WHERE id = 5", "WHERE nome = 'João'", "WHERE idade = 30", "WHERE altura = 1.75"]
+            ],
+            "correta": ["SELECT", "*", "WHERE id = 5"]
+        },
+        {
+            "titulo": "Selecione apenas o nome dos moradores",
+            "alternativas": [
+                ["SELECT", "INSERT INTO", "UPDATE", "DELETE FROM"],
+                ["nome", "*", "id", "idade"],
+                ["FROM moradores", "WHERE nome = 'Ana'", "FROM dados", "WHERE id = 3"]
+            ],
+            "correta": ["SELECT", "nome", "FROM moradores"]
+        },
+        {
+            "titulo": "Insira um novo morador chamado Carlos, com 25 anos",
+            "alternativas": [
+                ["INSERT INTO", "SELECT", "DELETE FROM", "UPDATE"],
+                ["moradores (nome, idade)", "usuarios (nome, idade)", "clientes (nome, idade)", "dados (nome, idade)"],
+                ["VALUES ('Carlos', 25)", "SET nome = 'Carlos'", "WHERE nome = 'Carlos'", "VALUES (25, 'Carlos')"]
+            ],
+            "correta": ["INSERT INTO", "moradores (nome, idade)", "VALUES ('Carlos', 25)"]
+        },
+        {
+            "titulo": "Atualize a idade do morador com id 3 para 28",
+            "alternativas": [
+                ["UPDATE", "SELECT", "DELETE FROM", "INSERT INTO"],
+                ["moradores", "usuarios", "clientes", "pessoas"],
+                ["SET idade = 28", "WHERE id = 3", "SET id = 3", "SET idade = 25"],
+                ["WHERE id = 3", "SET idade = 28", "WHERE id = 4", "SET id = 3"]
+            ],
+            "correta": ["UPDATE", "moradores", "SET idade = 28", "WHERE id = 3"]
+        },
+        {
+            "titulo": "Remova o morador com nome 'João'",
+            "alternativas": [
+                ["DELETE FROM", "SELECT", "INSERT INTO", "UPDATE"],
+                ["moradores", "usuarios", "clientes", "dados"],
+                ["WHERE nome = 'João'", "SET nome = 'João'", "VALUES ('João')", "WHERE idade = 'João'"]
+            ],
+            "correta": ["DELETE FROM", "moradores", "WHERE nome = 'João'"]
+        },
+        {
+            "titulo": "Selecione moradores com idade maior que 18",
+            "alternativas": [
+                ["SELECT", "DELETE FROM", "INSERT INTO", "UPDATE"],
+                ["*", "nome", "id", "altura"],
+                ["WHERE idade > 18", "WHERE idade = 18", "WHERE idade < 18", "WHERE nome > 18"]
+            ],
+            "correta": ["SELECT", "*", "WHERE id > 18"]
+        },
+        {
+            "titulo": "Adicione um campo de email na tabela moradores",
+            "alternativas": [
+                ["ALTER TABLE", "SELECT", "INSERT INTO", "UPDATE"],
+                ["moradores", "usuarios", "clientes", "dados"],
+                ["ADD email VARCHAR(255)", "SET email = ''", "MODIFY email VARCHAR", "CREATE email VARCHAR"]
+            ],
+            "correta": ["ALTER TABLE", "moradores", "ADD email VARCHAR(255)"]
+        },
+        {
+            "titulo": "Crie uma nova tabela chamada casas",
+            "alternativas": [
+                ["CREATE TABLE", "SELECT", "INSERT INTO", "DROP TABLE"],
+                ["casas", "moradores", "usuarios", "enderecos"],
+                ["(id INT, endereco TEXT)", "(id INT)", "USING id", "(nome, idade)"]
+            ],
+            "correta": ["CREATE TABLE", "casas", "(id INT, endereco TEXT)"]
+        },
+        {
+            "titulo": "Liste todas as informações de moradores com nome iniciando com 'A'",
+            "alternativas": [
+                ["SELECT", "UPDATE", "DELETE FROM", "INSERT INTO"],
+                ["*", "nome", "id", "idade"],
+                ["WHERE nome LIKE 'A%'", "WHERE nome = 'A'", "WHERE nome IN ('A')", "WHERE nome = A"]
+            ],
+            "correta": ["SELECT", "*", "WHERE nome LIKE 'A%'"]
+        },
+        {
+            "titulo": "Exclua a tabela temporária de teste",
+            "alternativas": [
+                ["DROP TABLE", "DELETE FROM", "UPDATE", "TRUNCATE TABLE"],
+                ["teste", "moradores", "usuarios", "clientes"]
+            ],
+            "correta": ["DROP TABLE", "teste"]
+        },
+        {
+            "titulo": "Renomeie a tabela clientes para usuarios",
+            "alternativas": [
+                ["ALTER TABLE", "UPDATE", "DROP TABLE", "SELECT"],
+                ["clientes", "usuarios", "moradores", "dados"],
+                ["RENAME TO usuarios", "RENAME usuarios", "TO usuarios", "CHANGE TO usuarios"]
+            ],
+            "correta": ["ALTER TABLE", "clientes", "RENAME TO usuarios"]
+        },
+        {
+            "titulo": "Conte quantos moradores existem",
+            "alternativas": [
+                ["SELECT", "INSERT INTO", "UPDATE", "DELETE FROM"],
+                ["COUNT(*)", "id", "nome", "*"],
+                ["FROM moradores", "WHERE id > 0", "IN moradores", "WHERE nome != ''"]
+            ],
+            "correta": ["SELECT", "COUNT(*)", "FROM moradores"]
+        },
+        {
+            "titulo": "Mostre os moradores ordenados por idade",
+            "alternativas": [
+                ["SELECT", "INSERT", "UPDATE", "DELETE"],
+                ["*", "idade", "nome", "id"],
+                ["ORDER BY idade", "WHERE idade", "HAVING idade", "SORT idade"]
+            ],
+            "correta": ["SELECT", "*", "ORDER BY idade"]
+        },
+        {
+            "titulo": "Insira um morador com nome Ana e idade 35",
+            "alternativas": [
+                ["INSERT INTO", "SELECT", "UPDATE", "DELETE FROM"],
+                ["moradores (nome, idade)", "usuarios (nome, idade)", "clientes (nome, idade)", "pessoas (nome, idade)"],
+                ["VALUES ('Ana', 35)", "SET idade = 35", "VALUES (35, 'Ana')", "ADD ('Ana', 35)"]
+            ],
+            "correta": ["INSERT INTO", "moradores (nome, idade)", "VALUES ('Ana', 35)"]
+        },
+        {
+            "titulo": "Selecione todos os moradores com nome 'Pedro'",
+            "alternativas": [
+                ["SELECT", "DELETE FROM", "UPDATE", "INSERT"],
+                ["*", "nome", "id", "idade"],
+                ["WHERE nome = 'Pedro'", "HAVING nome = 'Pedro'", "IN nome = 'Pedro'", "SET nome = 'Pedro'"]
+            ],
+            "correta": ["SELECT", "*", "WHERE nome = 'Pedro'"]
+        },
+        {
+            "titulo": "Atualize o nome do morador com id 10 para 'Maria'",
+            "alternativas": [
+                ["UPDATE", "INSERT INTO", "DELETE FROM", "SELECT"],
+                ["moradores", "usuarios", "clientes", "dados"],
+                ["SET nome = 'Maria'", "WHERE id = 10", "REPLACE nome = 'Maria'", "SET id = 10"],
+                ["WHERE id = 10", "SET id = 10", "WHERE nome = 'Maria'", "HAVING id = 10"]
+            ],
+            "correta": ["UPDATE", "moradores", "SET nome = 'Maria'", "WHERE id = 10"]
+        },
+        {
+            "titulo": "Selecione a idade dos moradores com id de 5 a 10",
+            "alternativas": [
+                ["SELECT", "DELETE FROM", "INSERT INTO", "UPDATE"],
+                ["idade", "*", "id", "nome"],
+                ["WHERE id BETWEEN 5 AND 10", "WHERE id > 5 AND id < 10", "HAVING id", "FROM 5 TO 10"]
+            ],
+            "correta": ["SELECT", "idade", "WHERE id BETWEEN 5 AND 10"]
+        },
+        {
+            "titulo": "Mostre o maior valor da idade",
+            "alternativas": [
+                ["SELECT", "UPDATE", "DELETE FROM", "INSERT INTO"],
+                ["MAX(idade)", "idade", "nome", "COUNT(idade)"],
+                ["FROM moradores", "WHERE idade", "IN moradores", "HAVING idade"]
+            ],
+            "correta": ["SELECT", "MAX(idade)", "FROM moradores"]
+        },
+        {
+            "titulo": "Conte moradores com idade maior que 40",
+            "alternativas": [
+                ["SELECT", "DELETE FROM", "INSERT INTO", "UPDATE"],
+                ["COUNT(*)", "idade", "nome", "id"],
+                ["WHERE idade > 40", "HAVING idade > 40", "SET idade > 40", "IN idade > 40"]
+            ],
+            "correta": ["SELECT", "COUNT(*)", "WHERE idade > 40"]
+        },
+        {
+            "titulo": "Selecione apenas id e nome dos moradores",
+            "alternativas": [
+                ["SELECT", "INSERT INTO", "UPDATE", "DELETE FROM"],
+                ["id, nome", "*", "nome", "idade"],
+                ["FROM moradores", "WHERE id", "WHERE nome", "HAVING nome"]
+            ],
+            "correta": ["SELECT", "id, nome", "FROM moradores"]
+        },
+        {
+            "titulo": "Mostre todos os moradores que têm idade igual a 30",
+            "alternativas": [
+                ["SELECT", "INSERT INTO", "DELETE FROM", "UPDATE"],
+                ["*", "idade", "nome", "id"],
+                ["WHERE idade = 30", "HAVING idade = 30", "SET idade = 30", "WHERE nome = 30"]
+            ],
+            "correta": ["SELECT", "*", "WHERE idade = 30"]
+        }
+    ]
+}
+
+function gerarDesafioTipo6() {
+    if (!Array.isArray(questoes) || questoes.length === 0) {
+        const lista = questoesJson.questoes;
+
+        for (const pergunta of lista) {
+            pergunta.alternativas = pergunta.alternativas
+                .map((texto, indice) => ({ texto, correta: indice === 0 }))
+                .sort(() => Math.random() - 0.5);
+        }
+
+        for (let i = lista.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [lista[i], lista[j]] = [lista[j], lista[i]];
+        }
+
+        questoes = lista;
+    }
+
+    const desafio = questoes.splice(0, 3);
+    desafio.sort(() => Math.random() - 0.5);
+    for (const pergunta of desafio) {
+        pergunta.alternativas.sort(() => Math.random() - 0.5);
+    }
+
+    questoes.push(...desafio);
+
+    return desafio;
+}
+
+function gerarDesafioTipo7() {
+    function shuffle(arr) {
+        const a = arr.slice();
+        for (let j = a.length - 1; j > 0; j--) {
+            const k = Math.floor(Math.random() * (j + 1));
+            [a[j], a[k]] = [a[k], a[j]];
+        }
+        return a;
+    }
+
+    const perguntas = shuffle(perguntasJson.perguntas);
+    const q = perguntas[0];
+
+    const alternativas = q.alternativas.map((grupo, idx) => {
+        const opcoesEmbaralhadas = shuffle(grupo);
+        const indiceCorreta = opcoesEmbaralhadas.indexOf(q.correta[idx]);
+        return { opcoes: opcoesEmbaralhadas, indiceCorreta };
+    });
+
+    return { titulo: q.titulo, alternativas };
+}
+
+function validarDesafioTipo2(desafio, respostaPlayer) {
+    const code = desafio.codigo_python || "";
+
+    if (code.includes("def produto_caracteres_vogais") && code.includes("vogais =")) {
+        const vogais = 'aeiouAEIOU';
+        const numVogais = [...respostaPlayer]
+            .filter(ch => vogais.includes(ch))
+            .length;
+        const produto = numVogais * respostaPlayer.length;
+        return produto === desafio.resposta_correta;
+    }
+
+    return respostaPlayer === desafio.resposta_correta;
+}
+
+function validarDesafioTipo3(desafio, respostaPlayer) {
+    return respostaPlayer === desafio.resposta_correta;
+}
+
+function validarDesafioTipo5(desafio, respostaPlayer) {
+    return respostaPlayer === desafio.resposta_correta;
+}
+
+
+
+let tarefas = [];
+let estadoTarefas = {
+    1: '',
+    2: '',
+    3: '',
+    4: ''
+};
+
+function preencherTarefas() {
+    // Mapeamento tipos → funções
+    const geradores = {
+        1: gerarDesafioTipo1,
+        2: gerarDesafioTipo2,
+        3: gerarDesafioTipo3,
+        4: gerarDesafioTipo4,
+        5: gerarDesafioTipo5,
+        6: gerarDesafioTipo6,
+        7: gerarDesafioTipo7
+    };
+
+    const calcularPontos = (tipo) => ({
+        pontosGanhos: tipo,
+        pontosPerdidos: -tipo
+    });
+
+    const gerarTarefa = () => {
+        const tipo = Math.floor(Math.random() * 7) + 1;
+        const gerarFn = geradores[tipo];
+        const resultado = gerarFn();
+        const { pontosGanhos, pontosPerdidos } = calcularPontos(tipo);
+
+        return {
+            tipo,
+            ...resultado,
+            pontosGanhos,
+            pontosPerdidos
+        };
+    };
+
+    for (let i = 0; i < tarefas.length; i++) {
+        if (tarefas[i] === null) {
+            tarefas[i] = gerarTarefa();
+            estadoTarefas[i + 1] = '';
+        }
+    }
+
+    while (tarefas.length < 4) {
+        tarefas.push(gerarTarefa());
+    }
+}
+preencherTarefas();
+console.log(tarefas);
+
+
+// Resto do Código
+
 function gameOver() {
     clearInterval(intervaloTempo);
     clearInterval(intervaloDecaimento);
@@ -81,6 +1051,7 @@ function gameOver() {
 let tempoRestante = 600;
 let energia = 100;
 let felicidade = 100;
+let pontuacao = 0;
 
 let statusReuniao = 'fechado'; // "fechado", "aberto", "selecionado"
 let statusPasta = 'fechado'; // "fechado", "aberto", "selecionado"
@@ -178,19 +1149,542 @@ function destruirTelaPasta() {
     document.querySelector('#doc-5')?.remove();
     try {
         destruirTelaDocumento();
-    } catch {}
+    } catch { }
 }
 
 function destruirTelaDocumento() {
-    document.querySelector('#documento-aberto').remove();
-    document.querySelector('#documento-aberto-fechar').remove();
-    document.querySelector('#documento-aberto-minimizar').remove();
-    document.querySelector('#documento-aberto-texto').remove();
+    document.querySelector('#documento-aberto')?.remove();
+    document.querySelector('#documento-aberto-fechar')?.remove();
+    document.querySelector('#documento-aberto-minimizar')?.remove();
+    document.querySelector('#documento-aberto-texto')?.remove();
+}
+
+function destruirTelaLista() {
+    document.querySelector('#tela-lista')?.remove();
+    document.querySelector('#minimizar-lista')?.remove();
+    document.querySelector('#xis-lista')?.remove();
+    document.querySelector('#pontuacao-jogador')?.remove();
+    document.querySelectorAll('.icone-tarefa').forEach((e) => e.remove());
+    document.querySelectorAll('.texto-tarefa').forEach((e) => e.remove());
+    document.querySelectorAll('.pontuacao-ganha-tarefa').forEach((e) => e.remove());
+    document.querySelectorAll('.pontuacao-perdida-tarefa').forEach((e) => e.remove());
+    document.querySelectorAll('.item-lista').forEach((e) => e.remove());
+}
+
+function destruirTelaTarefa() {
+    document.querySelector('#tela-tarefa-1')?.remove();
+    document.querySelector('#tela-tarefa-2')?.remove();
+    document.querySelector('#tela-tarefa-3')?.remove();
+    document.querySelector('#tela-tarefa-4')?.remove();
+    document.querySelector('#tela-tarefa-5')?.remove();
+    document.querySelector('#tela-tarefa-6')?.remove();
+    document.querySelector('#tela-tarefa-7')?.remove();
+    document.querySelector('#botao-trocar-t1')?.remove();
+    document.querySelector('#botao-testar-t1')?.remove();
+    document.querySelector('#botao-entregar-t1')?.remove();
+    document.querySelector('#comparacao-t1')?.remove();
+    document.querySelector('#countdown-t1')?.remove();
+    document.querySelectorAll('[id^="elemento"]')?.forEach(el => el.remove());
+    document.querySelector('#xis-tarefa')?.remove();
+    document.querySelector('#minimizar-tarefa')?.remove();
+    document.querySelector('#sucesso-t1')?.remove();
+    document.querySelector('#falha-t1')?.remove();
+}
+
+function destruirTelaJogo() {
+    // TODO
+    console.log('Falta destruir a tela do jogo');
+}
+
+function porTarefasNaTelaLista() {
+    const game = document.querySelector('#game');
+    const pontuacaoJogador = document.createElement('div');
+    pontuacaoJogador.id = 'pontuacao-jogador';
+    pontuacaoJogador.innerHTML = `Pontuação: ${pontuacao}/${pontuacaoMinima}`;
+    game.appendChild(pontuacaoJogador);
+
+    if (tarefas.length < 4) {
+        preencherTarefas();
+    }
+
+    tarefas.forEach((tarefa, i) => {
+        let nomes = {
+            1: 'Linha de Lógica',
+            2: 'Ajuste Final',
+            3: 'Corte Preciso',
+            4: 'Nivelamento',
+            5: 'Previsão de Retorno',
+            6: 'Quiz do Dev',
+            7: 'Operação SQL'
+        };
+        const iconeTarefa = document.createElement('div');
+        iconeTarefa.className = 'icone-tarefa';
+        iconeTarefa.id = `icone-tarefa-${i + 1}`;
+        iconeTarefa.style.backgroundImage = `url("../../assets/pc/tarefas/${tarefa['tipo']}.png")`;
+        game.appendChild(iconeTarefa);
+
+        const textoTarefa = document.createElement('div');
+        textoTarefa.className = 'texto-tarefa';
+        textoTarefa.id = `texto-tarefa-${i + 1}`;
+        textoTarefa.textContent = nomes[tarefa['tipo']];
+        game.appendChild(textoTarefa);
+
+        const pontuacaoGanhaTarefa = document.createElement('div');
+        pontuacaoGanhaTarefa.className = 'pontuacao-ganha-tarefa';
+        pontuacaoGanhaTarefa.id = `pontuacao-ganha-tarefa-${i + 1}`;
+        pontuacaoGanhaTarefa.textContent = `+${tarefa['pontosGanhos']}`;
+        game.appendChild(pontuacaoGanhaTarefa);
+
+        const pontuacaoPerdidaTarefa = document.createElement('div');
+        pontuacaoPerdidaTarefa.className = 'pontuacao-perdida-tarefa';
+        pontuacaoPerdidaTarefa.id = `pontuacao-perdida-tarefa-${i + 1}`;
+        pontuacaoPerdidaTarefa.textContent = tarefa['pontosPerdidos'];
+        game.appendChild(pontuacaoPerdidaTarefa);
+
+        const itemLista = document.createElement('div');
+        itemLista.className = 'item-lista';
+        itemLista.id = `item-lista-${i + 1}`;
+        itemLista.addEventListener('click', () => selecionaTarefa(i + 1));
+        game.appendChild(itemLista);
+    });
+}
+
+function criarTelaTarefaTipo1(indiceTarefa) {
+    const game = document.querySelector('#game');
+
+    if (estadoTarefas[indiceTarefa] === '') {
+        estadoTarefas[indiceTarefa] = { 'selecionados': [], 'posicoes': [1, 2, 3, 4, 5], 'countdown': null, 'countdownInterval': null, 'ultimoResultado': null };
+    }
+
+    const tarefa = tarefas[indiceTarefa - 1];
+
+    const valores = Object.keys(tarefa)
+        .filter(chave => !isNaN(chave))
+        .map(chave => ({ valor: tarefa[chave], index: parseInt(chave) + 1 }));
+
+    const ordemCorreta = valores
+        .sort((a, b) => a.valor - b.valor)
+        .map(item => item.index);
+
+    console.log('Ordem: ' + ordemCorreta);
+
+    const telaTarefa = document.createElement('div');
+    telaTarefa.id = 'tela-tarefa-1';
+    game.appendChild(telaTarefa);
+
+    const botaoTrocar = document.createElement('div');
+    botaoTrocar.id = 'botao-trocar-t1';
+    game.appendChild(botaoTrocar);
+
+    const botaoTestar = document.createElement('div');
+    botaoTestar.id = 'botao-testar-t1';
+    game.appendChild(botaoTestar);
+
+    const botaoEntregar = document.createElement('div');
+    botaoEntregar.id = 'botao-entregar-t1';
+    botaoEntregar.addEventListener('click', () => {
+        // Finaliza o teste em andamento, se houver
+        if (estadoTarefas[indiceTarefa]['countdownInterval']) {
+            clearInterval(estadoTarefas[indiceTarefa]['countdownInterval']);
+            estadoTarefas[indiceTarefa]['countdownInterval'] = null;
+            estadoTarefas[indiceTarefa]['countdown'] = null;
+            document.querySelector('#countdown-t1')?.remove();
+        }
+
+        // Desseleciona todos os elementos
+        estadoTarefas[indiceTarefa]['selecionados'] = [];
+        const elementos = document.querySelectorAll('[id^="elemento"]');
+        elementos.forEach(elemento => {
+            elemento.style.backgroundImage = 'url("../../assets/pc/tarefas/1/azul.png")';
+
+            // Remove div de esmaecimento, se existir
+            const esmaecidoDiv = elemento.querySelector('.elemento-esmaecido-t1');
+            if (esmaecidoDiv) {
+                esmaecidoDiv.remove();
+            }
+        });
+
+        // Remove qualquer comparação da UI
+        const comparacaoDiv = document.querySelector('#comparacao-t1');
+        if (comparacaoDiv) {
+            comparacaoDiv.remove();
+        }
+
+        // Atualiza os botões "Testar" e "Trocar" para esmaecidos
+        botaoTrocar.innerHTML = '';
+        const esmaecidoTrocar = document.createElement('div');
+        esmaecidoTrocar.id = 'trocar-esmaecido-t1';
+        botaoTrocar.appendChild(esmaecidoTrocar);
+        botaoTrocar.style.pointerEvents = 'none';
+
+        botaoTestar.innerHTML = '';
+        const esmaecidoTestar = document.createElement('div');
+        esmaecidoTestar.id = 'testar-esmaecido-t1';
+        botaoTestar.appendChild(esmaecidoTestar);
+        botaoTestar.style.pointerEvents = 'none';
+
+        const posicoes = estadoTarefas[indiceTarefa]['posicoes'];
+        let todosCorretos = true;
+
+        elementos.forEach((elemento, index) => {
+            const posicaoAtual = posicoes[index];
+            const posicaoCorreta = ordemCorreta[index];
+
+            if (posicaoAtual === posicaoCorreta) {
+                elemento.style.backgroundImage = 'url("../../assets/pc/tarefas/1/verde.png")';
+            } else {
+                elemento.style.backgroundImage = 'url("../../assets/pc/tarefas/1/vermelho.png")';
+                todosCorretos = false;
+            }
+
+            // Remove onclicks dos elementos
+            elemento.style.pointerEvents = 'none';
+        });
+
+        // Exibe mensagem de sucesso ou falha
+        const mensagem = document.createElement('div');
+        if (todosCorretos) {
+            pontuacao += tarefas[indiceTarefa - 1].pontosGanhos;
+            mensagem.id = 'sucesso-t1';
+            mensagem.textContent = `+${tarefas[indiceTarefa - 1].pontosGanhos} ponto${tarefas[indiceTarefa - 1].pontosGanhos === 1 ? '' : 's'}`;
+        } else {
+            pontuacao -= Math.abs(tarefas[indiceTarefa - 1].pontosPerdidos);
+            pontuacao = Math.max(pontuacao, 0);
+            mensagem.id = 'falha-t1';
+            mensagem.textContent = `-${Math.abs(tarefas[indiceTarefa - 1].pontosPerdidos)} ponto${Math.abs(tarefas[indiceTarefa - 1].pontosPerdidos) === 1 ? '' : 's'}`;
+        }
+        game.appendChild(mensagem);
+
+        // Remove onclicks do botão "Entregar"
+        botaoEntregar.style.pointerEvents = 'none';
+
+        console.log(tarefas);
+        tarefas[indiceTarefa - 1] = null;
+        console.log(tarefas);
+        preencherTarefas();
+
+        // Define função para destruir a tela da tarefa
+        const destruirTela = () => {
+            destruirTelaTarefa();
+            document.querySelector('#tb-tarefa').style.display = 'none';
+            game.querySelector('#tb-tarefa-selecionado')?.remove();
+            game.querySelector('#tb-tarefa-aberto')?.remove();
+            statusTarefa = 'fechado';
+        };
+
+        // Adiciona evento para destruir a tela imediatamente ao clicar em outra aba, fechar ou minimizar
+        const abas = ['#tb-reuniao', '#tb-pasta', '#tb-lista', '#tb-jogo', '#tb-tarefa', '#xis-tarefa', '#minimizar-tarefa'];
+        abas.forEach(selector => {
+            document.querySelector(selector)?.addEventListener('click', destruirTela, { once: true });
+        });
+
+        // Chama destruir a tela da tarefa após 2 segundos, caso não tenha sido destruída antes
+        setTimeout(destruirTela, 2000);
+    });
+    game.appendChild(botaoEntregar);
+
+    const getImagemPorPosicao = (posicao) => {
+        switch (posicao) {
+            case 1: return 'url("../../assets/pc/tarefas/1/quadrado.png")';
+            case 2: return 'url("../../assets/pc/tarefas/1/circulo.png")';
+            case 3: return 'url("../../assets/pc/tarefas/1/losango.png")';
+            case 4: return 'url("../../assets/pc/tarefas/1/esquerda.png")';
+            default: return 'url("../../assets/pc/tarefas/1/direita.png")';
+        }
+    };
+
+    const atualizarBotoes = () => {
+        botaoTrocar.innerHTML = '';
+        if (estadoTarefas[indiceTarefa]['selecionados'].length !== 2) {
+            const esmaecido = document.createElement('div');
+            esmaecido.id = 'trocar-esmaecido-t1';
+            botaoTrocar.appendChild(esmaecido);
+            botaoTrocar.style.pointerEvents = 'none';
+        } else {
+            botaoTrocar.style.pointerEvents = 'auto';
+        }
+
+        botaoTestar.innerHTML = '';
+        if (estadoTarefas[indiceTarefa]['selecionados'].length !== 1) {
+            const esmaecido = document.createElement('div');
+            esmaecido.id = 'testar-esmaecido-t1';
+            botaoTestar.appendChild(esmaecido);
+            botaoTestar.style.pointerEvents = 'none';
+        } else {
+            botaoTestar.style.pointerEvents = 'auto';
+        }
+
+        atualizarComparacao();
+    };
+
+    const atualizarComparacao = () => {
+        const comparacaoDiv = document.querySelector('#comparacao-t1');
+        if (comparacaoDiv) {
+            comparacaoDiv.remove();
+        }
+
+        const selecionados = estadoTarefas[indiceTarefa]['selecionados'];
+        if (selecionados.length === 2) {
+            const [primeiro, segundo] = selecionados;
+            const posicoes = estadoTarefas[indiceTarefa]['posicoes'];
+
+            const ordemPrimeiro = ordemCorreta.indexOf(posicoes[primeiro - 1]);
+            const ordemSegundo = ordemCorreta.indexOf(posicoes[segundo - 1]);
+
+            const comparacao = document.createElement('div');
+            comparacao.id = 'comparacao-t1';
+
+            const iconePrimeiro = document.createElement('div');
+            iconePrimeiro.className = 'icone-comparacao-t1';
+            const iconeSegundo = document.createElement('div');
+            iconeSegundo.className = 'icone-comparacao-t1';
+            const simbolo = document.createElement('div');
+
+            iconePrimeiro.style.backgroundImage = getImagemPorPosicao(posicoes[primeiro - 1]);
+            iconeSegundo.style.backgroundImage = getImagemPorPosicao(posicoes[segundo - 1]);
+            simbolo.textContent = ordemPrimeiro < ordemSegundo ? '<' : '>';
+
+            comparacao.appendChild(iconePrimeiro);
+            comparacao.appendChild(simbolo);
+            comparacao.appendChild(iconeSegundo);
+
+            game.appendChild(comparacao);
+        }
+    };
+
+    for (let j = 1; j <= 5; j++) {
+        const elemento = document.createElement('div');
+        elemento.id = `elemento${j}-t1`;
+
+        if (estadoTarefas[indiceTarefa]['selecionados'].includes(j)) {
+            elemento.style.backgroundImage = 'url("../../assets/pc/tarefas/1/amarelo.png")';
+        } else {
+            elemento.style.backgroundImage = 'url("../../assets/pc/tarefas/1/azul.png")';
+        }
+
+        elemento.addEventListener('click', () => {
+            const selecionados = estadoTarefas[indiceTarefa]['selecionados'];
+            if (selecionados.includes(j)) {
+                selecionados.splice(selecionados.indexOf(j), 1);
+                elemento.style.backgroundImage = 'url("../../assets/pc/tarefas/1/azul.png")';
+            } else if (selecionados.length < 2) {
+                selecionados.push(j);
+                elemento.style.backgroundImage = 'url("../../assets/pc/tarefas/1/amarelo.png")';
+            }
+            atualizarBotoes();
+        });
+
+        game.appendChild(elemento);
+
+        const icone = document.createElement('div');
+        icone.style.backgroundImage = getImagemPorPosicao(estadoTarefas[indiceTarefa]['posicoes'][j - 1]);
+        icone.className = 'icone-t1';
+        elemento.appendChild(icone);
+    }
+
+    const atualizarUI = () => {
+        for (let j = 1; j <= 5; j++) {
+            const elemento = document.querySelector(`#elemento${j}-t1`);
+            const posicao = estadoTarefas[indiceTarefa]['posicoes'][j - 1];
+            elemento.querySelector('.icone-t1').style.backgroundImage = getImagemPorPosicao(posicao);
+        }
+    };
+
+    botaoTrocar.addEventListener('click', () => {
+        const selecionados = estadoTarefas[indiceTarefa]['selecionados'];
+        if (selecionados.length === 2) {
+            const [primeiro, segundo] = selecionados;
+
+            const posicoes = estadoTarefas[indiceTarefa]['posicoes'];
+            [posicoes[primeiro - 1], posicoes[segundo - 1]] = [posicoes[segundo - 1], posicoes[primeiro - 1]];
+
+            estadoTarefas[indiceTarefa]['selecionados'] = [];
+            document.querySelector(`#elemento${primeiro}-t1`).style.backgroundImage = 'url("../../assets/pc/tarefas/1/azul.png")';
+            document.querySelector(`#elemento${segundo}-t1`).style.backgroundImage = 'url("../../assets/pc/tarefas/1/azul.png")';
+
+            atualizarUI();
+            atualizarBotoes();
+        }
+    });
+
+    function testarT1() {
+        const elementoSelecionado = estadoTarefas[indiceTarefa]['selecionados'][0];
+        const posicoes = estadoTarefas[indiceTarefa]['posicoes'];
+        const resultadoTeste = posicoes[elementoSelecionado - 1] === ordemCorreta[elementoSelecionado - 1];
+        const elemento = document.querySelector(`#elemento${elementoSelecionado}-t1`);
+        let countdown = estadoTarefas[indiceTarefa]['countdown'] || 5;
+        estadoTarefas[indiceTarefa]['countdown'] = countdown;
+
+        const countdownDiv = document.createElement('div');
+        countdownDiv.id = 'countdown-t1';
+        countdownDiv.textContent = `Resultado em ${countdown}...`;
+        game.appendChild(countdownDiv);
+
+        const elementos = document.querySelectorAll('[id^="elemento"]');
+        elementos.forEach(el => {
+            const esmaecidoDiv = document.createElement('div');
+            esmaecidoDiv.className = 'elemento-esmaecido-t1';
+            el.appendChild(esmaecidoDiv);
+            el.style.pointerEvents = 'none';
+        });
+
+        const esmaecidoDiv = document.createElement('div');
+        esmaecidoDiv.id = 'testar-esmaecido-t1';
+        botaoTestar.appendChild(esmaecidoDiv);
+        botaoTestar.style.pointerEvents = 'none';
+
+        if (estadoTarefas[indiceTarefa]['countdownInterval']) {
+            clearInterval(estadoTarefas[indiceTarefa]['countdownInterval']);
+        }
+
+        estadoTarefas[indiceTarefa]['countdownInterval'] = setInterval(() => {
+            countdown--;
+            estadoTarefas[indiceTarefa]['countdown'] = countdown;
+            countdownDiv.textContent = `Resultado em ${countdown}...`;
+            if (countdown === 0) {
+                clearInterval(estadoTarefas[indiceTarefa]['countdownInterval']);
+                estadoTarefas[indiceTarefa]['countdownInterval'] = null;
+                estadoTarefas[indiceTarefa]['countdown'] = null;
+                countdownDiv.remove();
+
+                elementos.forEach(el => {
+                    const esmaecidoDiv = el.querySelector('.elemento-esmaecido-t1');
+                    if (esmaecidoDiv) {
+                        esmaecidoDiv.remove();
+                    }
+                    el.style.pointerEvents = 'auto';
+                });
+
+                const esmaecidoDiv = botaoTestar.querySelector('#testar-esmaecido-t1');
+                if (esmaecidoDiv) {
+                    esmaecidoDiv.remove();
+                }
+                botaoTestar.style.pointerEvents = 'auto';
+
+                if (resultadoTeste) {
+                    elemento.style.backgroundImage = 'url("../../assets/pc/tarefas/1/verde.png")';
+                } else {
+                    elemento.style.backgroundImage = 'url("../../assets/pc/tarefas/1/vermelho.png")';
+                }
+
+                estadoTarefas[indiceTarefa]['ultimoResultado'] = {
+                    elementoSelecionado,
+                    resultadoTeste,
+                    timestamp: Date.now()
+                };
+
+                const selecionados = estadoTarefas[indiceTarefa]['selecionados'];
+                const index = selecionados.indexOf(elementoSelecionado);
+                if (index !== -1) {
+                    selecionados.splice(index, 1);
+                }
+                atualizarBotoes();
+
+                setTimeout(() => {
+                    if (!estadoTarefas[indiceTarefa]['selecionados'].includes(elementoSelecionado)) {
+                        elemento.style.backgroundImage = 'url("../../assets/pc/tarefas/1/azul.png")';
+                    }
+                }, 2000);
+            }
+        }, 1000);
+    }
+
+    botaoTestar.addEventListener('click', () => {
+        if (estadoTarefas[indiceTarefa]['selecionados'].length === 1) {
+            testarT1();
+        }
+    });
+
+    const ultimoResultado = estadoTarefas[indiceTarefa]['ultimoResultado'];
+    if (ultimoResultado && Date.now() - ultimoResultado.timestamp < 2000) {
+        const elemento = document.querySelector(`#elemento${ultimoResultado.elementoSelecionado}-t1`);
+        elemento.style.backgroundImage = ultimoResultado.resultadoTeste
+            ? 'url("../../assets/pc/tarefas/1/verde.png")'
+            : 'url("../../assets/pc/tarefas/1/vermelho.png")';
+
+        setTimeout(() => {
+            if (!estadoTarefas[indiceTarefa]['selecionados'].includes(ultimoResultado.elementoSelecionado)) {
+                elemento.style.backgroundImage = 'url("../../assets/pc/tarefas/1/azul.png")';
+            }
+        }, 1000);
+    }
+
+    atualizarBotoes();
+
+    if (estadoTarefas[indiceTarefa]['countdown'] !== null) {
+        testarT1();
+    }
+
+    const xisTarefa = document.createElement('div');
+    xisTarefa.id = 'xis-tarefa';
+    xisTarefa.addEventListener('click', () => {
+        if (estadoTarefas[indiceTarefa] != '') {
+            estadoTarefas[indiceTarefa]['selecionados'] = [];
+        }
+        if (estadoTarefas[indiceTarefa]['countdownInterval']) {
+            clearInterval(estadoTarefas[indiceTarefa]['countdownInterval']);
+            estadoTarefas[indiceTarefa]['countdownInterval'] = null;
+            estadoTarefas[indiceTarefa]['countdown'] = null;
+        }
+        destruirTelaTarefa();
+        document.querySelector('#tb-tarefa').style.display = 'none';
+        game.querySelector('#tb-tarefa-selecionado')?.remove();
+        statusTarefa = 'fechado';
+    });
+    game.appendChild(xisTarefa);
+
+    const minimizarTarefa = document.createElement('div');
+    minimizarTarefa.id = 'minimizar-tarefa';
+    minimizarTarefa.addEventListener('click', () => {
+        destruirTelaTarefa();
+        game.querySelector('#tb-tarefa-selecionado')?.remove();
+        const tarefaAberto = document.createElement('div');
+        tarefaAberto.id = 'tb-tarefa-aberto';
+        tarefaAberto.className = 'aberto';
+        game.appendChild(tarefaAberto);
+        statusTarefa = 'aberto';
+    });
+    game.appendChild(minimizarTarefa);
+}
+
+function criarTelaTarefaTipo2(indiceTarefa) {
+    // TODO
+    console.log('Tipo 2');
+}
+
+function criarTelaTarefaTipo3(indiceTarefa) {
+    // TODO
+    console.log('Tipo 3');
+}
+
+function criarTelaTarefaTipo4(indiceTarefa) {
+    // TODO
+    console.log('Tipo 4');
+}
+
+function criarTelaTarefaTipo5(indiceTarefa) {
+    // TODO
+    console.log('Tipo 5');
+}
+
+function criarTelaTarefaTipo6(indiceTarefa) {
+    // TODO
+    console.log('Tipo 6');
+}
+
+function criarTelaTarefaTipo7(indiceTarefa) {
+    // TODO
+    console.log('Tipo 7');
 }
 
 function selecionaReuniao() {
     desselecionaAbas();
-    destruirTelaPasta(); // Garante que a tela de pasta seja removida
+    destruirTelaPasta();
+    destruirTelaDocumento();
+    destruirTelaPasta();
+    destruirTelaLista();
+    destruirTelaTarefa();
+    destruirTelaJogo();
     statusReuniao = 'selecionado';
 
     const telaReuniao = document.createElement('div');
@@ -254,7 +1748,11 @@ function selecionaReuniao() {
 
 function selecionaPasta() {
     desselecionaAbas();
-    destruirTelaReuniao(); // Garante que a tela de reunião seja removida
+    destruirTelaReuniao();
+    destruirTelaDocumento();
+    destruirTelaLista();
+    destruirTelaTarefa();
+    destruirTelaJogo();
     statusPasta = 'selecionado';
 
     const telaPasta = document.createElement('div');
@@ -336,9 +1834,13 @@ function selecionaPasta() {
     pastaSelecionado.className = 'selecionado';
     game.appendChild(pastaSelecionado);
 }
-
 function selecionaLista() {
     desselecionaAbas();
+    destruirTelaReuniao();
+    destruirTelaDocumento();
+    destruirTelaPasta();
+    destruirTelaTarefa();
+    destruirTelaJogo();
     statusLista = 'selecionado';
 
     const listaAberto = game.querySelector('#tb-lista-aberto');
@@ -346,10 +1848,49 @@ function selecionaLista() {
         listaAberto.remove();
     }
 
+    const telaLista = document.createElement('div');
+    const minimizarLista = document.createElement('div');
+    const xisLista = document.createElement('div');
+
+    telaLista.id = 'tela-lista';
+    minimizarLista.id = 'minimizar-lista';
+    xisLista.id = 'xis-lista';
+
+    game.appendChild(telaLista);
+    game.appendChild(minimizarLista);
+    game.appendChild(xisLista);
+
+    minimizarLista.addEventListener('click', () => {
+        destruirTelaLista();
+
+        game.querySelector('#tb-lista-selecionado')?.remove();
+        const listaAberto = document.createElement('div');
+        listaAberto.id = 'tb-lista-aberto';
+        listaAberto.className = 'aberto';
+        game.appendChild(listaAberto);
+
+        // Adiciona o evento para reabrir a lista ao clicar no ícone minimizado
+        listaAberto.addEventListener('click', () => {
+            selecionaLista();
+        });
+
+        statusLista = 'aberto';
+    });
+
+    xisLista.addEventListener('click', () => {
+        destruirTelaLista();
+        document.querySelector('#tb-lista-selecionado')?.remove();
+        statusLista = 'fechado';
+    });
+
+    game.querySelector('#tb-lista-selecionado')?.remove();
+
     const listaSelecionado = document.createElement('div');
     listaSelecionado.id = 'tb-lista-selecionado';
     listaSelecionado.className = 'selecionado';
     game.appendChild(listaSelecionado);
+
+    porTarefasNaTelaLista();
 }
 
 function selecionaJogo() {
@@ -368,8 +1909,17 @@ function selecionaJogo() {
 }
 
 function selecionaTarefa(indiceTarefa) {
+    tarefaAberta = indiceTarefa;
     desselecionaAbas();
+    destruirTelaReuniao();
+    destruirTelaPasta();
+    destruirTelaDocumento();
+    destruirTelaLista();
+    destruirTelaTarefa();
+    destruirTelaJogo();
+
     statusTarefa = 'selecionado';
+    document.querySelector('#tb-tarefa').style.display = 'block';
 
     const tarefaAberto = game.querySelector('#tb-tarefa-aberto');
     if (tarefaAberto) {
@@ -380,6 +1930,20 @@ function selecionaTarefa(indiceTarefa) {
     tarefaSelecionado.id = 'tb-tarefa-selecionado';
     tarefaSelecionado.className = 'selecionado';
     game.appendChild(tarefaSelecionado);
+
+    const i = indiceTarefa - 1;
+    const tarefa = tarefas[i];
+    const funcoesTarefaPorTipo = {
+        1: criarTelaTarefaTipo1,
+        2: criarTelaTarefaTipo2,
+        3: criarTelaTarefaTipo3,
+        4: criarTelaTarefaTipo4,
+        5: criarTelaTarefaTipo5,
+        6: criarTelaTarefaTipo6,
+        7: criarTelaTarefaTipo7
+    };
+
+    funcoesTarefaPorTipo[tarefa['tipo']](indiceTarefa);
 }
 
 function clicaAba(aba) {
@@ -423,6 +1987,7 @@ function clicaAba(aba) {
                 selecionaLista();
             } else {
                 statusLista = 'aberto';
+                destruirTelaLista();
                 const listaSelecionado = game.querySelector('#tb-lista-selecionado');
                 if (listaSelecionado) {
                     listaSelecionado.remove();
@@ -439,6 +2004,7 @@ function clicaAba(aba) {
                 selecionaJogo();
             } else {
                 statusJogo = 'aberto';
+                destruirTelaJogo();
                 const jogoSelecionado = game.querySelector('#tb-jogo-selecionado');
                 if (jogoSelecionado) {
                     jogoSelecionado.remove();
@@ -452,9 +2018,10 @@ function clicaAba(aba) {
 
         case 'tarefa':
             if (statusTarefa === 'fechado' || statusTarefa === 'aberto') {
-                selecionaTarefa(1);
+                selecionaTarefa(tarefaAberta);
             } else {
                 statusTarefa = 'aberto';
+                destruirTelaTarefa();
                 const tarefaSelecionado = game.querySelector('#tb-tarefa-selecionado');
                 if (tarefaSelecionado) {
                     tarefaSelecionado.remove();
