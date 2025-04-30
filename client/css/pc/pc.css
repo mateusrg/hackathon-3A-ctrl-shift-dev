@@ -907,3 +907,212 @@ body {
     top: calc(216 * var(--un));
     right: calc(360 * var(--un));
 }
+
+#tela-jogo {
+    position: absolute;
+    background-image: url('../../assets/pc/jogo/inicio.png');
+    height: calc(714 * var(--un));
+    width: calc(1285 * var(--un));
+    top: calc(140 * var(--un));
+    left: calc(58 * var(--un));
+}
+
+#botao-iniciar-jogo {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(132 * var(--un));
+    width: calc(529 * var(--un));
+    left: calc(436 * var(--un));
+    bottom: calc(312 * var(--un));
+    cursor: pointer;
+}
+
+#minimizar-jogo {
+    position: absolute;
+    height: calc(35 * var(--un));
+    width: calc(60 * var(--un));
+    top: calc(143 * var(--un));
+    right: calc(218 * var(--un));
+}
+
+#xis-jogo {
+    position: absolute;
+    height: calc(35 * var(--un));
+    width: calc(77 * var(--un));
+    top: calc(143 * var(--un));
+    right: calc(119 * var(--un));
+}
+
+#seta-direita-jogo {
+    position: absolute;
+    background-image: url('../../assets/hud/seta_baixo.png');
+    height: calc(89 * var(--un));
+    width: calc(151 * var(--un));
+    bottom: calc(407 * var(--un));
+    left: calc(1150 * var(--un));
+    cursor: pointer;
+    z-index: 100;
+    rotate: 270deg;
+}
+
+#seta-esquerda-jogo {
+    position: absolute;
+    background-image: url('../../assets/hud/seta_baixo.png');
+    height: calc(89 * var(--un));
+    width: calc(151 * var(--un));
+    bottom: calc(407 * var(--un));
+    left: calc(98 * var(--un));
+    cursor: pointer;
+    z-index: 100;
+    rotate: 90deg;
+}
+
+#inimigo-1-esquerda {
+    position: absolute;
+    height: calc(210 * var(--un));
+    width: calc(80 * var(--un));
+    bottom: calc(340 * var(--un));
+    left: calc(370 * var(--un));
+    cursor: pointer;
+}
+
+#inimigo-1-meio {
+    position: absolute;
+    height: calc(150 * var(--un));
+    width: calc(90 * var(--un));
+    bottom: calc(400 * var(--un));
+    left: calc(560 * var(--un));
+    cursor: pointer;
+}
+
+#inimigo-1-direita {
+    position: absolute;
+    height: calc(120 * var(--un));
+    width: calc(140 * var(--un));
+    bottom: calc(390 * var(--un));
+    left: calc(820 * var(--un));
+    cursor: pointer;
+}
+
+#inimigo-2-esquerda {
+    position: absolute;
+    height: calc(120 * var(--un));
+    width: calc(140 * var(--un));
+    bottom: calc(580 * var(--un));
+    left: calc(400 * var(--un));
+    cursor: pointer;
+}
+
+#inimigo-2-meio {
+    position: absolute;
+    height: calc(180 * var(--un));
+    width: calc(90 * var(--un));
+    bottom: calc(460 * var(--un));
+    left: calc(690 * var(--un));
+    cursor: pointer;
+}
+
+#inimigo-2-direita {
+    position: absolute;
+    height: calc(140 * var(--un));
+    width: calc(120 * var(--un));
+    bottom: calc(520 * var(--un));
+    left: calc(1050 * var(--un));
+    cursor: pointer;
+}
+
+#inimigo-3-esquerda {
+    position: absolute;
+    height: calc(200 * var(--un));
+    width: calc(110 * var(--un));
+    bottom: calc(290 * var(--un));
+    left: calc(300 * var(--un));
+    cursor: pointer;
+}
+
+#inimigo-3-meio {
+    position: absolute;
+    height: calc(210 * var(--un));
+    width: calc(150 * var(--un));
+    bottom: calc(240 * var(--un));
+    left: calc(720 * var(--un));
+    cursor: pointer;
+}
+
+#inimigo-3-direita {
+    position: absolute;
+    height: calc(140 * var(--un));
+    width: calc(100 * var(--un));
+    bottom: calc(550 * var(--un));
+    left: calc(900 * var(--un));
+    cursor: pointer;
+}
+
+#inimigo-4-esquerda {
+    position: absolute;
+    height: calc(210 * var(--un));
+    width: calc(140 * var(--un));
+    bottom: calc(420 * var(--un));
+    left: calc(250 * var(--un));
+    cursor: pointer;
+}
+
+#inimigo-4-meio {
+    position: absolute;
+    height: calc(170 * var(--un));
+    width: calc(90 * var(--un));
+    bottom: calc(320 * var(--un));
+    left: calc(620 * var(--un));
+    cursor: pointer;
+}
+
+#inimigo-4-direita {
+    position: absolute;
+    height: calc(120 * var(--un));
+    width: calc(100 * var(--un));
+    bottom: calc(555 * var(--un));
+    left: calc(760 * var(--un));
+    cursor: pointer;
+}
+
+#pause-jogo {
+    position: absolute;
+    background-image: url('../../assets/pc/jogo/pause.png');
+    height: calc(102 * var(--un));
+    width: calc(120 * var(--un));
+    top: calc(200 * var(--un));
+    left: calc(127 * var(--un));
+    cursor: pointer;
+    z-index: 120;
+}
+
+#play-jogo {
+    position: absolute;
+    background-image: url('../../assets/pc/jogo/play.png');
+    height: calc(102 * var(--un));
+    width: calc(120 * var(--un));
+    top: calc(200 * var(--un));
+    left: calc(127 * var(--un));
+    cursor: pointer;
+    z-index: 120;
+}
+
+#blur-jogo {
+    position: absolute;
+    background-image: url('../../assets/pc/jogo/blur.png');
+    height: calc(656 * var(--un));
+    width: calc(1162 * var(--un));
+    top: calc(180 * var(--un));
+    left: calc(120 * var(--un));
+    z-index: 110;
+}
+
+#texto-jogo {
+    position: absolute;
+    font-size: calc(50 * var(--un));
+    color: #fff;
+    top: calc(490 * var(--un));
+    left: calc(400 * var(--un));
+    z-index: 120;
+    text-align: center;
+}

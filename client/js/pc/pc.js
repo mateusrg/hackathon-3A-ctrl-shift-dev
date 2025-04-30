@@ -1205,8 +1205,28 @@ function destruirTelaTarefa() {
 }
 
 function destruirTelaJogo() {
-    // TODO
-    console.log('Falta destruir a tela do jogo');
+    document.querySelector('#tela-jogo')?.remove();
+    document.querySelector('#botao-iniciar-jogo')?.remove();
+    document.querySelector('#xis-jogo')?.remove();
+    document.querySelector('#minimizar-jogo')?.remove();
+    document.getElementById("seta-direita-jogo")?.remove();
+    document.getElementById("seta-esquerda-jogo")?.remove();
+    document.getElementById("pause-jogo")?.remove();
+    document.getElementById("play-jogo")?.remove();
+    document.getElementById("blur-jogo")?.remove();
+    document.getElementById("texto-jogo")?.remove();
+    document.getElementById("inimigo-1-esquerda")?.remove();
+    document.getElementById("inimigo-1-meio")?.remove();
+    document.getElementById("inimigo-1-direita")?.remove();
+    document.getElementById("inimigo-2-esquerda")?.remove();
+    document.getElementById("inimigo-2-meio")?.remove();
+    document.getElementById("inimigo-2-direita")?.remove();
+    document.getElementById("inimigo-3-esquerda")?.remove();
+    document.getElementById("inimigo-3-meio")?.remove();
+    document.getElementById("inimigo-3-direita")?.remove();
+    document.getElementById("inimigo-4-esquerda")?.remove();
+    document.getElementById("inimigo-4-meio")?.remove();
+    document.getElementById("inimigo-4-direita")?.remove();
 }
 
 function porTarefasNaTelaLista() {
@@ -2318,8 +2338,789 @@ function selecionaLista() {
     porTarefasNaTelaLista();
 }
 
+let posicaoAtual = 1;
+let jogoRodando = false;
+let jogoEstavaSelecionado = false;
+let estaPausado = false;
+
+const imagensPrecarregadas = {};
+
+function preCarregarImagens(lista) {
+  lista.forEach(src => {
+    const img = new Image();
+    img.src = src;
+    imagensPrecarregadas[src] = img;
+  });
+}
+
+preCarregarImagens([
+  '../../assets/pc/jogo/mapa1_0.png',
+  '../../assets/pc/jogo/mapa1_1.png',
+  '../../assets/pc/jogo/mapa1_2.png',
+  '../../assets/pc/jogo/mapa1_3.png',
+  '../../assets/pc/jogo/mapa1_4.png',
+  '../../assets/pc/jogo/mapa1_5.png',
+  '../../assets/pc/jogo/mapa1_6.png',
+  '../../assets/pc/jogo/mapa1_7.png',
+  '../../assets/pc/jogo/mapa2_0.png',
+  '../../assets/pc/jogo/mapa2_1.png',
+  '../../assets/pc/jogo/mapa2_2.png',
+  '../../assets/pc/jogo/mapa2_3.png',
+  '../../assets/pc/jogo/mapa2_4.png',
+  '../../assets/pc/jogo/mapa2_5.png',
+  '../../assets/pc/jogo/mapa2_6.png',
+  '../../assets/pc/jogo/mapa2_7.png',
+  '../../assets/pc/jogo/mapa3_0.png',
+  '../../assets/pc/jogo/mapa3_1.png',
+  '../../assets/pc/jogo/mapa3_2.png',
+  '../../assets/pc/jogo/mapa3_3.png',
+  '../../assets/pc/jogo/mapa3_4.png',
+  '../../assets/pc/jogo/mapa3_5.png',
+  '../../assets/pc/jogo/mapa3_6.png',
+  '../../assets/pc/jogo/mapa3_7.png',
+  '../../assets/pc/jogo/mapa4_0.png',
+  '../../assets/pc/jogo/mapa4_1.png',
+  '../../assets/pc/jogo/mapa4_2.png',
+  '../../assets/pc/jogo/mapa4_3.png',
+  '../../assets/pc/jogo/mapa4_4.png',
+  '../../assets/pc/jogo/mapa4_5.png',
+  '../../assets/pc/jogo/mapa4_6.png',
+  '../../assets/pc/jogo/mapa4_7.png',
+]);
+
+const mataInimigo = {
+    "mapa 1": [
+        [null, null, null, '../../assets/pc/jogo/mapa1_0.png'],
+        [0, null, null, '../../assets/pc/jogo/mapa1_1.png'],
+        [null, 0, null, '../../assets/pc/jogo/mapa1_2.png'],
+        [null, null, 0, '../../assets/pc/jogo/mapa1_3.png'],
+        [2, 1, null, '../../assets/pc/jogo/mapa1_4.png'],
+        [3, null, 1, '../../assets/pc/jogo/mapa1_5.png'],
+        [null, 3, 2, '../../assets/pc/jogo/mapa1_6.png'],
+        [6, 5, 4, '../../assets/pc/jogo/mapa1_7.png'],
+        0
+    ],
+    "mapa 2": [
+        [null, null, null, '../../assets/pc/jogo/mapa2_0.png'],
+        [0, null, null, '../../assets/pc/jogo/mapa2_1.png'],
+        [null, 0, null, '../../assets/pc/jogo/mapa2_2.png'],
+        [null, null, 0, '../../assets/pc/jogo/mapa2_3.png'],
+        [2, 1, null, '../../assets/pc/jogo/mapa2_4.png'],
+        [3, null, 1, '../../assets/pc/jogo/mapa2_5.png'],
+        [null, 3, 2, '../../assets/pc/jogo/mapa2_6.png'],
+        [6, 5, 4, '../../assets/pc/jogo/mapa2_7.png'],
+        0
+    ],
+    "mapa 3": [
+        [null, null, null, '../../assets/pc/jogo/mapa3_0.png'],
+        [0, null, null, '../../assets/pc/jogo/mapa3_1.png'],
+        [null, 0, null, '../../assets/pc/jogo/mapa3_2.png'],
+        [null, null, 0, '../../assets/pc/jogo/mapa3_3.png'],
+        [2, 1, null, '../../assets/pc/jogo/mapa3_4.png'],
+        [3, null, 1, '../../assets/pc/jogo/mapa3_5.png'],
+        [null, 3, 2, '../../assets/pc/jogo/mapa3_6.png'],
+        [6, 5, 4, '../../assets/pc/jogo/mapa3_7.png'],
+        0
+    ],
+    "mapa 4": [
+        [null, null, null, '../../assets/pc/jogo/mapa4_0.png'],
+        [0, null, null, '../../assets/pc/jogo/mapa4_1.png'],
+        [null, 0, null, '../../assets/pc/jogo/mapa4_2.png'],
+        [null, null, 0, '../../assets/pc/jogo/mapa4_3.png'],
+        [2, 1, null, '../../assets/pc/jogo/mapa4_4.png'],
+        [3, null, 1, '../../assets/pc/jogo/mapa4_5.png'],
+        [null, 3, 2, '../../assets/pc/jogo/mapa4_6.png'],
+        [6, 5, 4, '../../assets/pc/jogo/mapa4_7.png'],
+        0
+    ],
+}
+
+function eliminarInimigo(ladoInimigo) {
+    const telaJogo = document.querySelector('#tela-jogo');
+    const inimigo = document.querySelector(`#inimigo-${posicaoAtual}-${ladoInimigo}`);
+
+    let srcMapa;
+
+    let posicaoMapa = mataInimigo[`mapa ${posicaoAtual}`][8];
+    
+    switch (posicaoMapa) {
+        case 1:
+            srcMapa = mataInimigo[`mapa ${posicaoAtual}`][0][3];
+            console.log(posicaoMapa)
+            posicaoMapa = 0;
+            console.log(posicaoMapa)
+            break;
+        case 2:
+            srcMapa = mataInimigo[`mapa ${posicaoAtual}`][0][3];
+            console.log(posicaoMapa)
+            posicaoMapa = 0;
+            console.log(posicaoMapa)
+            break;
+        case 3:
+            srcMapa = mataInimigo[`mapa ${posicaoAtual}`][0][3];
+            console.log(posicaoMapa)
+            posicaoMapa = 0;
+            console.log(posicaoMapa)
+            break;
+        case 4:
+            if (ladoInimigo == 'esquerda') {
+                srcMapa = mataInimigo[`mapa ${posicaoAtual}`][2][3];
+                console.log(posicaoMapa)
+                posicaoMapa = 2;
+                console.log(posicaoMapa)
+            } else {
+                srcMapa = mataInimigo[`mapa ${posicaoAtual}`][1][3];
+                console.log(posicaoMapa)
+                posicaoMapa = 1;
+                console.log(posicaoMapa)
+            }
+            break;
+        case 5:
+            if (ladoInimigo == 'esquerda') {
+                srcMapa = mataInimigo[`mapa ${posicaoAtual}`][3][3];
+                console.log(posicaoMapa)
+                posicaoMapa = 3;
+                console.log(posicaoMapa)
+            } else {
+                srcMapa = mataInimigo[`mapa ${posicaoAtual}`][1][3];
+                console.log(posicaoMapa)
+                posicaoMapa = 1;
+                console.log(posicaoMapa)
+            }
+            break;
+        case 6:
+            if (ladoInimigo == 'meio') {
+                srcMapa = mataInimigo[`mapa ${posicaoAtual}`][3][3];
+                console.log(posicaoMapa)
+                posicaoMapa = 3;
+                console.log(posicaoMapa)
+            } else {
+                srcMapa = mataInimigo[`mapa ${posicaoAtual}`][2][3];
+                console.log(posicaoMapa)
+                posicaoMapa = 2;
+                console.log(posicaoMapa)
+            }
+            break;
+        case 7:
+            if (ladoInimigo == 'esquerda') {
+                srcMapa = mataInimigo[`mapa ${posicaoAtual}`][6][3];
+                console.log(posicaoMapa)
+                posicaoMapa = 6;
+                console.log(posicaoMapa)
+            } else if (ladoInimigo == 'meio') {
+                srcMapa = mataInimigo[`mapa ${posicaoAtual}`][5][3];
+                console.log(posicaoMapa)
+                posicaoMapa = 5;
+                console.log(posicaoMapa)
+            } else {
+                srcMapa = mataInimigo[`mapa ${posicaoAtual}`][4][3];
+                console.log(posicaoMapa)
+                posicaoMapa = 4;
+                console.log(posicaoMapa)
+            }
+            break;
+    }
+
+    inimigo?.remove();
+    mataInimigo[`mapa ${posicaoAtual}`][8] = posicaoMapa;
+
+    felicidade = Math.min(100, felicidade + felicidadeInimigoDerrotado);
+    atualizarHUD();
+
+    if (statusJogo == 'selecionado') {
+        telaJogo.style.backgroundImage = `url(${imagensPrecarregadas[srcMapa].src})`;
+    }
+}
+
+function gerarInimigo() {
+    if (estaPausado) return;
+    if (jogoRodando) {
+        const numero = Math.floor(Math.random() * 3) + 1;
+        if (numero == 1 || numero == 2) {
+            const telaJogo = document.querySelector('#tela-jogo');
+
+            const numeroMapa = Math.floor(Math.random() * 4) + 1;
+            if (mataInimigo[`mapa ${numeroMapa}`][8] == 7) {
+                return;
+            }
+            const mapa = mataInimigo[`mapa ${numeroMapa}`];
+            const indiceMapaInicial = mapa[8];
+
+            let numeroInimigo;
+            let inimigo = document.createElement('div');
+            let ladoInimigo;
+            let indiceMapa;
+
+            switch (mapa[8]) {
+                case 0:
+                    numeroInimigo = Math.floor(Math.random() * 3) + 1;
+
+                    if (numeroInimigo == 1) {
+                        ladoInimigo = "esquerda";
+                        indiceMapa = 1;
+                    } else if (numeroInimigo == 2) {
+                        ladoInimigo = "meio";
+                        indiceMapa = 2;
+                    } else {
+                        ladoInimigo = "direita";
+                        indiceMapa = 3;
+                    }
+
+                    mapa[8] = indiceMapa;
+                    break;
+                case 1:
+                    numeroInimigo = Math.floor(Math.random() * 2) + 2;
+                    if (numeroInimigo == 2) {
+                        ladoInimigo = "meio";
+                        indiceMapa = 4;
+                    } else {
+                        ladoInimigo = "direita";
+                        indiceMapa = 5;
+                    }
+
+                    mapa[8] = indiceMapa;
+                    break;
+                case 2:
+                    numeroInimigo = Math.random() < 0.5 ? 1 : 3;
+                    if (numeroInimigo == 1) {
+                        ladoInimigo = "esquerda";
+                        indiceMapa = 4;
+                    } else {
+                        ladoInimigo = "direita";
+                        indiceMapa = 6;
+                    }
+
+                    mapa[8] = indiceMapa;
+                    break;
+                case 3:
+                    numeroInimigo = Math.floor(Math.random() * 2) + 1;
+                    if (numeroInimigo == 1) {
+                        ladoInimigo = "esquerda";
+                        indiceMapa = 5;
+                    } else {
+                        ladoInimigo = "meio";
+                        indiceMapa = 6;
+                    }
+
+                    mapa[8] = indiceMapa;
+                    break;
+                case 4:
+                    ladoInimigo = "direita";
+                    indiceMapa = 7;
+
+                    mapa[8] = indiceMapa;
+                    break;
+                case 5:
+                    ladoInimigo = "meio";
+                    indiceMapa = 7;
+
+                    mapa[8] = indiceMapa;
+                    break;
+                case 6:
+                    ladoInimigo = "esquerda";
+                    indiceMapa = 7;
+
+                    mapa[8] = indiceMapa;
+                    break;
+                case 7:
+                    inimigo.remove();
+                    break;
+            }
+            
+            if (posicaoAtual == numeroMapa) {
+                if (indiceMapaInicial != 7) {
+                    if (statusJogo == 'selecionado') {
+                        telaJogo.style.backgroundImage = `url(${imagensPrecarregadas[mapa[indiceMapa][3]].src})`;
+                        inimigo.id = `inimigo-${numeroMapa}-${ladoInimigo}`;
+                        game.appendChild(inimigo);
+                        inimigo.addEventListener('click', () => {
+                            eliminarInimigo(ladoInimigo);
+                        });
+                    }
+                }
+            }
+
+            console.log(`Indice Mapa 1: ${mataInimigo["mapa 1"][8]}
+                Indice Mapa 2: ${mataInimigo["mapa 2"][8]}
+                Indice Mapa 3: ${mataInimigo["mapa 3"][8]}
+                Indice Mapa 4: ${mataInimigo["mapa 4"][8]}`)
+        }
+    }
+}
+
+function pausarJogo () {
+    estaPausado = true;
+
+    document.getElementById("pause-jogo")?.remove();
+
+    const blur = document.createElement('div');
+    blur.id = 'blur-jogo';
+    game.appendChild(blur);
+
+    const textoJogo = document.createElement('h3');
+    textoJogo.id = 'texto-jogo';
+    textoJogo.textContent = 'Jogo Pausado';
+    game.appendChild(textoJogo);
+
+    const play = document.createElement('div');
+    play.id = 'play-jogo';
+    game.appendChild(play);
+    play.addEventListener('click', () => {
+        document.getElementById("play-jogo").remove();
+        document.getElementById("blur-jogo")?.remove();
+        document.getElementById("texto-jogo")?.remove();
+        estaPausado = false;
+        const pause = document.createElement('div');
+        pause.id = 'pause-jogo';
+        game.appendChild(pause);
+        pause.addEventListener('click', pausarJogo);
+    });
+}
+
+let trocaMapaBloqueada = false;
+
+function setaDireitaJogo() {
+    if (trocaMapaBloqueada) return;
+    trocaMapaBloqueada = true;
+    setTimeout(() => trocaMapaBloqueada = false, 300);
+
+    const telaJogo = document.querySelector('#tela-jogo');
+
+    document.getElementById("seta-direita-jogo")?.remove();
+    document.getElementById("seta-esquerda-jogo")?.remove();
+    document.getElementById("inimigo-1-esquerda")?.remove();
+    document.getElementById("inimigo-1-meio")?.remove();
+    document.getElementById("inimigo-1-direita")?.remove();
+    document.getElementById("inimigo-2-esquerda")?.remove();
+    document.getElementById("inimigo-2-meio")?.remove();
+    document.getElementById("inimigo-2-direita")?.remove();
+    document.getElementById("inimigo-3-esquerda")?.remove();
+    document.getElementById("inimigo-3-meio")?.remove();
+    document.getElementById("inimigo-3-direita")?.remove();
+    document.getElementById("inimigo-4-esquerda")?.remove();
+    document.getElementById("inimigo-4-meio")?.remove();
+    document.getElementById("inimigo-4-direita")?.remove();
+
+    const setaDireita = document.createElement('div');
+    setaDireita.id = 'seta-direita-jogo';
+    game.appendChild(setaDireita);
+    setaDireita.addEventListener('click', setaDireitaJogo);
+    const setaEsquerda = document.createElement('div');
+    setaEsquerda.id = 'seta-esquerda-jogo';
+    game.appendChild(setaEsquerda);
+    setaEsquerda.addEventListener('click', setaEsquerdaJogo);
+
+    if (posicaoAtual < 4) {
+        posicaoAtual++;
+    }
+
+    const posicaoMapa = mataInimigo[`mapa ${posicaoAtual}`][8];
+    telaJogo.style.backgroundImage = `url(${imagensPrecarregadas[mataInimigo[`mapa ${posicaoAtual}`][posicaoMapa][3]].src})`;
+
+    switch (posicaoAtual) {
+        case 1:
+            setaEsquerda?.remove();
+            break;
+        case 4:
+            setaDireita?.remove();
+            break;
+    }
+
+    if (posicaoMapa != 0) {
+        const inimigo1 = document.createElement('div');
+        const inimigo2 = document.createElement('div');
+        const inimigo3 = document.createElement('div');
+        if (posicaoMapa == 1) {
+            inimigo1.id = `inimigo-${posicaoAtual}-esquerda`;
+            game.appendChild(inimigo1);
+            inimigo1.addEventListener('click', () => {
+                eliminarInimigo("esquerda");
+            });
+            inimigo2.remove();
+            inimigo3.remove();
+        } else if (posicaoMapa == 2) {
+            inimigo1.id = `inimigo-${posicaoAtual}-meio`;
+            game.appendChild(inimigo1);
+            inimigo1.addEventListener('click', () => {
+                eliminarInimigo("meio");
+            });
+            inimigo2.remove();
+            inimigo3.remove();
+        } else if (posicaoMapa == 3) {
+            inimigo1.id = `inimigo-${posicaoAtual}-direita`;
+            game.appendChild(inimigo1);
+            inimigo1.addEventListener('click', () => {
+                eliminarInimigo("direita");
+            });
+            inimigo2.remove();
+            inimigo3.remove();
+        } else if (posicaoMapa == 4) {
+            inimigo1.id = `inimigo-${posicaoAtual}-esquerda`;
+            game.appendChild(inimigo1);
+            inimigo1.addEventListener('click', () => {
+                eliminarInimigo("esquerda");
+            });
+            inimigo2.id = `inimigo-${posicaoAtual}-meio`;
+            game.appendChild(inimigo2);
+            inimigo2.addEventListener('click', () => {
+                eliminarInimigo("meio");
+            });
+            inimigo3.remove();
+        } else if (posicaoMapa == 5) {
+            inimigo1.id = `inimigo-${posicaoAtual}-esquerda`;
+            game.appendChild(inimigo1);
+            inimigo1.addEventListener('click', () => {
+                eliminarInimigo("esquerda");
+            });
+            inimigo2.id = `inimigo-${posicaoAtual}-direita`;
+            game.appendChild(inimigo2);
+            inimigo2.addEventListener('click', () => {
+                eliminarInimigo("direita");
+            });
+            inimigo3.remove();
+        } else if (posicaoMapa == 6) {
+            inimigo1.id = `inimigo-${posicaoAtual}-meio`;
+            game.appendChild(inimigo1);
+            inimigo1.addEventListener('click', () => {
+                eliminarInimigo("meio");
+            });
+            inimigo2.id = `inimigo-${posicaoAtual}-direita`;
+            game.appendChild(inimigo2);
+            inimigo2.addEventListener('click', () => {
+                eliminarInimigo("direita");
+            });
+            inimigo3.remove();
+        } else if (posicaoMapa == 7) {
+            inimigo1.id = `inimigo-${posicaoAtual}-esquerda`;
+            game.appendChild(inimigo1);
+            inimigo1.addEventListener('click', () => {
+                eliminarInimigo("esquerda");
+            });
+            inimigo2.id = `inimigo-${posicaoAtual}-meio`;
+            game.appendChild(inimigo2);
+            inimigo2.addEventListener('click', () => {
+                eliminarInimigo("meio");
+            });
+            inimigo3.id = `inimigo-${posicaoAtual}-direita`;
+            game.appendChild(inimigo3);
+            inimigo3.addEventListener('click', () => {
+                eliminarInimigo("direita");
+            });
+        }
+    }
+}
+
+function setaEsquerdaJogo() {
+    if (trocaMapaBloqueada) return;
+    trocaMapaBloqueada = true;
+    setTimeout(() => trocaMapaBloqueada = false, 300);
+
+    const telaJogo = document.querySelector('#tela-jogo');
+
+    document.getElementById("seta-direita-jogo")?.remove();
+    document.getElementById("seta-esquerda-jogo")?.remove();
+    document.getElementById("inimigo-1-esquerda")?.remove();
+    document.getElementById("inimigo-1-meio")?.remove();
+    document.getElementById("inimigo-1-direita")?.remove();
+    document.getElementById("inimigo-2-esquerda")?.remove();
+    document.getElementById("inimigo-2-meio")?.remove();
+    document.getElementById("inimigo-2-direita")?.remove();
+    document.getElementById("inimigo-3-esquerda")?.remove();
+    document.getElementById("inimigo-3-meio")?.remove();
+    document.getElementById("inimigo-3-direita")?.remove();
+    document.getElementById("inimigo-4-esquerda")?.remove();
+    document.getElementById("inimigo-4-meio")?.remove();
+    document.getElementById("inimigo-4-direita")?.remove();
+
+    const setaDireita = document.createElement('div');
+    setaDireita.id = 'seta-direita-jogo';
+    game.appendChild(setaDireita);
+    setaDireita.addEventListener('click', setaDireitaJogo);
+    const setaEsquerda = document.createElement('div');
+    setaEsquerda.id = 'seta-esquerda-jogo';
+    game.appendChild(setaEsquerda);
+    setaEsquerda.addEventListener('click', setaEsquerdaJogo);
+
+    if (posicaoAtual > 1) {
+        posicaoAtual--;
+    }
+
+    const posicaoMapa = mataInimigo[`mapa ${posicaoAtual}`][8];
+    telaJogo.style.backgroundImage = `url(${imagensPrecarregadas[mataInimigo[`mapa ${posicaoAtual}`][posicaoMapa][3]].src})`;
+
+    switch (posicaoAtual) {
+        case 1:
+            setaEsquerda?.remove();
+            break;
+        case 4:
+            setaDireita?.remove();
+            break;
+    }
+
+    if (posicaoMapa != 0) {
+        const inimigo1 = document.createElement('div');
+        const inimigo2 = document.createElement('div');
+        const inimigo3 = document.createElement('div');
+        if (posicaoMapa == 1) {
+            inimigo1.id = `inimigo-${posicaoAtual}-esquerda`;
+            game.appendChild(inimigo1);
+            inimigo1.addEventListener('click', () => {
+                eliminarInimigo("esquerda");
+            });
+            inimigo2.remove();
+            inimigo3.remove();
+        } else if (posicaoMapa == 2) {
+            inimigo1.id = `inimigo-${posicaoAtual}-meio`;
+            game.appendChild(inimigo1);
+            inimigo1.addEventListener('click', () => {
+                eliminarInimigo("meio");
+            });
+            inimigo2.remove();
+            inimigo3.remove();
+        } else if (posicaoMapa == 3) {
+            inimigo1.id = `inimigo-${posicaoAtual}-direita`;
+            game.appendChild(inimigo1);
+            inimigo1.addEventListener('click', () => {
+                eliminarInimigo("direita");
+            });
+            inimigo2.remove();
+            inimigo3.remove();
+        } else if (posicaoMapa == 4) {
+            inimigo1.id = `inimigo-${posicaoAtual}-esquerda`;
+            game.appendChild(inimigo1);
+            inimigo1.addEventListener('click', () => {
+                eliminarInimigo("esquerda");
+            });
+            inimigo2.id = `inimigo-${posicaoAtual}-meio`;
+            game.appendChild(inimigo2);
+            inimigo2.addEventListener('click', () => {
+                eliminarInimigo("meio");
+            });
+            inimigo3.remove();
+        } else if (posicaoMapa == 5) {
+            inimigo1.id = `inimigo-${posicaoAtual}-esquerda`;
+            game.appendChild(inimigo1);
+            inimigo1.addEventListener('click', () => {
+                eliminarInimigo("esquerda");
+            });
+            inimigo2.id = `inimigo-${posicaoAtual}-direita`;
+            game.appendChild(inimigo2);
+            inimigo2.addEventListener('click', () => {
+                eliminarInimigo("direita");
+            });
+            inimigo3.remove();
+        } else if (posicaoMapa == 6) {
+            inimigo1.id = `inimigo-${posicaoAtual}-meio`;
+            game.appendChild(inimigo1);
+            inimigo1.addEventListener('click', () => {
+                eliminarInimigo("meio");
+            });
+            inimigo2.id = `inimigo-${posicaoAtual}-direita`;
+            game.appendChild(inimigo2);
+            inimigo2.addEventListener('click', () => {
+                eliminarInimigo("direita");
+            });
+            inimigo3.remove();
+        } else if (posicaoMapa == 7) {
+            inimigo1.id = `inimigo-${posicaoAtual}-esquerda`;
+            game.appendChild(inimigo1);
+            inimigo1.addEventListener('click', () => {
+                eliminarInimigo("esquerda");
+            });
+            inimigo2.id = `inimigo-${posicaoAtual}-meio`;
+            game.appendChild(inimigo2);
+            inimigo2.addEventListener('click', () => {
+                eliminarInimigo("meio");
+            });
+            inimigo3.id = `inimigo-${posicaoAtual}-direita`;
+            game.appendChild(inimigo3);
+            inimigo3.addEventListener('click', () => {
+                eliminarInimigo("direita");
+            });
+        }
+    }
+}
+
+function criarMapaJogo() {
+    const botaoIniciar = document.querySelector('#botao-iniciar-jogo');
+    botaoIniciar?.remove();
+
+    posicaoAtual = 1;
+
+    const telaJogo = document.querySelector('#tela-jogo');
+
+    const posicaoMapa = mataInimigo[`mapa ${posicaoAtual}`][8];
+    telaJogo.style.backgroundImage = `url(${imagensPrecarregadas[mataInimigo[`mapa ${posicaoAtual}`][posicaoMapa][3]].src})`;
+
+    if (posicaoMapa != 0) {
+        const inimigo1 = document.createElement('div');
+        const inimigo2 = document.createElement('div');
+        const inimigo3 = document.createElement('div');
+        if (posicaoMapa == 1) {
+            inimigo1.id = `inimigo-${posicaoAtual}-esquerda`;
+            game.appendChild(inimigo1);
+            inimigo1.addEventListener('click', () => {
+                eliminarInimigo("esquerda");
+            });
+            inimigo2.remove();
+            inimigo3.remove();
+        } else if (posicaoMapa == 2) {
+            inimigo1.id = `inimigo-${posicaoAtual}-meio`;
+            game.appendChild(inimigo1);
+            inimigo1.addEventListener('click', () => {
+                eliminarInimigo("meio");
+            });
+            inimigo2.remove();
+            inimigo3.remove();
+        } else if (posicaoMapa == 3) {
+            inimigo1.id = `inimigo-${posicaoAtual}-direita`;
+            game.appendChild(inimigo1);
+            inimigo1.addEventListener('click', () => {
+                eliminarInimigo("direita");
+            });
+            inimigo2.remove();
+            inimigo3.remove();
+        } else if (posicaoMapa == 4) {
+            inimigo1.id = `inimigo-${posicaoAtual}-esquerda`;
+            game.appendChild(inimigo1);
+            inimigo1.addEventListener('click', () => {
+                eliminarInimigo("esquerda");
+            });
+            inimigo2.id = `inimigo-${posicaoAtual}-meio`;
+            game.appendChild(inimigo2);
+            inimigo2.addEventListener('click', () => {
+                eliminarInimigo("meio");
+            });
+            inimigo3.remove();
+        } else if (posicaoMapa == 5) {
+            inimigo1.id = `inimigo-${posicaoAtual}-esquerda`;
+            game.appendChild(inimigo1);
+            inimigo1.addEventListener('click', () => {
+                eliminarInimigo("esquerda");
+            });
+            inimigo2.id = `inimigo-${posicaoAtual}-direita`;
+            game.appendChild(inimigo2);
+            inimigo2.addEventListener('click', () => {
+                eliminarInimigo("direita");
+            });
+            inimigo3.remove();
+        } else if (posicaoMapa == 6) {
+            inimigo1.id = `inimigo-${posicaoAtual}-meio`;
+            game.appendChild(inimigo1);
+            inimigo1.addEventListener('click', () => {
+                eliminarInimigo("meio");
+            });
+            inimigo2.id = `inimigo-${posicaoAtual}-direita`;
+            game.appendChild(inimigo2);
+            inimigo2.addEventListener('click', () => {
+                eliminarInimigo("direita");
+            });
+            inimigo3.remove();
+        } else if (posicaoMapa == 7) {
+            inimigo1.id = `inimigo-${posicaoAtual}-esquerda`;
+            game.appendChild(inimigo1);
+            inimigo1.addEventListener('click', () => {
+                eliminarInimigo("esquerda");
+            });
+            inimigo2.id = `inimigo-${posicaoAtual}-meio`;
+            game.appendChild(inimigo2);
+            inimigo2.addEventListener('click', () => {
+                eliminarInimigo("meio");
+            });
+            inimigo3.id = `inimigo-${posicaoAtual}-direita`;
+            game.appendChild(inimigo3);
+            inimigo3.addEventListener('click', () => {
+                eliminarInimigo("direita");
+            });
+        }
+    }
+
+    const pause = document.createElement('div');
+    pause.id = 'pause-jogo';
+    game.appendChild(pause);
+    pause.addEventListener('click', pausarJogo);
+
+    const setaDireita = document.createElement('div');
+    setaDireita.id = 'seta-direita-jogo';
+    game.appendChild(setaDireita);
+    setaDireita.addEventListener('click', setaDireitaJogo);
+
+    const setaEsquerda = document.createElement('div');
+    setaEsquerda.id = 'seta-esquerda-jogo';
+    game.appendChild(setaEsquerda);
+    setaEsquerda.addEventListener('click', setaEsquerdaJogo);
+
+    setaEsquerda?.remove();
+
+    jogoRodando = true;
+
+    if (estaPausado) {
+        pausarJogo();
+    }
+}
+
+function criarTelaJogo() {
+    destruirTelaReuniao();
+    destruirTelaDocumento();
+    destruirTelaPasta();
+    destruirTelaTarefa();
+    destruirTelaJogo();
+
+    const telaJogo = document.createElement('div');
+    telaJogo.id = 'tela-jogo';
+    game.appendChild(telaJogo);
+
+    const xisJogo = document.createElement('div');
+    const minimizarJogo = document.createElement('div');
+    xisJogo.id = 'xis-jogo';
+    minimizarJogo.id = 'minimizar-jogo';
+    game.appendChild(xisJogo);
+    game.appendChild(minimizarJogo);
+
+    xisJogo.addEventListener('click', () => {
+        destruirTelaJogo();
+        game.querySelector('#tb-jogo-selecionado')?.remove();
+        statusJogo = 'fechado';
+        jogoRodando = false;
+        estaPausado = false;
+    });
+
+    minimizarJogo.addEventListener('click', () => {
+        destruirTelaJogo();
+        game.querySelector('#tb-jogo-selecionado')?.remove();
+        const jogoAberto = document.createElement('div');
+        jogoAberto.id = 'tb-jogo-aberto';
+        jogoAberto.className = 'aberto';
+        game.appendChild(jogoAberto);
+        statusJogo = 'aberto';
+    });
+
+    const jogoAberto = game.querySelector('#tb-jogo-aberto');
+    if (jogoAberto) {
+        jogoAberto.remove();
+    }
+
+    if (jogoEstavaSelecionado) {
+        criarMapaJogo();
+        return;
+    }
+
+    const botaoIniciar = document.createElement('div');
+    botaoIniciar.id = 'botao-iniciar-jogo';
+    game.appendChild(botaoIniciar);
+
+    botaoIniciar.addEventListener('click', () => {
+        criarMapaJogo();
+    });
+}
+
 function selecionaJogo() {
     desselecionaAbas();
+    if (statusJogo == 'aberto') {
+        jogoEstavaSelecionado = true;
+    } else {
+        jogoEstavaSelecionado = false;
+    }
     statusJogo = 'selecionado';
 
     const jogoAberto = game.querySelector('#tb-jogo-aberto');
@@ -2331,6 +3132,7 @@ function selecionaJogo() {
     jogoSelecionado.id = 'tb-jogo-selecionado';
     jogoSelecionado.className = 'selecionado';
     game.appendChild(jogoSelecionado);
+    criarTelaJogo()
 }
 
 function selecionaTarefa(indiceTarefa) {
@@ -2503,3 +3305,5 @@ function atualizarHUD() {
 
 const intervaloTempo = setInterval(atualizarTempo, 1000);
 const intervaloDecaimento = setInterval(atualizarDecaimento, decaimentoEnergiaEmS * 1000);
+
+const intervaloInimigo = setInterval(gerarInimigo, 1000);
