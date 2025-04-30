@@ -733,3 +733,177 @@ body {
     top: calc(305 * var(--un));
     left: calc(540 * var(--un));
 }
+
+#tela-tarefa-2 {
+    position: absolute;
+    background-image: url('../../assets/pc/tarefas/2/tela.png');
+    height: calc(714 * var(--un));
+    width: calc(1285 * var(--un));
+    top: calc(140 * var(--un));
+    left: calc(58 * var(--un));
+}
+
+#titulo-tarefa-2 {
+    color: #000;
+    position: absolute;
+    width: calc(876 * var(--un));
+    font-size: calc(30 * var(--un));
+    top: calc(316 * var(--un));
+    left: calc(282 * var(--un));
+    text-align: center;
+}
+
+.linha-codigo-t2 {
+    position: absolute;
+    font-family: 'Fira Code', monospace;
+    font-size: calc(25 * var(--un));
+    color: #fff;
+    top: calc(503 * var(--un));
+    left: calc(275 * var(--un));
+}
+
+.numeracao-linha-t2 {
+    position: absolute;
+    left: calc(235 * var(--un));
+    font-family: 'Fira Code', monospace;
+    font-size: calc(25 * var(--un));
+    color: #c8c5c5;
+}
+
+#botao-testar-t2 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(88 * var(--un));
+    width: calc(343 * var(--un));
+    right: calc(153 * var(--un));
+    bottom: calc(370 * var(--un));
+    cursor: pointer;
+}
+
+#botao-entregar-t2 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(88 * var(--un));
+    width: calc(343 * var(--un));
+    right: calc(153 * var(--un));
+    bottom: calc(245 * var(--un));
+    cursor: pointer;
+}
+
+#completar-t2 {
+    border: none;
+    background-color: #fff;
+    height: calc(30 * var(--un));
+    width: calc(50 * var(--un));
+    font-size: calc(25 * var(--un));
+    font-family: 'Fira Code', monospace;
+    text-align: center;
+    outline: none;
+}
+
+#botao-duvida-t2 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(80 * var(--un));
+    width: calc(80 * var(--un));
+    right: calc(151 * var(--un));
+    top: calc(195 * var(--un));
+    cursor: pointer;
+}
+
+#testar-esmaecido-t2 {
+    position: absolute;
+    background-image: url('../../assets/pc/tarefas/1/escurecedor.png');
+    height: calc(88 * var(--un));
+    width: calc(347 * var(--un));
+}
+
+#countdown-t2 {
+    position: absolute;
+    font-size: calc(15 * var(--un));
+    color: #fff;
+    top: calc(505 * var(--un));
+    left: calc(955 * var(--un));
+}
+
+#resultado-t2 {
+    position: absolute;
+    font-size: calc(30 * var(--un));
+    width: calc(180 * var(--un));
+    top: calc(449 * var(--un));
+    left: calc(985 * var(--un));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#sucesso-t2 {
+    position: absolute;
+    color: #00cf0a;
+    font-size: calc(40 * var(--un));
+    top: calc(216 * var(--un));
+    right: calc(360 * var(--un));
+}
+
+#falha-t2 {
+    position: absolute;
+    color: #df0000;
+    font-size: calc(40 * var(--un));
+    top: calc(216 * var(--un));
+    right: calc(360 * var(--un));
+}
+
+#tela-tarefa-3 {
+    position: absolute;
+    background-image: url('../../assets/pc/tarefas/3/tela.png');
+    height: calc(714 * var(--un));
+    width: calc(1285 * var(--un));
+    top: calc(140 * var(--un));
+    left: calc(58 * var(--un));
+}
+
+#titulo-tarefa-3 {
+    color: #000;
+    position: absolute;
+    font-size: calc(30 * var(--un));
+    top: calc(316 * var(--un));
+    left: calc(265 * var(--un));
+    text-align: center;
+}
+
+#botao-entregar-t3 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(88 * var(--un));
+    width: calc(343 * var(--un));
+    right: calc(170 * var(--un));
+    bottom: calc(333 * var(--un));
+    cursor: pointer;
+}
+
+#resultado-t3 {
+    position: absolute;
+    font-size: calc(30 * var(--un));
+    width: calc(180 * var(--un));
+    top: calc(449 * var(--un));
+    left: calc(985 * var(--un));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#sucesso-t3 {
+    position: absolute;
+    color: #00cf0a;
+    font-size: calc(40 * var(--un));
+    top: calc(216 * var(--un));
+    right: calc(360 * var(--un));
+}
+
+#falha-t3 {
+    position: absolute;
+    color: #df0000;
+    font-size: calc(40 * var(--un));
+    top: calc(216 * var(--un));
+    right: calc(360 * var(--un));
+}

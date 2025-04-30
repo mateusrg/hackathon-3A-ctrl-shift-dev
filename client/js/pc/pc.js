@@ -100,14 +100,14 @@ function gerarDesafioTipo2() {
             ).length;
             const resultadoEsperado = totalValidos * incrementar + ajusteFinal;
             const codigo_python = `
-  def conta_${comentario}(numeros):
-      contador = 0
-      for num in numeros:
-          if ${criterioTexto}:
-              contador += ${incrementar}
-      return contador + ???
-  lista = [${numeros.join(", ")}]
-  print(conta_${comentario}(lista))
+def conta_${comentario}(numeros):
+    contador = 0
+    for num in numeros:
+        if ${criterioTexto}:
+            contador += ${incrementar}
+    return contador + ???
+lista = [${numeros.join(", ")}]
+print(conta_${comentario}(lista))
   `.trim();
             return {
                 codigo_python,
@@ -121,15 +121,15 @@ function gerarDesafioTipo2() {
             const tamanhoPalavra = Math.floor(Math.random() * 6) + (numVogais + 1);
             const resultado = numVogais * tamanhoPalavra;
             const codigo_python = `
-  def produto_caracteres_vogais(palavra):
-      vogais = 'aeiouAEIOU'
-      contador_vogais = 0
-      for letra in palavra:
-          if letra in vogais:
-              contador_vogais += 1
-      return contador_vogais * len(palavra)
+def produto_caracteres_vogais(palavra):
+    vogais = 'aeiouAEIOU'
+    contador_vogais = 0
+    for letra in palavra:
+        if letra in vogais:
+            contador_vogais += 1
+    return contador_vogais * len(palavra)
   
-  print(produto_caracteres_vogais('???'))
+print(produto_caracteres_vogais('???'))
   `.trim();
             return {
                 codigo_python,
@@ -154,8 +154,8 @@ function gerarDesafioTipo2() {
             const indiceCorreto = Math.floor(Math.random() * lista.length);
             const resultadoEsperado = lista[indiceCorreto] / divisor;
             const codigo_python = `
-  lista = [${lista.join(", ")}]
-  print(lista[???] / ${divisor})
+lista = [${lista.join(", ")}]
+print(lista[???] / ${divisor})
   `.trim();
             return {
                 codigo_python,
@@ -175,13 +175,13 @@ function gerarDesafioTipo2() {
             const somaParcial = listaParcial.reduce((a, b) => a + b, 0);
             const valorFaltando = somaEsperada - somaParcial;
             const codigo_python = `
-  def media_lista(nums):
-      soma = sum(nums)
-      media = soma / len(nums)
-      return media
-  
-  valores = [${listaParcial.join(", ")}, ???]
-  print(media_lista(valores))
+def media_lista(nums):
+    soma = sum(nums)
+    media = soma / len(nums)
+    return media
+
+valores = [${listaParcial.join(", ")}, ???]
+print(media_lista(valores))
   `.trim();
             return {
                 codigo_python,
@@ -210,12 +210,12 @@ function gerarDesafioTipo2() {
             listaComErro[indiceErro] = letraErrada;
             const palavraErrada = listaComErro.join("");
             const codigo_python = `
-  def corrige(palavra):
-      lista = list(palavra)
-      lista[???] = '${letraCorreta}'
-      return ''.join(lista)
+def corrige(palavra):
+    lista = list(palavra)
+    lista[???] = '${letraCorreta}'
+    return ''.join(lista)
   
-  print(corrige('${palavraErrada}'))
+print(corrige('${palavraErrada}'))
   `.trim();
             return {
                 codigo_python,
@@ -235,12 +235,12 @@ function gerarDesafioTipo3() {
                 Math.floor(Math.random() * 9) + 1
             );
             const codigo_python = `
-  valores = [${valores.join(', ')}]
-  soma = 0
-  for v in valores:
-      soma += v
-  media = soma / len(valores)
-  print("Média: " + media)
+valores = [${valores.join(', ')}]
+soma = 0
+for v in valores:
+    soma += v
+media = soma / len(valores)
+print("Média: " + media)
   `.trim();
             return { codigo_python, resposta_correta: 6 };
         }
@@ -256,10 +256,10 @@ function gerarDesafioTipo3() {
                 .sort(() => Math.random() - 0.5);
             const numerador = gerarValorNumerador();
             const codigo_python = `
-  def calcula(x):
-      return ${numerador} / x
+def calcula(x):
+    return ${numerador} / x
   
-  ${chamadas.map(c => `print(calcula(${c.valor}))`).join('\n')}
+${chamadas.map(c => `print(calcula(${c.valor}))`).join('\n')}
   `.trim();
             const linhaComErro = 4 + chamadas.findIndex(c => c.valor === 0);
             return { codigo_python, resposta_correta: linhaComErro };
@@ -277,8 +277,8 @@ function gerarDesafioTipo3() {
                 { tipo: "index", codigo: `print(texto[${Math.floor(Math.random() * 4)}])` }
             ].sort(() => Math.random() - 0.5);
             const codigo_python = `
-  texto = "${texto}"
-  ${chamadas.map(c => c.codigo).join('\n')}
+texto = "${texto}"
+${chamadas.map(c => c.codigo).join('\n')}
   `.trim();
             const linhaComErro = 2 + chamadas.findIndex(c => c.tipo === "append");
             return { codigo_python, resposta_correta: linhaComErro };
@@ -306,9 +306,9 @@ function gerarDesafioTipo3() {
             ];
             linhas[erroNaLinha - 3] = `print(dados["${chaveErrada}"])`;
             const codigo_python = `
-  dados = { "nome": "${dados.nome}", "idade": ${dados.idade}, "altura": ${dados.altura} }
-  
-  ${linhas.join('\n')}
+dados = { "nome": "${dados.nome}", "idade": ${dados.idade}, "altura": ${dados.altura} }
+
+${linhas.join('\n')}
   `.trim();
             return { codigo_python, resposta_correta: erroNaLinha };
         }
@@ -973,15 +973,15 @@ function validarDesafioTipo2(desafio, respostaPlayer) {
         return produto === desafio.resposta_correta;
     }
 
-    return respostaPlayer === desafio.resposta_correta;
+    return respostaPlayer == desafio.resposta_correta;
 }
 
 function validarDesafioTipo3(desafio, respostaPlayer) {
-    return respostaPlayer === desafio.resposta_correta;
+    return respostaPlayer == desafio.resposta_correta;
 }
 
 function validarDesafioTipo5(desafio, respostaPlayer) {
-    return respostaPlayer === desafio.resposta_correta;
+    return respostaPlayer == desafio.resposta_correta;
 }
 
 
@@ -1189,6 +1189,19 @@ function destruirTelaTarefa() {
     document.querySelector('#minimizar-tarefa')?.remove();
     document.querySelector('#sucesso-t1')?.remove();
     document.querySelector('#falha-t1')?.remove();
+    document.querySelector('#titulo-tarefa-2')?.remove();
+    document.querySelectorAll('.linha-codigo-t2')?.forEach(el => el.remove());
+    document.querySelectorAll('.numeracao-linha-t2')?.forEach(el => el.remove());
+    document.querySelector('#botao-testar-t2')?.remove();
+    document.querySelector('#botao-entregar-t2')?.remove();
+    document.querySelector('#botao-duvida-t2')?.remove();
+    document.querySelector('#countdown-t2')?.remove();
+    document.querySelector('#resultado-t2')?.remove();
+    document.querySelector('#sucesso-t2')?.remove();
+    document.querySelector('#falha-t2')?.remove();
+    document.querySelector('#titulo-tarefa-3')?.remove();
+    document.querySelector('#sucesso-t3')?.remove();
+    document.querySelector('#falha-t3')?.remove();
 }
 
 function destruirTelaJogo() {
@@ -1648,13 +1661,425 @@ function criarTelaTarefaTipo1(indiceTarefa) {
 }
 
 function criarTelaTarefaTipo2(indiceTarefa) {
-    // TODO
-    console.log('Tipo 2');
+    const tarefa = tarefas[indiceTarefa - 1];
+    console.log(tarefa);
+    let numeroLinhaAtual = 0;
+    let codigoPython = tarefa['codigo_python']
+        .split('\n')
+        .flatMap((linha) => {
+            const resultado = [];
+            let primeiraLinha = true;
+
+            while (linha.length > 40) {
+                const corte = linha.lastIndexOf(' ', 40);
+                if (corte === -1) break;
+
+                resultado.push({
+                    linha: linha.slice(0, corte),
+                    numeroLinha: primeiraLinha ? ++numeroLinhaAtual : ''
+                });
+
+                linha = linha.slice(corte + 1);
+                primeiraLinha = false;
+            }
+
+            resultado.push({
+                linha: linha.replace('???', '<input id="completar-t2">'),
+                numeroLinha: primeiraLinha ? ++numeroLinhaAtual : ''
+            });
+
+            return resultado;
+        });
+
+    const game = document.querySelector('#game');
+    const telaTarefa = document.createElement('div');
+    telaTarefa.id = 'tela-tarefa-2';
+    game.appendChild(telaTarefa);
+
+    const botaoXis = document.createElement('div');
+    botaoXis.id = 'xis-tarefa';
+    botaoXis.addEventListener('click', () => {
+        if (estadoTarefas[indiceTarefa]) {
+            estadoTarefas[indiceTarefa]['countdown'] = null;
+            clearInterval(estadoTarefas[indiceTarefa]['countdownInterval']);
+        }
+        destruirTelaTarefa();
+        document.querySelector('#tb-tarefa').style.display = 'none';
+        game.querySelector('#tb-tarefa-selecionado')?.remove();
+        statusTarefa = 'fechado';
+    });
+    game.appendChild(botaoXis);
+
+    const botaoMinimizar = document.createElement('div');
+    botaoMinimizar.id = 'minimizar-tarefa';
+    botaoMinimizar.addEventListener('click', () => {
+        destruirTelaTarefa();
+        game.querySelector('#tb-tarefa-selecionado')?.remove();
+        const tarefaAberto = document.createElement('div');
+        tarefaAberto.id = 'tb-tarefa-aberto';
+        tarefaAberto.className = 'aberto';
+        game.appendChild(tarefaAberto);
+        statusTarefa = 'aberto';
+    });
+    game.appendChild(botaoMinimizar);
+
+    const tituloTarefa = document.createElement('div');
+    tituloTarefa.id = 'titulo-tarefa-2';
+    tituloTarefa.textContent = `Tarefa ${indiceTarefa}`;
+    tituloTarefa.innerHTML = tarefa['texto'];
+    game.appendChild(tituloTarefa);
+
+    codigoPython.forEach((linha, i) => {
+        const linhaCodigo = document.createElement('div');
+        linhaCodigo.className = 'linha-codigo-t2';
+        linhaCodigo.style.whiteSpace = 'pre';
+        linhaCodigo.innerHTML = linha['linha'];
+        linhaCodigo.style.top = `calc(${465 + 32 * i} * var(--un))`;
+        game.appendChild(linhaCodigo);
+
+        const numeracaoLinha = document.createElement('div');
+        numeracaoLinha.className = 'numeracao-linha-t2';
+        numeracaoLinha.textContent = linha['numeroLinha'];
+        numeracaoLinha.style.top = `calc(${466 + 32 * i} * var(--un))`;
+        game.appendChild(numeracaoLinha);
+    });
+
+    const input = document.querySelector('#completar-t2');
+    if (estadoTarefas[indiceTarefa]?.inputValue) {
+        input.value = estadoTarefas[indiceTarefa].inputValue;
+    }
+
+    input.addEventListener('input', () => {
+        if (!estadoTarefas[indiceTarefa]) {
+            estadoTarefas[indiceTarefa] = {};
+        }
+        estadoTarefas[indiceTarefa].inputValue = input.value;
+    });
+
+    const botaoTestar = document.createElement('div');
+    botaoTestar.id = 'botao-testar-t2';
+    game.appendChild(botaoTestar);
+
+    const botaoEntregar = document.createElement('div');
+    botaoEntregar.id = 'botao-entregar-t2';
+    console.log(tarefa);
+    botaoEntregar.addEventListener('click', () => {
+        // Desabilita os cliques no botão "Entregar", "Testar" e no input
+        botaoEntregar.style.pointerEvents = 'none';
+        botaoTestar.style.pointerEvents = 'none';
+        input.disabled = true;
+
+        // Finaliza o teste em andamento, se houver
+        if (estadoTarefas[indiceTarefa]['countdownInterval']) {
+            clearInterval(estadoTarefas[indiceTarefa]['countdownInterval']);
+            estadoTarefas[indiceTarefa]['countdownInterval'] = null;
+            estadoTarefas[indiceTarefa]['countdown'] = null;
+            document.querySelector('#countdown-t2')?.remove();
+        }
+
+        const resposta = input.value.trim();
+        const respostaCorreta = validarDesafioTipo2(tarefa, resposta);
+        const game = document.querySelector('#game');
+        const mensagem = document.createElement('div');
+
+        if (respostaCorreta) {
+            pontuacao += tarefa['pontosGanhos'];
+            mensagem.id = 'sucesso-t2';
+            mensagem.textContent = `+${tarefa['pontosGanhos']} ponto${tarefa['pontosGanhos'] === 1 ? '' : 's'}`;
+        } else {
+            pontuacao -= Math.abs(tarefa['pontosPerdidos']);
+            pontuacao = Math.max(pontuacao, 0);
+            mensagem.id = 'falha-t2';
+            mensagem.textContent = `-${Math.abs(tarefa['pontosPerdidos'])} ponto${Math.abs(tarefa['pontosPerdidos']) === 1 ? '' : 's'}`;
+        }
+
+        game.appendChild(mensagem);
+
+        // Remove a tarefa da lista e atualiza
+        tarefas[indiceTarefa - 1] = null;
+        preencherTarefas();
+
+        // Define função para destruir a tela da tarefa
+        const destruirTela = () => {
+            destruirTelaTarefa();
+            document.querySelector('#tb-tarefa').style.display = 'none';
+            game.querySelector('#tb-tarefa-selecionado')?.remove();
+            game.querySelector('#tb-tarefa-aberto')?.remove();
+            statusTarefa = 'fechado';
+        };
+
+        // Adiciona evento para destruir a tela imediatamente ao clicar em outra aba, fechar ou minimizar
+        const abas = ['#tb-reuniao', '#tb-pasta', '#tb-lista', '#tb-jogo', '#tb-tarefa', '#xis-tarefa', '#minimizar-tarefa'];
+        abas.forEach(selector => {
+            document.querySelector(selector)?.addEventListener('click', destruirTela, { once: true });
+        });
+
+        // Chama destruir a tela da tarefa após 2 segundos, caso não tenha sido destruída antes
+        setTimeout(destruirTela, 2000);
+    });
+    game.appendChild(botaoEntregar);
+
+    const botaoDuvida = document.createElement('div');
+    botaoDuvida.id = 'botao-duvida-t2';
+    game.appendChild(botaoDuvida);
+
+    // Countdown
+    if (!estadoTarefas[indiceTarefa]) {
+        estadoTarefas[indiceTarefa] = { countdown: null, countdownInterval: null, resultado: null };
+    }
+
+    const iniciarCountdown = () => {
+        let countdown = estadoTarefas[indiceTarefa]['countdown'] || 5;
+        estadoTarefas[indiceTarefa]['countdown'] = countdown;
+
+        const countdownDiv = document.createElement('div');
+        countdownDiv.id = 'countdown-t2';
+        countdownDiv.textContent = `Resultado em ${countdown}...`;
+        game.appendChild(countdownDiv);
+
+        input.disabled = true;
+
+        const esmaecidoDiv = document.createElement('div');
+        esmaecidoDiv.id = 'testar-esmaecido-t2';
+        botaoTestar.appendChild(esmaecidoDiv);
+
+        botaoTestar.style.pointerEvents = 'none';
+
+        if (estadoTarefas[indiceTarefa]['countdownInterval']) {
+            clearInterval(estadoTarefas[indiceTarefa]['countdownInterval']);
+        }
+
+        estadoTarefas[indiceTarefa]['countdownInterval'] = setInterval(() => {
+            countdown--;
+            estadoTarefas[indiceTarefa]['countdown'] = countdown;
+            countdownDiv.textContent = `Resultado em ${countdown}...`;
+
+            if (countdown === 0) {
+                clearInterval(estadoTarefas[indiceTarefa]['countdownInterval']);
+                estadoTarefas[indiceTarefa]['countdownInterval'] = null;
+                estadoTarefas[indiceTarefa]['countdown'] = null;
+                countdownDiv.remove();
+
+                input.disabled = false;
+
+                if (esmaecidoDiv) {
+                    esmaecidoDiv.remove();
+                }
+                botaoTestar.style.pointerEvents = 'auto';
+
+                const resposta = input.value.trim();
+                const respostaCorreta = validarDesafioTipo2(tarefa, resposta);
+                const resultado = respostaCorreta ? 'Certo' : 'Errado';
+                estadoTarefas[indiceTarefa]['resultado'] = resultado;
+
+                // Only add the result to the screen if the task screen is still open
+                if (document.querySelector('#tela-tarefa-2')) {
+                    // Remove any existing result button
+                    const existingResult = document.querySelector('#resultado-t2');
+                    if (existingResult) {
+                        existingResult.remove();
+                    }
+
+                    // Add result button based on correctness
+                    const resultadoDiv = document.createElement('div');
+                    resultadoDiv.id = 'resultado-t2';
+                    resultadoDiv.style.color = resultado === 'Certo' ? '#00cf0a' : '#df0000';
+                    resultadoDiv.textContent = resultado;
+                    game.appendChild(resultadoDiv);
+                }
+            }
+        }, 1000);
+    };
+
+    // If there is already a result stored in the state, display it
+    if (estadoTarefas[indiceTarefa]['resultado']) {
+        const resultado = estadoTarefas[indiceTarefa]['resultado'];
+        const resultadoDiv = document.createElement('div');
+        resultadoDiv.id = 'resultado-t2';
+        resultadoDiv.style.color = resultado === 'Certo' ? '#00cf0a' : '#df0000';
+        resultadoDiv.textContent = resultado;
+        game.appendChild(resultadoDiv);
+    };
+
+    botaoTestar.addEventListener('click', () => {
+        // Remove any existing result button
+        const existingResult = document.querySelector('#resultado-t2');
+        if (existingResult) {
+            existingResult.remove();
+        }
+
+        // Reset the result state
+        estadoTarefas[indiceTarefa]['resultado'] = null;
+
+        iniciarCountdown();
+    });
+
+    if (estadoTarefas[indiceTarefa]['countdown'] !== null) {
+        iniciarCountdown();
+    }
 }
 
 function criarTelaTarefaTipo3(indiceTarefa) {
-    // TODO
-    console.log('Tipo 3');
+    const tarefa = tarefas[indiceTarefa - 1];
+    let numeroLinhaAtual = 0;
+    let codigoPython = tarefa['codigo_python']
+        .split('\n')
+        .flatMap((linha) => {
+            const resultado = [];
+            let primeiraLinha = true;
+
+            while (linha.length > 36) {
+                const corte = linha.lastIndexOf(' ', 36);
+                if (corte === -1) break;
+
+                resultado.push({
+                    linha: linha.slice(0, corte),
+                    numeroLinha: primeiraLinha ? ++numeroLinhaAtual : ''
+                });
+
+                linha = linha.slice(corte + 1);
+                primeiraLinha = false;
+            }
+
+            resultado.push({
+                linha: linha,
+                numeroLinha: primeiraLinha ? ++numeroLinhaAtual : ''
+            });
+
+            return resultado;
+        });
+
+    const game = document.querySelector('#game');
+    const telaTarefa = document.createElement('div');
+    telaTarefa.id = 'tela-tarefa-3';
+    game.appendChild(telaTarefa);
+
+    const botaoXis = document.createElement('div');
+    botaoXis.id = 'xis-tarefa';
+    botaoXis.addEventListener('click', () => {
+        destruirTelaTarefa();
+        document.querySelector('#tb-tarefa').style.display = 'none';
+        game.querySelector('#tb-tarefa-selecionado')?.remove();
+        statusTarefa = 'fechado';
+    });
+    game.appendChild(botaoXis);
+
+    const botaoMinimizar = document.createElement('div');
+    botaoMinimizar.id = 'minimizar-tarefa';
+    botaoMinimizar.addEventListener('click', () => {
+        destruirTelaTarefa();
+        game.querySelector('#tb-tarefa-selecionado')?.remove();
+        const tarefaAberto = document.createElement('div');
+        tarefaAberto.id = 'tb-tarefa-aberto';
+        tarefaAberto.className = 'aberto';
+        game.appendChild(tarefaAberto);
+        statusTarefa = 'aberto';
+    });
+    game.appendChild(botaoMinimizar);
+
+    const tituloTarefa = document.createElement('div');
+    tituloTarefa.id = 'titulo-tarefa-3';
+    tituloTarefa.textContent = "Remova a linha que causa erro";
+    game.appendChild(tituloTarefa);
+
+    if (!estadoTarefas[indiceTarefa]) {
+        estadoTarefas[indiceTarefa] = { linhaMarcada: null };
+    }
+
+    codigoPython.forEach((linha, i) => {
+        const linhaCodigo = document.createElement('div');
+        linhaCodigo.className = 'linha-codigo-t2';
+        linhaCodigo.style.cursor = 'pointer';
+        linhaCodigo.style.whiteSpace = 'pre';
+        linhaCodigo.textContent = linha['linha'];
+        linhaCodigo.style.top = `calc(${465 + 32 * i} * var(--un))`;
+
+        if (estadoTarefas[indiceTarefa].linhaMarcada === linha['numeroLinha']) {
+            linhaCodigo.style.textDecoration = 'line-through';
+            linhaCodigo.style.color = '#df0000';
+        }
+
+        linhaCodigo.addEventListener('click', () => {
+            const linhas = document.querySelectorAll('.linha-codigo-t2');
+            if (estadoTarefas[indiceTarefa].linhaMarcada === linha['numeroLinha']) {
+                console.log('Teste')
+                // If the clicked line is already marked, reset all lines to normal
+                linhas.forEach(linha => {
+                    linha.style.textDecoration = 'none';
+                    linha.style.color = '';
+                });
+                estadoTarefas[indiceTarefa].linhaMarcada = null;
+            } else {
+                // Reset all lines to normal
+                linhas.forEach(linha => {
+                    linha.style.textDecoration = 'none';
+                    linha.style.color = '';
+                });
+                // Mark the clicked line
+                estadoTarefas[indiceTarefa].linhaMarcada = linha['numeroLinha'];
+                linhaCodigo.style.textDecoration = 'line-through';
+                linhaCodigo.style.color = '#df0000';
+            }
+        });
+
+        game.appendChild(linhaCodigo);
+
+        const numeracaoLinha = document.createElement('div');
+        numeracaoLinha.className = 'numeracao-linha-t2';
+        numeracaoLinha.textContent = linha['numeroLinha'];
+        numeracaoLinha.style.top = `calc(${466 + 32 * i} * var(--un))`;
+        game.appendChild(numeracaoLinha);
+    });
+
+    const botaoEntregar = document.createElement('div');
+    botaoEntregar.id = 'botao-entregar-t3';
+    botaoEntregar.addEventListener('click', () => {
+        // Desabilita cliques nas linhas e no botão "Entregar"
+        document.querySelectorAll('.linha-codigo-t2').forEach(linha => {
+            linha.style.pointerEvents = 'none';
+        });
+        botaoEntregar.style.pointerEvents = 'none';
+
+        const linhaMarcada = estadoTarefas[indiceTarefa].linhaMarcada;
+        const respostaCorreta = validarDesafioTipo3(tarefa, linhaMarcada);
+
+        const mensagem = document.createElement('div');
+        if (respostaCorreta) {
+            pontuacao += tarefa['pontosGanhos'];
+            mensagem.id = 'sucesso-t3';
+            mensagem.textContent = `+${tarefa['pontosGanhos']} ponto${tarefa['pontosGanhos'] === 1 ? '' : 's'}`;
+        } else {
+            pontuacao -= Math.abs(tarefa['pontosPerdidos']);
+            pontuacao = Math.max(pontuacao, 0);
+            mensagem.id = 'falha-t3';
+            mensagem.textContent = `-${Math.abs(tarefa['pontosPerdidos'])} ponto${Math.abs(tarefa['pontosPerdidos']) === 1 ? '' : 's'}`;
+        }
+
+        game.appendChild(mensagem);
+
+        // Remove a tarefa da lista e atualiza
+        tarefas[indiceTarefa - 1] = null;
+        preencherTarefas();
+
+        // Define função para destruir a tela da tarefa
+        const destruirTela = () => {
+            destruirTelaTarefa();
+            document.querySelector('#tb-tarefa').style.display = 'none';
+            game.querySelector('#tb-tarefa-selecionado')?.remove();
+            game.querySelector('#tb-tarefa-aberto')?.remove();
+            statusTarefa = 'fechado';
+        };
+
+        // Adiciona evento para destruir a tela imediatamente ao clicar em outra aba, fechar ou minimizar
+        const abas = ['#tb-reuniao', '#tb-pasta', '#tb-lista', '#tb-jogo', '#tb-tarefa', '#xis-tarefa', '#minimizar-tarefa'];
+        abas.forEach(selector => {
+            document.querySelector(selector)?.addEventListener('click', destruirTela, { once: true });
+        });
+
+        // Chama destruir a tela da tarefa após 2 segundos, caso não tenha sido destruída antes
+        setTimeout(destruirTela, 2000);
+    });
+    game.appendChild(botaoEntregar);
 }
 
 function criarTelaTarefaTipo4(indiceTarefa) {
@@ -2072,7 +2497,7 @@ function atualizarHUD() {
     document.querySelector('#tempo').textContent = `${minutos}:${segundos}`;
 
     document.querySelector('#energia').textContent = `${Math.round(energia)}%`;
-    document.querySelector('#felicidade').textContent = `${Math.round(felicidade)}%`;
+    document.querySelector('#felicidade').textContent = `${Math.round(felicidade)}%`
     document.querySelector('#icone-felicidade').style.backgroundImage = `url("../../assets/hud/felicidade/${Math.max(1, Math.ceil(felicidade / 25))}.png")`;
 }
 
