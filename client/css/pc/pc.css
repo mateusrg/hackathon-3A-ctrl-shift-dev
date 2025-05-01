@@ -10,6 +10,11 @@ body {
     background-image: url('../../assets/entorno/bg/computador.png');
 }
 
+button {
+    background-color: transparent;
+    border: none;
+}
+
 .frame {
     position: relative;
     border-image: url('../../assets/entorno/borda/computador.png') 32 stretch;
@@ -1115,4 +1120,151 @@ body {
     left: calc(400 * var(--un));
     z-index: 120;
     text-align: center;
+}
+
+#tela-tarefa-4 {
+    position: absolute;
+    background-image: url('../../assets/pc/tarefas/4/tela.png');
+    height: calc(714 * var(--un));
+    width: calc(1285 * var(--un));
+    top: calc(140 * var(--un));
+    left: calc(58 * var(--un));
+}
+
+#botao-verde-t4 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(105 * var(--un));
+    width: calc(413 * var(--un));
+    top: calc(527 * var(--un));
+    left: calc(240 * var(--un));
+    cursor: pointer;
+    font-size: calc(15 * var(--un));
+    text-align: center;
+    padding: auto;
+}
+
+#botao-amarelo-t4 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(106 * var(--un));
+    width: calc(420 * var(--un));
+    top: calc(527 * var(--un));
+    right: calc(222 * var(--un));
+    cursor: pointer;
+    font-size: calc(15 * var(--un));
+    text-align: center;
+    padding: auto;
+}
+
+#botao-vermelho-t4 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(106 * var(--un));
+    width: calc(421 * var(--un));
+    bottom: calc(215 * var(--un));
+    left: calc(234* var(--un));
+    cursor: pointer;
+    font-size: calc(15 * var(--un));
+    text-align: center;
+    padding: auto;
+}
+
+#botao-azul-t4 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(107 * var(--un));
+    width: calc(422 * var(--un));
+    bottom: calc(214 * var(--un));
+    right: calc(220 * var(--un));
+    cursor: pointer;
+    font-size: calc(15 * var(--un));
+    text-align: center;
+    padding: auto;
+}
+
+#botao-desistir-t4 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(80 * var(--un));
+    width: calc(254 * var(--un));
+    right: calc(376 * var(--un));
+    top: calc(195 * var(--un));
+    cursor: pointer;
+}
+
+#botao-resetar-t4 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(80 * var(--un));
+    width: calc(80 * var(--un));
+    right: calc(275 * var(--un));
+    top: calc(195 * var(--un));
+    cursor: pointer;
+}
+
+#botao-duvida-t4 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(80 * var(--un));
+    width: calc(80 * var(--un));
+    right: calc(176 * var(--un));
+    top: calc(195 * var(--un));
+    cursor: pointer;
+}
+
+#elemento-vermelho-t4 {
+    position: absolute;
+    text-align: center;
+    height: calc(30 * var(--un));
+    width: calc(160 * var(--un));
+    color: #f00;
+    top: calc(443 * var(--un));
+    left: calc(300 * var(--un));
+}
+
+#elemento-amarelo-t4 {
+    position: absolute;
+    text-align: center;
+    height: calc(30 * var(--un));
+    width: calc(160 * var(--un));
+    color: #ff0;
+    top: calc(443 * var(--un));
+    left: calc(514 * var(--un));
+}
+
+#elemento-verde-t4 {
+    position: absolute;
+    text-align: center;
+    height: calc(30 * var(--un));
+    width: calc(160 * var(--un));
+    color: #0f0;
+    top: calc(443 * var(--un));
+    left: calc(727 * var(--un));
+}
+
+#elemento-azul-t4 {
+    position: absolute;
+    text-align: center;
+    height: calc(30 * var(--un));
+    width: calc(160 * var(--un));
+    color: #00f;
+    top: calc(443 * var(--un));
+    left: calc(941 * var(--un));
+}
+
+#sucesso-t4 {
+    position: absolute;
+    color: #00cf0a;
+    font-size: calc(40 * var(--un));
+    top: calc(220 * var(--un));
+    left: calc(595 * var(--un));
+}
+
+#falha-t4 {
+    position: absolute;
+    color: #df0000;
+    font-size: calc(40 * var(--un));
+    top: calc(220 * var(--un));
+    left: calc(595 * var(--un));
 }

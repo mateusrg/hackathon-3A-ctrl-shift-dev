@@ -346,7 +346,7 @@ ${linhas.join('\n')}
 }
 
 function gerarDesafioTipo4() {
-    const cores = ["vermelho", "amarelo", "verde", "azul"];
+    const cores = ["Vermelho", "Amarelo", "Verde", "Azul"];
     const randInt = (min, max) =>
         Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -385,7 +385,7 @@ function gerarDesafioTipo4() {
             const { target, op1, expr } = btn[opIdx];
 
             let valorExpr;
-            const m = expr.match(/^([a-z]+) ([+-]) (\d+)$/);
+            const m = expr.match(/^([A-Za-z]+) ([+-]) (\d+)$/);
             if (m) {
                 const [, varName, sign, num] = m;
                 valorExpr = sign === "+"
@@ -1202,6 +1202,18 @@ function destruirTelaTarefa() {
     document.querySelector('#titulo-tarefa-3')?.remove();
     document.querySelector('#sucesso-t3')?.remove();
     document.querySelector('#falha-t3')?.remove();
+    document.querySelector('#tela-tarefa-4')?.remove();
+    document.querySelector('#botao-desistir-t4')?.remove();
+    document.querySelector('#botao-duvida-t4')?.remove();
+    document.querySelector('#botao-resetar-t4')?.remove();
+    ['verde', 'vermelho', 'azul', 'amarelo'].forEach(cor => {
+        document.querySelector(`#botao-${cor}-t4`)?.remove();
+    });
+    ['vermelho', 'amarelo', 'verde', 'azul'].forEach(cor => {
+        document.querySelector(`#elemento-${cor}-t4`)?.remove();
+    });
+    document.querySelector('#sucesso-t4')?.remove();
+    document.querySelector('#falha-t4')?.remove();
 }
 
 function destruirTelaJogo() {
@@ -2103,8 +2115,171 @@ function criarTelaTarefaTipo3(indiceTarefa) {
 }
 
 function criarTelaTarefaTipo4(indiceTarefa) {
-    // TODO
-    console.log('Tipo 4');
+    const tarefa = tarefas[indiceTarefa - 1];
+    console.log(tarefa);
+    const game = document.querySelector('#game');
+
+    const telaTarefa = document.createElement('div');
+    telaTarefa.id = 'tela-tarefa-4';
+    game.appendChild(telaTarefa);
+
+    const botaoFechar = document.createElement('div');
+    botaoFechar.id = 'xis-tarefa';
+    botaoFechar.addEventListener('click', () => {
+        destruirTelaTarefa();
+        document.querySelector('#tb-tarefa').style.display = 'none';
+        game.querySelector('#tb-tarefa-selecionado')?.remove();
+        statusTarefa = 'fechado';
+    });
+    game.appendChild(botaoFechar);
+
+    const botaoMinimizar = document.createElement('div');
+    botaoMinimizar.id = 'minimizar-tarefa';
+    botaoMinimizar.addEventListener('click', () => {
+        destruirTelaTarefa();
+        game.querySelector('#tb-tarefa-selecionado')?.remove();
+        const tarefaAberto = document.createElement('div');
+        tarefaAberto.id = 'tb-tarefa-aberto';
+        tarefaAberto.className = 'aberto';
+        game.appendChild(tarefaAberto);
+        statusTarefa = 'aberto';
+    });
+    game.appendChild(botaoMinimizar);
+
+    ['Vermelho', 'Amarelo', 'Verde', 'Azul'].forEach((e, i) => {
+        const elemento = document.createElement('div');
+        elemento.id = `elemento-${e.toLowerCase()}-t4`;
+        if (!estadoTarefas[indiceTarefa]) {
+            estadoTarefas[indiceTarefa] = { valores: { ...tarefa.valoresIniciais } };
+        }
+
+        elemento.style.fontSize = 'calc(50 * var(--un))';
+        elemento.textContent = estadoTarefas[indiceTarefa].valores[e];
+        game.appendChild(elemento);
+    });
+
+    ['verde', 'vermelho', 'azul', 'amarelo'].forEach((e, i) => {
+        const botao = document.createElement('button');
+        botao.id = `botao-${e}-t4`;
+        let texto = tarefa['botoes'][i].join('<br><br>');
+
+        if (texto.includes("Amarelo")) {
+            texto = texto.replace(/Amarelo/g, '<span style="color: #ff0;">Amarelo</span>');
+        }
+
+        if (texto.includes("Vermelho")) {
+            const cor = i === 1 ? '#8a0000' : '#f00';
+            texto = texto.replace(/Vermelho/g, `<span style="color: ${cor};">Vermelho</span>`);
+        }
+
+        if (texto.includes("Azul")) {
+            const cor = i === 2 ? '#0b0ec1' : '#00f';
+            texto = texto.replace(/Azul/g, `<span style="color: ${cor};">Azul</span>`);
+        }
+
+        if (texto.includes("Verde")) {
+            texto = texto.replace(/Verde/g, '<span style="color: #0f0;">Verde</span>');
+        }
+        botao.innerHTML = texto;
+
+        const finalizarTarefa = (resultado) => {
+            // Bloqueia o clique de todos os botões
+            ['verde', 'vermelho', 'azul', 'amarelo', 'desistir', 'duvida', 'resetar'].forEach(cor => {
+                const botao = document.querySelector(`#botao-${cor}-t4`);
+                if (botao) {
+                    botao.style.pointerEvents = 'none';
+                }
+            });
+
+            if (resultado) {
+                const mensagem = document.createElement('div');
+                pontuacao += tarefa.pontosGanhos;
+                mensagem.id = 'sucesso-t4';
+                mensagem.textContent = `+${tarefa.pontosGanhos}p.`;
+                game.appendChild(mensagem);
+
+            } else {
+                const mensagem = document.createElement('div');
+                pontuacao -= Math.abs(tarefa.pontosPerdidos);
+                pontuacao = Math.max(pontuacao, 0);
+                mensagem.id = 'falha-t4';
+                mensagem.textContent = `-${Math.abs(tarefa.pontosPerdidos)}p.`;
+                game.appendChild(mensagem);
+            }
+
+            tarefas[indiceTarefa - 1] = null;
+            preencherTarefas();
+
+            const destruirTela = () => {
+                destruirTelaTarefa();
+                document.querySelector('#tb-tarefa').style.display = 'none';
+                game.querySelector('#tb-tarefa-selecionado')?.remove();
+                game.querySelector('#tb-tarefa-aberto')?.remove();
+                statusTarefa = 'fechado';
+            };
+
+            const abas = ['#tb-reuniao', '#tb-pasta', '#tb-lista', '#tb-jogo', '#tb-tarefa', '#xis-tarefa', '#minimizar-tarefa'];
+            abas.forEach(selector => {
+                document.querySelector(selector)?.addEventListener('click', destruirTela, { once: true });
+            });
+
+            setTimeout(destruirTela, 2000);
+        };
+
+        const verificarValoresIguais = () => {
+            const valores = Object.values(estadoTarefas[indiceTarefa].valores);
+            const todosIguais = valores.every(valor => valor === valores[0]);
+
+            if (todosIguais) {
+                finalizarTarefa(true);
+            }
+        };
+
+        botao.addEventListener('click', () => {
+            tarefa['botoes'][i].forEach(op => {
+                const [target, operation, ...expressionParts] = op.split(' ');
+                const expression = expressionParts.join(' ');
+                const evalExpression = expression.replace(/([A-Za-z]+)/g, match => {
+                    if (estadoTarefas[indiceTarefa].valores[match] === undefined) {
+                        throw new Error(`Variable "${match}" is not defined in valores.`);
+                    }
+                    return estadoTarefas[indiceTarefa].valores[match];
+                });
+
+                const result = eval(evalExpression);
+
+                if (operation === '+=') {
+                    estadoTarefas[indiceTarefa].valores[target] += result;
+                } else if (operation === '-=') {
+                    estadoTarefas[indiceTarefa].valores[target] -= result;
+                }
+            });
+
+            // Atualiza os valores na tela
+            ['Vermelho', 'Amarelo', 'Verde', 'Azul'].forEach(cor => {
+                const elemento = document.querySelector(`#elemento-${cor.toLowerCase()}-t4`);
+                elemento.textContent = estadoTarefas[indiceTarefa].valores[cor];
+            });
+            verificarValoresIguais();
+        });
+        game.appendChild(botao);
+    });
+
+    ['desistir', 'duvida', 'resetar'].forEach((e) => {
+        const botao = document.createElement('div');
+        botao.id = `botao-${e}-t4`;
+        game.appendChild(botao);
+    });
+
+    document.querySelector('#botao-resetar-t4').addEventListener('click', () => {
+        estadoTarefas[indiceTarefa].valores = { ...tarefa.valoresIniciais };
+
+        // Atualiza os valores na tela
+        ['Vermelho', 'Amarelo', 'Verde', 'Azul'].forEach(cor => {
+            const elemento = document.querySelector(`#elemento-${cor.toLowerCase()}-t4`);
+            elemento.textContent = estadoTarefas[indiceTarefa].valores[cor];
+        });
+    });
 }
 
 function criarTelaTarefaTipo5(indiceTarefa) {
@@ -2346,46 +2521,46 @@ let estaPausado = false;
 const imagensPrecarregadas = {};
 
 function preCarregarImagens(lista) {
-  lista.forEach(src => {
-    const img = new Image();
-    img.src = src;
-    imagensPrecarregadas[src] = img;
-  });
+    lista.forEach(src => {
+        const img = new Image();
+        img.src = src;
+        imagensPrecarregadas[src] = img;
+    });
 }
 
 preCarregarImagens([
-  '../../assets/pc/jogo/mapa1_0.png',
-  '../../assets/pc/jogo/mapa1_1.png',
-  '../../assets/pc/jogo/mapa1_2.png',
-  '../../assets/pc/jogo/mapa1_3.png',
-  '../../assets/pc/jogo/mapa1_4.png',
-  '../../assets/pc/jogo/mapa1_5.png',
-  '../../assets/pc/jogo/mapa1_6.png',
-  '../../assets/pc/jogo/mapa1_7.png',
-  '../../assets/pc/jogo/mapa2_0.png',
-  '../../assets/pc/jogo/mapa2_1.png',
-  '../../assets/pc/jogo/mapa2_2.png',
-  '../../assets/pc/jogo/mapa2_3.png',
-  '../../assets/pc/jogo/mapa2_4.png',
-  '../../assets/pc/jogo/mapa2_5.png',
-  '../../assets/pc/jogo/mapa2_6.png',
-  '../../assets/pc/jogo/mapa2_7.png',
-  '../../assets/pc/jogo/mapa3_0.png',
-  '../../assets/pc/jogo/mapa3_1.png',
-  '../../assets/pc/jogo/mapa3_2.png',
-  '../../assets/pc/jogo/mapa3_3.png',
-  '../../assets/pc/jogo/mapa3_4.png',
-  '../../assets/pc/jogo/mapa3_5.png',
-  '../../assets/pc/jogo/mapa3_6.png',
-  '../../assets/pc/jogo/mapa3_7.png',
-  '../../assets/pc/jogo/mapa4_0.png',
-  '../../assets/pc/jogo/mapa4_1.png',
-  '../../assets/pc/jogo/mapa4_2.png',
-  '../../assets/pc/jogo/mapa4_3.png',
-  '../../assets/pc/jogo/mapa4_4.png',
-  '../../assets/pc/jogo/mapa4_5.png',
-  '../../assets/pc/jogo/mapa4_6.png',
-  '../../assets/pc/jogo/mapa4_7.png',
+    '../../assets/pc/jogo/mapa1_0.png',
+    '../../assets/pc/jogo/mapa1_1.png',
+    '../../assets/pc/jogo/mapa1_2.png',
+    '../../assets/pc/jogo/mapa1_3.png',
+    '../../assets/pc/jogo/mapa1_4.png',
+    '../../assets/pc/jogo/mapa1_5.png',
+    '../../assets/pc/jogo/mapa1_6.png',
+    '../../assets/pc/jogo/mapa1_7.png',
+    '../../assets/pc/jogo/mapa2_0.png',
+    '../../assets/pc/jogo/mapa2_1.png',
+    '../../assets/pc/jogo/mapa2_2.png',
+    '../../assets/pc/jogo/mapa2_3.png',
+    '../../assets/pc/jogo/mapa2_4.png',
+    '../../assets/pc/jogo/mapa2_5.png',
+    '../../assets/pc/jogo/mapa2_6.png',
+    '../../assets/pc/jogo/mapa2_7.png',
+    '../../assets/pc/jogo/mapa3_0.png',
+    '../../assets/pc/jogo/mapa3_1.png',
+    '../../assets/pc/jogo/mapa3_2.png',
+    '../../assets/pc/jogo/mapa3_3.png',
+    '../../assets/pc/jogo/mapa3_4.png',
+    '../../assets/pc/jogo/mapa3_5.png',
+    '../../assets/pc/jogo/mapa3_6.png',
+    '../../assets/pc/jogo/mapa3_7.png',
+    '../../assets/pc/jogo/mapa4_0.png',
+    '../../assets/pc/jogo/mapa4_1.png',
+    '../../assets/pc/jogo/mapa4_2.png',
+    '../../assets/pc/jogo/mapa4_3.png',
+    '../../assets/pc/jogo/mapa4_4.png',
+    '../../assets/pc/jogo/mapa4_5.png',
+    '../../assets/pc/jogo/mapa4_6.png',
+    '../../assets/pc/jogo/mapa4_7.png',
 ]);
 
 const mataInimigo = {
@@ -2442,7 +2617,7 @@ function eliminarInimigo(ladoInimigo) {
     let srcMapa;
 
     let posicaoMapa = mataInimigo[`mapa ${posicaoAtual}`][8];
-    
+
     switch (posicaoMapa) {
         case 1:
             srcMapa = mataInimigo[`mapa ${posicaoAtual}`][0][3];
@@ -2626,7 +2801,7 @@ function gerarInimigo() {
                     inimigo.remove();
                     break;
             }
-            
+
             if (posicaoAtual == numeroMapa) {
                 if (indiceMapaInicial != 7) {
                     if (statusJogo == 'selecionado') {
@@ -2648,7 +2823,7 @@ function gerarInimigo() {
     }
 }
 
-function pausarJogo () {
+function pausarJogo() {
     estaPausado = true;
 
     document.getElementById("pause-jogo")?.remove();
