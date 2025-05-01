@@ -205,10 +205,57 @@ const conquistasDescricao = [
     }
 ]
 
+let secaoConquista = 0;
+
+const usuarioStorage = JSON.parse(localStorage.getItem('usuario'));
+const usuario = await Usuario.selecionarUsuarioPorId(usuarioStorage.id);
+let easterEggLiberado;
+if (usuario.conquistas_desbloqueadas == '000000000000000000000000000000000000') {
+    easterEggLiberado = false;
+} else {
+    easterEggLiberado = true;
+}
+
+async function conquista24() {
+    easterEggLiberado = true;
+
+    const usuarioStorage = JSON.parse(localStorage.getItem('usuario'));
+    const usuario = await Usuario.selecionarUsuarioPorId(usuarioStorage.id);
+    
+    const usuarioAtualizado = await Usuario.desbloquearConquista(usuario.id, 25);
+
+    const secaoConquistaNotificacao = document.querySelector('#div-notificacao-conquista');
+
+    const conquistaNotificacao = document.createElement('div');
+    conquistaNotificacao.classList.add('conquista-notificacao');
+    // conquistaNotificacao.style.backgroundImage = `url('../../assets/conquistas/amarelo-grande.png')`;
+    secaoConquistaNotificacao.appendChild(conquistaNotificacao);
+
+    const imagemConquista = document.createElement('div');
+    imagemConquista.classList.add('imagem-conquista-notificacao');
+    console.log(conquistasDescricao[24].imagem);
+    imagemConquista.style.backgroundImage = `url('../../assets/conquistas/icones/conquistas25.png')`;
+    conquistaNotificacao.appendChild(imagemConquista);
+
+    const nomeConquista = document.createElement('h4');
+    nomeConquista.classList.add('nome-conquista-notificacao');
+    nomeConquista.innerText = "Easter Eggs";
+    conquistaNotificacao.appendChild(nomeConquista);
+
+    setTimeout(() => {
+        conquistaNotificacao?.remove();
+        imagemConquista?.remove();
+        nomeConquista?.remove();
+        abrirModalConquista(24, true);
+        carregarConquistas(secaoConquista);
+    }, 3000);
+}
+
 function abrirModalConquista(index, desbloqueada) {
     document.querySelector('.imagem-conquista')?.remove();
     document.querySelector('.nome-conquista')?.remove();
     document.querySelector('.descricao-conquista')?.remove();
+    document.querySelector('#clique-aqui')?.remove();
 
     const tela = document.querySelector('#game');
     tela.style.backgroundImage = `url('../../assets/conquistas/tela-conquista-selecionado.png')`;
@@ -237,6 +284,13 @@ function abrirModalConquista(index, desbloqueada) {
 
     voltar.style.top = 'calc(563 * var(--un))';
 
+    if (index == 24 && !easterEggLiberado) {
+        const cliqueAqui = document.createElement('div');
+        cliqueAqui.id = 'clique-aqui';
+        tela.appendChild(cliqueAqui);
+        cliqueAqui.addEventListener('click', conquista24)
+    }
+
     const imagemConquista = document.createElement('div');
     imagemConquista.classList.add('imagem-conquista');
     imagemConquista.style.backgroundImage = `url('${conquistasDescricao[index].imagem}')`;
@@ -255,8 +309,6 @@ function abrirModalConquista(index, desbloqueada) {
     descricaoConquista.innerText = conquistasDescricao[index].descricao;
     tela.appendChild(descricaoConquista);
 }
-
-let secaoConquista = 0;
 
 async function carregarConquistas(nivel) {
     const usuarioStorage = JSON.parse(localStorage.getItem('usuario'));
