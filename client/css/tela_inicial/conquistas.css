@@ -1,0 +1,125 @@
+* {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+.frame {
+    position: relative;
+}
+
+#game {
+    background-image: url('../../assets/conquistas/tela-conquista-desselecionado.png');
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#conquistas-cima {
+    position: absolute;
+    height: calc(159 * var(--un));
+    width: calc(1209 * var(--un));
+    top: calc(282 * var(--un));
+    left: calc(90 * var(--un));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#conquistas-baixo {
+    position: absolute;
+    height: calc(159 * var(--un));
+    width: calc(1209 * var(--un));
+    top: calc(482 * var(--un));
+    left: calc(90 * var(--un));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.botao-conquista {
+    cursor: pointer;
+    border-radius: calc(20 * var(--un));
+    height: calc(179 * var(--un));
+    width: calc(180 * var(--un));
+    background-image: url('../../assets/conquistas/azul.png');
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.conquista-item {
+    height: calc(100 * var(--un));
+    width: calc(100 * var(--un));
+}
+
+#seta-cima {
+    position: absolute;
+    cursor: pointer;
+    height: calc(69 * var(--un));
+    width: calc(46 * var(--un));
+    top: calc(200 * var(--un));
+    left: calc(1300 * var(--un));
+    background-image: url('../../assets/conquistas/seta.png');
+    rotate: 270deg;
+    border: none;
+    outline: none;
+}
+
+#seta-baixo {
+    position: absolute;
+    cursor: pointer;
+    height: calc(69 * var(--un));
+    width: calc(46 * var(--un));
+    top: calc(655 * var(--un));
+    left: calc(1300 * var(--un));
+    background-image: url('../../assets/conquistas/seta.png');
+    rotate: 90deg;
+    border: none;
+    outline: none;
+}
+
+#voltar {
+    position: absolute;
+    cursor: pointer;
+    border-radius: calc(20 * var(--un));
+    height: calc(98 * var(--un));
+    width: calc(385 * var(--un));
+    top: calc(703 * var(--un));
+    left: calc(508 * var(--un));
+    font-size: calc(35 * var(--un));
+    color: transparent;
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+
+.imagem-conquista {
+    position: absolute;
+    height: calc(150 * var(--un));
+    width: calc(150 * var(--un));
+    top: calc(773 * var(--un));
+    left: calc(66 * var(--un));
+}
+
+.nome-conquista {
+    position: absolute;
+    height: calc(50 * var(--un));
+    width: calc(1100 * var(--un));
+    top: calc(800 * var(--un));
+    left: calc(250 * var(--un));
+    font-size: calc(40 * var(--un));
+    color: #fff;
+}
+
+.descricao-conquista {
+    position: absolute;
+    height: calc(50 * var(--un));
+    width: calc(1100 * var(--un));
+    top: calc(860 * var(--un));
+    left: calc(250 * var(--un));
+    font-size: calc(20 * var(--un));
+    color: #fff;
+    line-height: calc(30 * var(--un));
+}
