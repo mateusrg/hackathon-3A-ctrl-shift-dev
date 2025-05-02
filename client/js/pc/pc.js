@@ -14,7 +14,7 @@ async function verificarLogin() {
     }
 }
 
-const contaVerificada = setInterval(verificarLogin, 1000);
+verificarLogin();
 
 const dificuldade = Number(localStorage.getItem('dificuldadeSelecionada'));
 
@@ -2176,6 +2176,12 @@ function criarTelaTarefaTipo4(indiceTarefa) {
         game.appendChild(elemento);
     });
 
+    ['desistir', 'duvida', 'resetar'].forEach((e) => {
+        const botao = document.createElement('div');
+        botao.id = `botao-${e}-t4`;
+        game.appendChild(botao);
+    });
+
     ['verde', 'vermelho', 'azul', 'amarelo'].forEach((e, i) => {
         const botao = document.createElement('button');
         botao.id = `botao-${e}-t4`;
@@ -2244,6 +2250,10 @@ function criarTelaTarefaTipo4(indiceTarefa) {
             setTimeout(destruirTela, 2000);
         };
 
+        if (i === 0) {
+            document.querySelector('#botao-desistir-t4').addEventListener('click', () => finalizarTarefa(false));
+        }
+
         const verificarValoresIguais = () => {
             const valores = Object.values(estadoTarefas[indiceTarefa].valores);
             const todosIguais = valores.every(valor => valor === valores[0]);
@@ -2255,37 +2265,41 @@ function criarTelaTarefaTipo4(indiceTarefa) {
 
         botao.addEventListener('click', () => {
             tarefa['botoes'][i].forEach(op => {
-                const [target, operation, ...expressionParts] = op.split(' ');
-                const expression = expressionParts.join(' ');
-                const evalExpression = expression.replace(/([A-Za-z]+)/g, match => {
-                    if (estadoTarefas[indiceTarefa].valores[match] === undefined) {
-                        throw new Error(`Variable "${match}" is not defined in valores.`);
-                    }
-                    return estadoTarefas[indiceTarefa].valores[match];
-                });
-
-                const result = eval(evalExpression);
-
-                if (operation === '+=') {
-                    estadoTarefas[indiceTarefa].valores[target] += result;
-                } else if (operation === '-=') {
-                    estadoTarefas[indiceTarefa].valores[target] -= result;
+            const [target, operation, ...expressionParts] = op.split(' ');
+            const expression = expressionParts.join(' ');
+            const evalExpression = expression.replace(/([A-Za-z]+)/g, match => {
+                if (estadoTarefas[indiceTarefa].valores[match] === undefined) {
+                throw new Error(`Variable "${match}" is not defined in valores.`);
                 }
+                return estadoTarefas[indiceTarefa].valores[match];
+            });
+
+            const result = eval(evalExpression);
+
+            if (operation === '+=') {
+                estadoTarefas[indiceTarefa].valores[target] += result;
+            } else if (operation === '-=') {
+                estadoTarefas[indiceTarefa].valores[target] -= result;
+            }
             });
 
             // Atualiza os valores na tela
             ['Vermelho', 'Amarelo', 'Verde', 'Azul'].forEach(cor => {
-                const elemento = document.querySelector(`#elemento-${cor.toLowerCase()}-t4`);
-                elemento.textContent = estadoTarefas[indiceTarefa].valores[cor];
+            const elemento = document.querySelector(`#elemento-${cor.toLowerCase()}-t4`);
+            const valor = estadoTarefas[indiceTarefa].valores[cor];
+            if (valor > 9999) {
+                elemento.textContent = '>9999';
+                elemento.style.fontSize = 'calc(40 * var(--un))';
+            } else if (valor < -999) {
+                elemento.textContent = '<-999';
+                elemento.style.fontSize = 'calc(40 * var(--un))';
+            } else {
+                elemento.textContent = valor;
+                elemento.style.fontSize = 'calc(50 * var(--un))';
+            }
             });
             verificarValoresIguais();
         });
-        game.appendChild(botao);
-    });
-
-    ['desistir', 'duvida', 'resetar'].forEach((e) => {
-        const botao = document.createElement('div');
-        botao.id = `botao-${e}-t4`;
         game.appendChild(botao);
     });
 

@@ -1217,7 +1217,7 @@ button {
     position: absolute;
     text-align: center;
     height: calc(30 * var(--un));
-    width: calc(160 * var(--un));
+    width: calc(200 * var(--un));
     color: #f00;
     top: calc(443 * var(--un));
     left: calc(300 * var(--un));
@@ -1227,7 +1227,7 @@ button {
     position: absolute;
     text-align: center;
     height: calc(30 * var(--un));
-    width: calc(160 * var(--un));
+    width: calc(200 * var(--un));
     color: #ff0;
     top: calc(443 * var(--un));
     left: calc(514 * var(--un));
@@ -1237,7 +1237,7 @@ button {
     position: absolute;
     text-align: center;
     height: calc(30 * var(--un));
-    width: calc(160 * var(--un));
+    width: calc(200 * var(--un));
     color: #0f0;
     top: calc(443 * var(--un));
     left: calc(727 * var(--un));
@@ -1247,7 +1247,7 @@ button {
     position: absolute;
     text-align: center;
     height: calc(30 * var(--un));
-    width: calc(160 * var(--un));
+    width: calc(200 * var(--un));
     color: #00f;
     top: calc(443 * var(--un));
     left: calc(941 * var(--un));
