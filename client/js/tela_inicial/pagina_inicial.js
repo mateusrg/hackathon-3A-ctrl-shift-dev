@@ -25,10 +25,16 @@ function conquistas() {
 }
 
 function sair() {
-    window.location.href = '../html/teste.html';
+    Usuario.logout();
+    window.location.href = '../login/pagina_inicial_deslogado.html';
+}
+
+function editar() {
+    window.location.href = '../tela_inicial/editar_senha.html';
 }
 
 
 document.querySelector('#iniciar').addEventListener('click', iniciar);
 document.querySelector('#conquistas').addEventListener('click', conquistas);
 document.querySelector('#sair').addEventListener('click', sair);
+document.querySelector('#botao-editar').addEventListener('click', editar);

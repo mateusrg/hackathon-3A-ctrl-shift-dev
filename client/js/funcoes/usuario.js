@@ -20,8 +20,6 @@ export async function login(email, senha) {
   const result = await res.json();
   if (result.success) {
     localStorage.setItem('usuario', JSON.stringify(result.data));
-  } else {
-    alert(result.message);
   }
   return result;
 }
@@ -56,7 +54,6 @@ export async function atualizarUsuario({ id, email, nome, senhaAtual, senhaNova 
     body: JSON.stringify({ email, nome, senhaAtual, senhaNova })
   });
   const result = await res.json();
-  if (!result.success) alert(result.message);
   return result;
 }
 
