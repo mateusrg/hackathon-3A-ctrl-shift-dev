@@ -1439,3 +1439,101 @@ button {
     top: calc(227 * var(--un));
     left: calc(615 * var(--un));
 }
+
+#tela-tarefa-7 {
+    position: absolute;
+    background-image: url('../../assets/pc/tarefas/7/tela.png');
+    height: calc(714 * var(--un));
+    width: calc(1285 * var(--un));
+    top: calc(140 * var(--un));
+    left: calc(58 * var(--un));
+}
+
+#titulo-tarefa-7 {
+    position: absolute;
+    color: #000;
+    font-size: calc(20 * var(--un));
+    text-align: center;
+    height: calc(60 * var(--un));
+    width: calc(876 * var(--un));
+    top: calc(334 * var(--un));
+    left: calc(282 * var(--un));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#campo-texto-tarefa-7 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    font-size: calc(25 * var(--un));
+    top: calc(454 * var(--un));
+    left: calc(222 * var(--un));
+    height: calc(60 * var(--un));
+    width: calc(956 * var(--un));
+    text-align: center;
+}
+
+#botao-verde-t7,
+#botao-vermelho-t7,
+#botao-azul-t7,
+#botao-amarelo-t7 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(106 * var(--un));
+    width: calc(421 * var(--un));
+    cursor: pointer;
+    font-size: calc(20 * var(--un));
+    text-align: center;
+    padding: 0 calc(30 * var(--un));
+}
+
+#botao-verde-t7 {
+    top: calc(560 * var(--un));
+    left: calc(233 * var(--un));
+}
+
+#botao-vermelho-t7 {
+    bottom: calc(183 * var(--un));
+    left: calc(227 * var(--un));
+}
+
+#botao-azul-t7 {
+    bottom: calc(183 * var(--un));
+    right: calc(227 * var(--un));
+}
+
+#botao-amarelo-t7 {
+    top: calc(560 * var(--un));
+    right: calc(229 * var(--un));
+}
+
+#botao-duvida-t7 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(80 * var(--un));
+    width: calc(80 * var(--un));
+    right: calc(150 * var(--un));
+    top: calc(196 * var(--un));
+    cursor: pointer;
+}
+
+#sucesso-t7 {
+    position: absolute;
+    color: #00cf0a;
+    font-size: calc(40 * var(--un));
+    top: calc(215 * var(--un));
+    left: calc(650 * var(--un));
+}
+
+#falha-t7 {
+    position: absolute;
+    color: #df0000;
+    font-size: calc(40 * var(--un));
+    top: calc(215 * var(--un));
+    left: calc(650 * var(--un));
+}

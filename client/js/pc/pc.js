@@ -785,9 +785,10 @@ const perguntasJson = {
             "alternativas": [
                 ["SELECT", "DELETE FROM", "INSERT INTO", "UPDATE"],
                 ["*", "nome", "id", "altura"],
+                ["FROM moradores", "FROM usuarios", "FROM clientes", "FROM dados"],
                 ["WHERE idade > 18", "WHERE idade = 18", "WHERE idade < 18", "WHERE nome > 18"]
             ],
-            "correta": ["SELECT", "*", "WHERE id > 18"]
+            "correta": ["SELECT", "*", "FROM moradores", "WHERE idade > 18"]
         },
         {
             "titulo": "Adicione um campo de email na tabela moradores",
@@ -812,9 +813,10 @@ const perguntasJson = {
             "alternativas": [
                 ["SELECT", "UPDATE", "DELETE FROM", "INSERT INTO"],
                 ["*", "nome", "id", "idade"],
-                ["WHERE nome LIKE 'A%'", "WHERE nome = 'A'", "WHERE nome IN ('A')", "WHERE nome = A"]
+                ["FROM moradores", "FROM usuarios", "FROM clientes", "FROM dados"],
+                ["WHERE nome LIKE 'A%'", "WHERE nome = '%A'", "WHERE nome IN ('A')", "WHERE nome LIKE '%A'"]
             ],
-            "correta": ["SELECT", "*", "WHERE nome LIKE 'A%'"]
+            "correta": ["SELECT", "*", "FROM moradores", "WHERE nome LIKE 'A%'"]
         },
         {
             "titulo": "Exclua a tabela temporária de teste",
@@ -1275,6 +1277,16 @@ function destruirTelaTarefa() {
     ['verde', 'vermelho', 'azul', 'amarelo'].forEach(cor => {
         document.querySelector(`#botao-${cor}-t6`)?.remove();
     });
+    document.querySelector('#tela-tarefa-7')?.remove();
+    document.querySelector('#xis-tarefa')?.remove();
+    document.querySelector('#minimizar-tarefa')?.remove();
+    document.querySelector('#titulo-tarefa-7')?.remove();
+    document.querySelector('#campo-texto-tarefa-7')?.remove();
+    document.querySelectorAll('[id^="botao-"]').forEach(el => el.remove());
+    document.querySelector('#botao-duvida-t7')?.remove();
+    document.querySelector('#sucesso-t7')?.remove();
+    document.querySelector('#falha-t7')?.remove();
+    document.querySelector('#comando-completo-t7')?.remove();
 }
 
 function destruirTelaJogo() {
@@ -2614,8 +2626,132 @@ function criarTelaTarefaTipo6(indiceTarefa) {
 }
 
 function criarTelaTarefaTipo7(indiceTarefa) {
-    // TODO
-    console.log('Tipo 7');
+    const tarefa = tarefas[indiceTarefa - 1];
+    const game = document.querySelector('#game');
+
+    if (!estadoTarefas[indiceTarefa]) {
+        estadoTarefas[indiceTarefa] = { etapaAtual: 0, textoAtual: "" };
+    }
+
+    const { etapaAtual, textoAtual } = estadoTarefas[indiceTarefa];
+
+    const telaTarefa = document.createElement('div');
+    telaTarefa.id = 'tela-tarefa-7';
+    game.appendChild(telaTarefa);
+
+    const botaoXis = document.createElement('div');
+    botaoXis.id = 'xis-tarefa';
+    botaoXis.addEventListener('click', () => {
+        destruirTelaTarefa();
+        document.querySelector('#tb-tarefa').style.display = 'none';
+        game.querySelector('#tb-tarefa-selecionado')?.remove();
+        statusTarefa = 'fechado';
+    });
+    game.appendChild(botaoXis);
+
+    const botaoMinimizar = document.createElement('div');
+    botaoMinimizar.id = 'minimizar-tarefa';
+    botaoMinimizar.addEventListener('click', () => {
+        destruirTelaTarefa();
+        game.querySelector('#tb-tarefa-selecionado')?.remove();
+        const tarefaAberto = document.createElement('div');
+        tarefaAberto.id = 'tb-tarefa-aberto';
+        tarefaAberto.className = 'aberto';
+        game.appendChild(tarefaAberto);
+        statusTarefa = 'aberto';
+    });
+    game.appendChild(botaoMinimizar);
+
+    const titulo = document.createElement('div');
+    titulo.id = 'titulo-tarefa-7';
+    titulo.textContent = tarefa.titulo;
+    game.appendChild(titulo);
+
+    const campoTexto = document.createElement('div');
+    campoTexto.id = 'campo-texto-tarefa-7';
+    campoTexto.textContent = textoAtual || "...";
+    game.appendChild(campoTexto);
+
+    const cores = ['verde', 'vermelho', 'azul', 'amarelo'];
+    const alternativas = tarefa.alternativas[etapaAtual];
+
+    alternativas.opcoes.forEach((opcao, index) => {
+        const botao = document.createElement('button');
+        botao.id = `botao-${cores[index]}-t7`;
+        botao.textContent = opcao;
+
+        botao.addEventListener('click', () => {
+            if (index === alternativas.indiceCorreta) {
+                estadoTarefas[indiceTarefa].textoAtual += opcao;
+                estadoTarefas[indiceTarefa].textoAtual = estadoTarefas[indiceTarefa].textoAtual.replace('...', ' ');
+                estadoTarefas[indiceTarefa].textoAtual += '...';
+                estadoTarefas[indiceTarefa].etapaAtual++;
+
+                if (estadoTarefas[indiceTarefa].etapaAtual === tarefa.alternativas.length) {
+                    document.querySelector('#campo-texto-tarefa-7').textContent = tarefa.alternativas.map(a => a.opcoes[a.indiceCorreta]).join(' ');
+                    pontuacao += tarefa.pontosGanhos;
+                    const mensagem = document.createElement('div');
+                    mensagem.id = 'sucesso-t7';
+                    mensagem.textContent = `+${tarefa.pontosGanhos} ponto${tarefa.pontosGanhos === 1 ? '' : 's'}`;
+                    game.appendChild(mensagem);
+
+                    const comandoCompleto = document.createElement('div');
+                    comandoCompleto.id = 'comando-completo-t7';
+                    comandoCompleto.textContent = estadoTarefas[indiceTarefa].textoAtual.replace('...', '');
+                    game.appendChild(comandoCompleto);
+
+                    tarefas[indiceTarefa - 1] = null;
+                    preencherTarefas();
+                    destruirTela()
+                } else {
+                    destruirTelaTarefa();
+                    criarTelaTarefaTipo7(indiceTarefa);
+                }
+            } else {
+                pontuacao -= Math.abs(tarefa.pontosPerdidos);
+                pontuacao = Math.max(pontuacao, 0);
+                const mensagem = document.createElement('div');
+                mensagem.id = 'falha-t7';
+                mensagem.textContent = `-${Math.abs(tarefa.pontosPerdidos)} ponto${Math.abs(tarefa.pontosPerdidos) === 1 ? '' : 's'}`;
+                game.appendChild(mensagem);
+                tarefas[indiceTarefa - 1] = null;
+                preencherTarefas();
+                destruirTela();
+            }
+        });
+
+        game.appendChild(botao);
+    });
+
+    const botaoDuvida = document.createElement('div');
+    botaoDuvida.id = 'botao-duvida-t7';
+    game.appendChild(botaoDuvida);
+
+    function destruirTela() {
+        // Desabilita todos os botões (exceto os botões de fechar e minimizar)
+        document.querySelectorAll('[id^="botao-"]').forEach(botao => {
+            if (!botao.id.includes('xis') && !botao.id.includes('minimizar')) {
+            botao.style.pointerEvents = 'none';
+            }
+        });
+
+        const destruirTela = () => {
+            destruirTelaTarefa();
+            document.querySelector('#tb-tarefa').style.display = 'none';
+            game.querySelector('#tb-tarefa-selecionado')?.remove();
+            game.querySelector('#tb-tarefa-aberto')?.remove();
+            statusTarefa = 'fechado';
+        };
+
+        // Adiciona evento para destruir a tela imediatamente ao clicar em outra aba, fechar ou minimizar
+        const abas = ['#tb-reuniao', '#tb-pasta', '#tb-lista', '#tb-jogo', '#tb-tarefa', '#xis-tarefa', '#minimizar-tarefa'];
+        abas.forEach(selector => {
+            document.querySelector(selector)?.addEventListener('click', destruirTela, { once: true });
+        });
+
+        // Chama destruir a tela da tarefa após 2 segundos, caso não tenha sido destruída antes
+        setTimeout(destruirTela, 2000);
+    }
 }
 
 function selecionaReuniao() {
