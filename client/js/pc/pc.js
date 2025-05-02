@@ -608,8 +608,8 @@ const questoesJson = {
             "alternativas": [
                 "let",
                 "var",
-                "const",
-                "static"
+                "local",
+                "block"
             ]
         },
         {
@@ -997,12 +997,6 @@ function validarDesafioTipo3(desafio, respostaPlayer) {
     return respostaPlayer == desafio.resposta_correta;
 }
 
-function validarDesafioTipo5(desafio, respostaPlayer) {
-    return respostaPlayer == desafio.resposta_correta;
-}
-
-
-
 let tarefas = [];
 let estadoTarefas = {
     1: '',
@@ -1083,7 +1077,6 @@ function preencherTarefas() {
 }
 preencherTarefas();
 console.log(tarefas);
-
 
 // Resto do Código
 
@@ -1270,6 +1263,18 @@ function destruirTelaTarefa() {
     document.querySelector('#sucesso-t5')?.remove();
     document.querySelector('#falha-t5')?.remove();
     document.querySelector('#pergunta-tarefa-5')?.remove();
+    document.querySelector('#tela-tarefa-6')?.remove();
+    document.querySelector('#xis-tarefa')?.remove();
+    document.querySelector('#minimizar-tarefa')?.remove();
+    document.querySelector('#pergunta-tarefa-6')?.remove();
+    document.querySelector('#progresso-tarefa-6')?.remove();
+    document.querySelector('#botao-duvida-t6')?.remove();
+    document.querySelector('#errado-t6')?.remove();
+    document.querySelector('#falha-t6')?.remove();
+    document.querySelector('#sucesso-t6')?.remove();
+    ['verde', 'vermelho', 'azul', 'amarelo'].forEach(cor => {
+        document.querySelector(`#botao-${cor}-t6`)?.remove();
+    });
 }
 
 function destruirTelaJogo() {
@@ -2484,8 +2489,128 @@ function criarTelaTarefaTipo5(indiceTarefa) {
 }
 
 function criarTelaTarefaTipo6(indiceTarefa) {
-    // TODO
-    console.log('Tipo 6');
+    const tarefa = tarefas[indiceTarefa - 1];
+    const game = document.querySelector('#game');
+
+    if (!estadoTarefas[indiceTarefa]) {
+        estadoTarefas[indiceTarefa] = { questaoAtual: 0, totalQuestoes: Object.keys(tarefa).length - 3, erros: 0 };
+    }
+
+    const { questaoAtual, totalQuestoes, erros } = estadoTarefas[indiceTarefa];
+
+    const telaTarefa = document.createElement('div');
+    telaTarefa.id = 'tela-tarefa-6';
+    game.appendChild(telaTarefa);
+
+    const botaoXis = document.createElement('div');
+    botaoXis.id = 'xis-tarefa';
+    botaoXis.addEventListener('click', () => {
+        destruirTelaTarefa();
+        document.querySelector('#tb-tarefa').style.display = 'none';
+        game.querySelector('#tb-tarefa-selecionado')?.remove();
+        statusTarefa = 'fechado';
+    });
+    game.appendChild(botaoXis);
+
+    const botaoMinimizar = document.createElement('div');
+    botaoMinimizar.id = 'minimizar-tarefa';
+    botaoMinimizar.addEventListener('click', () => {
+        destruirTelaTarefa();
+        game.querySelector('#tb-tarefa-selecionado')?.remove();
+        const tarefaAberto = document.createElement('div');
+        tarefaAberto.id = 'tb-tarefa-aberto';
+        tarefaAberto.className = 'aberto';
+        game.appendChild(tarefaAberto);
+        statusTarefa = 'aberto';
+    });
+    game.appendChild(botaoMinimizar);
+
+    const pergunta = document.createElement('div');
+    pergunta.id = 'pergunta-tarefa-6';
+    pergunta.textContent = tarefa[questaoAtual].pergunta;
+    game.appendChild(pergunta);
+
+    const progresso = document.createElement('div');
+    progresso.id = 'progresso-tarefa-6';
+    progresso.textContent = `${questaoAtual + 1}/${totalQuestoes}`;
+    game.appendChild(progresso);
+
+    const cores = ['verde', 'vermelho', 'azul', 'amarelo'];
+    tarefa[questaoAtual].alternativas.forEach((alternativa, index) => {
+        const botao = document.createElement('button');
+        botao.id = `botao-${cores[index]}-t6`;
+        botao.textContent = alternativa.texto;
+
+        botao.addEventListener('click', () => {
+            if (alternativa.correta) {
+                if (questaoAtual + 1 === totalQuestoes) {
+                    pontuacao += tarefa.pontosGanhos;
+                    const mensagem = document.createElement('div');
+                    mensagem.id = 'sucesso-t6';
+                    mensagem.textContent = `+${tarefa.pontosGanhos} ponto${tarefa.pontosGanhos === 1 ? '' : 's'}`;
+                    game.appendChild(mensagem);
+                    tarefas[indiceTarefa - 1] = null;
+                    preencherTarefas();
+                    setTimeout(() => {
+                        destruirTelaTarefa();
+                        document.querySelector('#tb-tarefa').style.display = 'none';
+                        game.querySelector('#tb-tarefa-selecionado')?.remove();
+                        game.querySelector('#tb-tarefa-aberto')?.remove();
+                        statusTarefa = 'fechado';
+                    }, 2000);
+                } else {
+                    estadoTarefas[indiceTarefa].questaoAtual++;
+                    destruirTelaTarefa();
+                    criarTelaTarefaTipo6(indiceTarefa);
+                }
+            } else {
+                estadoTarefas[indiceTarefa].erros++;
+                if (erros + 1 >= 2) {
+                    pontuacao -= Math.abs(tarefa.pontosPerdidos);
+                    pontuacao = Math.max(pontuacao, 0);
+                    const mensagem = document.createElement('div');
+                    mensagem.id = 'falha-t6';
+                    mensagem.textContent = `-${Math.abs(tarefa.pontosPerdidos)} ponto${Math.abs(tarefa.pontosPerdidos) === 1 ? '' : 's'}`;
+                    game.appendChild(mensagem);
+                    tarefas[indiceTarefa - 1] = null;
+                    preencherTarefas();
+                    setTimeout(() => {
+                        destruirTelaTarefa();
+                        document.querySelector('#tb-tarefa').style.display = 'none';
+                        game.querySelector('#tb-tarefa-selecionado')?.remove();
+                        game.querySelector('#tb-tarefa-aberto')?.remove();
+                        statusTarefa = 'fechado';
+                    }, 2000);
+                } else {
+                    estadoTarefas[indiceTarefa].questaoAtual++;
+                    const novasQuestoes = gerarDesafioTipo6();
+                    estadoTarefas[indiceTarefa].totalQuestoes += novasQuestoes.length;
+
+                    tarefa[3] = novasQuestoes[0];
+                    tarefa[4] = novasQuestoes[1];
+                    tarefa[5] = novasQuestoes[2];
+
+                    const mensagem = document.createElement('div');
+                    mensagem.id = 'errado-t6';
+                    mensagem.textContent = "Errado. +3 questões.";
+                    game.appendChild(mensagem);
+                    console.log(tarefa);
+
+                    setTimeout(() => {
+                        mensagem.remove();
+                        destruirTelaTarefa();
+                        criarTelaTarefaTipo6(indiceTarefa);
+                    }, 1000);
+                }
+            }
+        });
+
+        game.appendChild(botao);
+    });
+
+    const botaoDuvida = document.createElement('div');
+    botaoDuvida.id = 'botao-duvida-t6';
+    game.appendChild(botaoDuvida);
 }
 
 function criarTelaTarefaTipo7(indiceTarefa) {

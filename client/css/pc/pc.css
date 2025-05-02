@@ -1339,3 +1339,103 @@ button {
     left: calc(235 * var(--un));
     text-align: center;
 }
+
+#tela-tarefa-6 {
+    position: absolute;
+    background-image: url('../../assets/pc/tarefas/6/tela.png');
+    height: calc(714 * var(--un));
+    width: calc(1285 * var(--un));
+    top: calc(140 * var(--un));
+    left: calc(58 * var(--un));
+}
+
+#pergunta-tarefa-6 {
+    position: absolute;
+    text-align: center;
+    height: calc(60 * var(--un));
+    width: calc(924 * var(--un));
+    font-size: calc(22 * var(--un));
+    top: calc(362 * var(--un));
+    left: calc(235 * var(--un));
+    color: #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#progresso-tarefa-6 {
+    position: absolute;
+    font-size: calc(40 * var(--un));
+    color: #fff;
+    top: calc(218 * var(--un));
+    right: calc(290 * var(--un));
+    text-align: center;
+}
+
+#botao-verde-t6,
+#botao-vermelho-t6,
+#botao-azul-t6,
+#botao-amarelo-t6 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(106 * var(--un));
+    width: calc(421 * var(--un));
+    cursor: pointer;
+    font-size: calc(20 * var(--un));
+    text-align: center;
+}
+
+#botao-verde-t6 {
+    top: calc(520 * var(--un));
+    left: calc(240 * var(--un));
+}
+
+#botao-vermelho-t6 {
+    bottom: calc(223 * var(--un));
+    left: calc(234 * var(--un));
+}
+
+#botao-azul-t6 {
+    bottom: calc(223 * var(--un));
+    right: calc(220 * var(--un));
+}
+
+#botao-amarelo-t6 {
+    top: calc(520 * var(--un));
+    right: calc(222 * var(--un));
+}
+
+#botao-duvida-t6 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(80 * var(--un));
+    width: calc(80 * var(--un));
+    right: calc(176 * var(--un));
+    top: calc(195 * var(--un));
+    cursor: pointer;
+}
+
+#sucesso-t6 {
+    position: absolute;
+    color: #00cf0a;
+    font-size: calc(40 * var(--un));
+    top: calc(220 * var(--un));
+    left: calc(595 * var(--un));
+}
+
+#falha-t6 {
+    position: absolute;
+    color: #df0000;
+    font-size: calc(40 * var(--un));
+    top: calc(217 * var(--un));
+    left: calc(615 * var(--un));
+}
+
+#errado-t6 {
+    position: absolute;
+    color: #df0000;
+    font-size: calc(18 * var(--un));
+    top: calc(227 * var(--un));
+    left: calc(615 * var(--un));
+}
