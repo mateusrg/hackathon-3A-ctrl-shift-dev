@@ -1268,3 +1268,74 @@ button {
     top: calc(220 * var(--un));
     left: calc(595 * var(--un));
 }
+
+#tela-tarefa-5 {
+    position: absolute;
+    background-image: url('../../assets/pc/tarefas/5/tela.png');
+    height: calc(714 * var(--un));
+    width: calc(1285 * var(--un));
+    top: calc(140 * var(--un));
+    left: calc(58 * var(--un));
+}
+
+#input-tarefa-5 {
+    position: absolute;
+    height: calc(50 * var(--un));
+    width: calc(295 * var(--un));
+    font-size: calc(20 * var(--un));
+    bottom: calc(410 * var(--un));
+    right: calc(190 * var(--un));
+    outline: none;
+    background-color: transparent;
+    border: none;
+}
+
+#input-tarefa-5::placeholder {
+    color: #000;
+}
+
+#tentativas-restantes-t4 {
+    position: absolute;
+    width: calc(343 * var(--un));
+    font-size: calc(15 * var(--un));
+    color: #fff;
+    bottom: calc(252 * var(--un));
+    right: calc(170 * var(--un));
+    text-align: center;
+}
+
+#botao-entregar-t5 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(88 * var(--un));
+    width: calc(343 * var(--un));
+    right: calc(170 * var(--un));
+    bottom: calc(276 * var(--un));
+    cursor: pointer;
+}
+
+#sucesso-t5 {
+    position: absolute;
+    color: #00cf0a;
+    font-size: calc(30 * var(--un));
+    top: calc(436 * var(--un));
+    right: calc(225 * var(--un));
+}
+
+#falha-t5 {
+    position: absolute;
+    color: #df0000;
+    font-size: calc(30 * var(--un));
+    top: calc(436 * var(--un));
+    right: calc(215 * var(--un));
+}
+
+#pergunta-tarefa-5 {
+    position: absolute;
+    text-align: center;
+    width: calc(924 * var(--un));
+    font-size: calc(30 * var(--un));
+    top: calc(316 * var(--un));
+    left: calc(235 * var(--un));
+    text-align: center;
+}

@@ -1,7 +1,7 @@
 import Usuario from '../funcoes/usuario.js';
 
 async function verificarLogin() {
-    const usuarioStorage = JSON.parse(localStorage.getItem('usuario')); 
+    const usuarioStorage = JSON.parse(localStorage.getItem('usuario'));
 
     if (usuarioStorage == null || usuarioStorage.length == 0) {
         window.location.href = '../../html/login/pagina_inicial_deslogado.html';
@@ -436,10 +436,11 @@ function gerarDesafioTipo5() {
             const indice = Math.floor(Math.random() * lista.length);
             const resposta = lista.length * lista[indice];
             const codigo_python = `
-  lista = [${lista.join(', ')}]
-  x = len(lista) * lista[${indice}]
+lista = [${lista.join(', ')}]
+x = len(lista) * lista[${indice}]
   `;
-            return { codigo_python: codigo_python.trim(), resposta_correta: resposta };
+            const pergunta = `Qual o valor de x?`;
+            return { codigo_python: codigo_python.trim(), resposta_correta: resposta, pergunta: pergunta };
         }
 
         case 2: {
@@ -451,28 +452,28 @@ function gerarDesafioTipo5() {
             let soma = 0;
             valores.forEach(v => { if (v > limite) soma += v; });
             const codigo_python = `
-  valores = [${valores.join(', ')}]
-  soma = 0
-  for v in valores:
-      if v > ${limite}:
-          soma += v
-  print(soma)
-  `;
-            return { codigo_python: codigo_python.trim(), resposta_correta: soma };
+valores = [${valores.join(', ')}]
+soma = 0
+for v in valores:
+    if v > ${limite}:
+        soma += v`;
+            const pergunta = `Qual o valor de soma?`;
+            return { codigo_python: codigo_python.trim(), resposta_correta: soma, pergunta: pergunta };
         }
 
         case 3: {
             const n = Math.floor(Math.random() * 51);
             const resultado = (n % 2 === 0) ? n - 2 : n * 2;
             const codigo_python = `
-  def misterio(n):
-      if n % 2 == 0:
-          return n - 2
-      return n * 2
+def misterio(n):
+    if n % 2 == 0:
+        return n - 2
+    return n * 2
   
-  print(misterio(${n}))
+print(misterio(${n}))
   `;
-            return { codigo_python: codigo_python.trim(), resposta_correta: resultado };
+            const pergunta = `Qual o retorno da função?`;
+            return { codigo_python: codigo_python.trim(), resposta_correta: resultado, pergunta: pergunta };
         }
 
         case 4: {
@@ -489,15 +490,15 @@ function gerarDesafioTipo5() {
                 }
             }
             const codigo_python = `
-  def busca(nums, alvo):
-      for i, n in enumerate(nums):
-          if n == alvo:
-              return i
-      return -1
+def busca(nums, alvo):
+    for i, n in enumerate(nums):
+        if n == alvo:
+            return i
+    return -1
   
-  print(busca([${lista.join(', ')}], ${alvo}))
-  `;
-            return { codigo_python: codigo_python.trim(), resposta_correta: retorno };
+busca([${lista.join(', ')}], ${alvo})`;
+            const pergunta = `Qual o retorno da função?`;
+            return { codigo_python: codigo_python.trim(), resposta_correta: retorno, pergunta: pergunta };
         }
 
         case 5: {
@@ -505,7 +506,7 @@ function gerarDesafioTipo5() {
                 "um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez",
                 "primeiro", "segundo", "terceiro", "quinto", "oitavo", "número", "valor", "chave", "resposta", "resultado"
             ];
-            const chaves = palavrasBase.sort(() => Math.random() - 0.5).slice(0, 5);
+            const chaves = palavrasBase.sort(() => Math.random() - 0.5).slice(0, 4);
             const casos = {};
             chaves.forEach(k => {
                 const ret = Math.random() < 0.5
@@ -519,20 +520,18 @@ function gerarDesafioTipo5() {
                 ...palavrasBase
             ];
             const entrada = entradas[Math.floor(Math.random() * entradas.length)];
-            const resposta = (entrada in casos) ? casos[entrada] : "padrão";
+            const resposta = (entrada in casos) ? casos[entrada] : "padrao";
             const fmt = v => (typeof v === "string" ? `"${v}"` : v);
             const codigo_python = `
-  def resposta(valor):
-      match valor:
-  ${Object.entries(casos).map(([k, v]) =>
-                `        case ${fmt(k)}:\n            return ${fmt(v)}`
+def resposta(valor):
+    match valor:
+${Object.entries(casos).map(([k, v]) =>
+                `        case ${fmt(k)}: return ${fmt(v)}`
             ).join('\n')}
-          case _:
-              return "padrão"
-  
-  print(resposta(${fmt(entrada)}))
-  `;
-            return { codigo_python: codigo_python.trim(), resposta_correta: resposta };
+        case _: return "padrao"
+resposta(${fmt(entrada)})`;
+            const pergunta = 'Qual o retorno da função?';
+            return { codigo_python: codigo_python.trim(), resposta_correta: resposta, pergunta: pergunta };
         }
     }
 }
@@ -1024,16 +1023,44 @@ function preencherTarefas() {
         7: gerarDesafioTipo7
     };
 
-    const calcularPontos = (tipo) => ({
-        pontosGanhos: tipo,
-        pontosPerdidos: -tipo
-    });
-
     const gerarTarefa = () => {
         const tipo = Math.floor(Math.random() * 7) + 1;
         const gerarFn = geradores[tipo];
         const resultado = gerarFn();
-        const { pontosGanhos, pontosPerdidos } = calcularPontos(tipo);
+
+        let pontosGanhos;
+        let pontosPerdidos;
+
+        switch (tipo) {
+            case 1:
+                pontosGanhos = 3;
+                pontosPerdidos = -1;
+                break;
+            case 2:
+                pontosGanhos = 1;
+                pontosPerdidos = -3;
+                break;
+            case 3:
+                pontosGanhos = 1;
+                pontosPerdidos = -1;
+                break;
+            case 4:
+                pontosGanhos = 5;
+                pontosPerdidos = -1;
+                break;
+            case 5:
+                pontosGanhos = 1;
+                pontosPerdidos = -2;
+                break;
+            case 6:
+                pontosGanhos = 2;
+                pontosPerdidos = -1;
+                break;
+            default:
+                pontosGanhos = 1;
+                pontosPerdidos = -1;
+                break;
+        }
 
         return {
             tipo,
@@ -1232,6 +1259,17 @@ function destruirTelaTarefa() {
     });
     document.querySelector('#sucesso-t4')?.remove();
     document.querySelector('#falha-t4')?.remove();
+    document.querySelector('#tela-tarefa-5')?.remove();
+    document.querySelector('#botao-entregar-t5')?.remove();
+    document.querySelector('#input-tarefa-5')?.remove();
+    document.querySelector('#tentativas-restantes-t4')?.remove();
+    document.querySelector('#xis-tarefa')?.remove();
+    document.querySelector('#minimizar-tarefa')?.remove();
+    document.querySelectorAll('.linha-codigo-t2')?.forEach(el => el.remove());
+    document.querySelectorAll('.numeracao-linha-t2')?.forEach(el => el.remove());
+    document.querySelector('#sucesso-t5')?.remove();
+    document.querySelector('#falha-t5')?.remove();
+    document.querySelector('#pergunta-tarefa-5')?.remove();
 }
 
 function destruirTelaJogo() {
@@ -2265,38 +2303,38 @@ function criarTelaTarefaTipo4(indiceTarefa) {
 
         botao.addEventListener('click', () => {
             tarefa['botoes'][i].forEach(op => {
-            const [target, operation, ...expressionParts] = op.split(' ');
-            const expression = expressionParts.join(' ');
-            const evalExpression = expression.replace(/([A-Za-z]+)/g, match => {
-                if (estadoTarefas[indiceTarefa].valores[match] === undefined) {
-                throw new Error(`Variable "${match}" is not defined in valores.`);
+                const [target, operation, ...expressionParts] = op.split(' ');
+                const expression = expressionParts.join(' ');
+                const evalExpression = expression.replace(/([A-Za-z]+)/g, match => {
+                    if (estadoTarefas[indiceTarefa].valores[match] === undefined) {
+                        throw new Error(`Variable "${match}" is not defined in valores.`);
+                    }
+                    return estadoTarefas[indiceTarefa].valores[match];
+                });
+
+                const result = eval(evalExpression);
+
+                if (operation === '+=') {
+                    estadoTarefas[indiceTarefa].valores[target] += result;
+                } else if (operation === '-=') {
+                    estadoTarefas[indiceTarefa].valores[target] -= result;
                 }
-                return estadoTarefas[indiceTarefa].valores[match];
-            });
-
-            const result = eval(evalExpression);
-
-            if (operation === '+=') {
-                estadoTarefas[indiceTarefa].valores[target] += result;
-            } else if (operation === '-=') {
-                estadoTarefas[indiceTarefa].valores[target] -= result;
-            }
             });
 
             // Atualiza os valores na tela
             ['Vermelho', 'Amarelo', 'Verde', 'Azul'].forEach(cor => {
-            const elemento = document.querySelector(`#elemento-${cor.toLowerCase()}-t4`);
-            const valor = estadoTarefas[indiceTarefa].valores[cor];
-            if (valor > 9999) {
-                elemento.textContent = '>9999';
-                elemento.style.fontSize = 'calc(40 * var(--un))';
-            } else if (valor < -999) {
-                elemento.textContent = '<-999';
-                elemento.style.fontSize = 'calc(40 * var(--un))';
-            } else {
-                elemento.textContent = valor;
-                elemento.style.fontSize = 'calc(50 * var(--un))';
-            }
+                const elemento = document.querySelector(`#elemento-${cor.toLowerCase()}-t4`);
+                const valor = estadoTarefas[indiceTarefa].valores[cor];
+                if (valor > 9999) {
+                    elemento.textContent = '>9999';
+                    elemento.style.fontSize = 'calc(40 * var(--un))';
+                } else if (valor < -999) {
+                    elemento.textContent = '<-999';
+                    elemento.style.fontSize = 'calc(40 * var(--un))';
+                } else {
+                    elemento.textContent = valor;
+                    elemento.style.fontSize = 'calc(50 * var(--un))';
+                }
             });
             verificarValoresIguais();
         });
@@ -2315,8 +2353,134 @@ function criarTelaTarefaTipo4(indiceTarefa) {
 }
 
 function criarTelaTarefaTipo5(indiceTarefa) {
-    // TODO
-    console.log('Tipo 5');
+    const tarefa = tarefas[indiceTarefa - 1];
+    const game = document.querySelector('#game');
+
+    const telaTarefa = document.createElement('div');
+    telaTarefa.id = 'tela-tarefa-5';
+    game.appendChild(telaTarefa);
+
+    const botaoXis = document.createElement('div');
+    botaoXis.id = 'xis-tarefa';
+    botaoXis.addEventListener('click', () => {
+        destruirTelaTarefa();
+        document.querySelector('#tb-tarefa').style.display = 'none';
+        game.querySelector('#tb-tarefa-selecionado')?.remove();
+        statusTarefa = 'fechado';
+    });
+    game.appendChild(botaoXis);
+
+    const botaoMinimizar = document.createElement('div');
+    botaoMinimizar.id = 'minimizar-tarefa';
+    botaoMinimizar.addEventListener('click', () => {
+        destruirTelaTarefa();
+        game.querySelector('#tb-tarefa-selecionado')?.remove();
+        const tarefaAberto = document.createElement('div');
+        tarefaAberto.id = 'tb-tarefa-aberto';
+        tarefaAberto.className = 'aberto';
+        game.appendChild(tarefaAberto);
+        statusTarefa = 'aberto';
+    });
+    game.appendChild(botaoMinimizar);
+
+    let numeroLinhaAtual = 0;
+    const codigoPython = tarefa['codigo_python']
+        .split('\n')
+        .flatMap((linha) => {
+            const resultado = [];
+            let primeiraLinha = true;
+
+            while (linha.length > 36) {
+                const corte = linha.lastIndexOf(' ', 36);
+                if (corte === -1) break;
+
+                resultado.push({
+                    linha: linha.slice(0, corte),
+                    numeroLinha: primeiraLinha ? ++numeroLinhaAtual : ''
+                });
+
+                linha = linha.slice(corte + 1);
+                primeiraLinha = false;
+            }
+
+            resultado.push({
+                linha: linha,
+                numeroLinha: primeiraLinha ? ++numeroLinhaAtual : ''
+            });
+
+            return resultado;
+        });
+
+    codigoPython.forEach((linha, i) => {
+        const linhaCodigo = document.createElement('div');
+        linhaCodigo.className = 'linha-codigo-t2';
+        linhaCodigo.style.whiteSpace = 'pre';
+        linhaCodigo.textContent = linha['linha'];
+        linhaCodigo.style.top = `calc(${465 + 32 * i} * var(--un))`;
+        game.appendChild(linhaCodigo);
+
+        const numeracaoLinha = document.createElement('div');
+        numeracaoLinha.className = 'numeracao-linha-t2';
+        numeracaoLinha.textContent = linha['numeroLinha'];
+        numeracaoLinha.style.top = `calc(${466 + 32 * i} * var(--un))`;
+        game.appendChild(numeracaoLinha);
+    });
+
+    const pergunta = document.createElement('div');
+    pergunta.id = 'pergunta-tarefa-5';
+    pergunta.textContent = tarefa['pergunta'];
+    game.appendChild(pergunta);
+
+    const input = document.createElement('input');
+    input.id = 'input-tarefa-5';
+    input.type = 'text';
+    input.placeholder = 'Digite aqui...';
+    if (!estadoTarefas[indiceTarefa]) {
+        estadoTarefas[indiceTarefa] = { inputValue: '', tentativasRestantes: 2 };
+    }
+    input.value = estadoTarefas[indiceTarefa].inputValue;
+    input.addEventListener('input', () => {
+        estadoTarefas[indiceTarefa].inputValue = input.value;
+    });
+    game.appendChild(input);
+
+    const tentativasRestantes = document.createElement('div');
+    tentativasRestantes.id = 'tentativas-restantes-t4';
+    tentativasRestantes.textContent = `${estadoTarefas[indiceTarefa].tentativasRestantes} ${estadoTarefas[indiceTarefa].tentativasRestantes === 1 ? 'tentativa restante' : 'tentativas restantes'}`;
+    game.appendChild(tentativasRestantes);
+
+    const botaoEntregar = document.createElement('div');
+    botaoEntregar.id = 'botao-entregar-t5';
+    botaoEntregar.addEventListener('click', () => {
+        const resposta = input.value.trim();
+        const respostaCorreta = resposta == tarefa['resposta_correta'];
+
+        if (respostaCorreta) {
+            pontuacao += tarefa['pontosGanhos'];
+            const mensagem = document.createElement('div');
+            mensagem.id = 'sucesso-t5';
+            mensagem.textContent = `+${tarefa['pontosGanhos']} ponto${tarefa['pontosGanhos'] === 1 ? '' : 's'}`;
+            game.appendChild(mensagem);
+            tarefas[indiceTarefa - 1] = null;
+            preencherTarefas();
+            setTimeout(() => destruirTelaTarefa(), 2000);
+        } else {
+            estadoTarefas[indiceTarefa].tentativasRestantes -= 1;
+            tentativasRestantes.textContent = `${estadoTarefas[indiceTarefa].tentativasRestantes} ${estadoTarefas[indiceTarefa].tentativasRestantes === 1 ? 'tentativa restante' : 'tentativas restantes'}`;
+            if (estadoTarefas[indiceTarefa].tentativasRestantes <= 0) {
+                pontuacao -= Math.abs(tarefa['pontosPerdidos']);
+                pontuacao = Math.max(pontuacao, 0);
+                const mensagem = document.createElement('div');
+                mensagem.id = 'falha-t5';
+                mensagem.textContent = `-${Math.abs(tarefa['pontosPerdidos'])} ponto${Math.abs(tarefa['pontosPerdidos']) === 1 ? '' : 's'}`;
+                game.appendChild(mensagem);
+                tarefas[indiceTarefa - 1] = null;
+                preencherTarefas();
+                setTimeout(() => destruirTelaTarefa(), 2000);
+            }
+        }
+    });
+    game.appendChild(botaoEntregar);
 }
 
 function criarTelaTarefaTipo6(indiceTarefa) {
