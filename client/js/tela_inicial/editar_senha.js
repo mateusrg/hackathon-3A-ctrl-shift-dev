@@ -27,12 +27,27 @@ document.querySelector('form').addEventListener('submit', async function (e) {
         return;
     }
     e.preventDefault();
-    const email = document.querySelector('#email').value;
-    const senha = document.querySelector('#senha').value;
-    const res = await Usuario.login(email, senha);
+
+    const usuarioStorage = JSON.parse(localStorage.getItem('usuario'));
+
+    const senhaAtual = document.querySelector('#senhaAtual').value;
+    const senhaNova = document.querySelector('#senhaNova').value;
+    const res = await Usuario.atualizarUsuario({
+        id: usuarioStorage.id,
+        email: usuarioStorage.email,
+        nome: usuarioStorage.nome,
+        senhaAtual,
+        senhaNova
+      });
     if (res.success) {
         window.location.href = '../../html/tela_inicial/pagina_inicial.html';
     } else {
         mostrarAlert(res.message);
     }
 });
+
+function voltar() {
+    window.location.href = '../tela_inicial/pagina_inicial.html';
+}
+
+document.querySelector('#voltar').addEventListener('click', voltar);
