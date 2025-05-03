@@ -739,6 +739,118 @@ button {
     left: calc(540 * var(--un));
 }
 
+#botao-duvida-t1 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(80 * var(--un));
+    width: calc(80 * var(--un));
+    right: calc(142 * var(--un));
+    top: calc(195 * var(--un));
+    cursor: pointer;
+}
+
+#botao-duvida-t3 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(80 * var(--un));
+    width: calc(80 * var(--un));
+    right: calc(148 * var(--un));
+    top: calc(195 * var(--un));
+    cursor: pointer;
+}
+
+#botao-duvida-t4 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(80 * var(--un));
+    width: calc(80 * var(--un));
+    right: calc(148 * var(--un));
+    top: calc(195 * var(--un));
+    cursor: pointer;
+}
+
+#botao-duvida-t5 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(80 * var(--un));
+    width: calc(80 * var(--un));
+    right: calc(148 * var(--un));
+    top: calc(195 * var(--un));
+    cursor: pointer;
+}
+
+#botao-duvida-t6 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(80 * var(--un));
+    width: calc(80 * var(--un));
+    right: calc(148 * var(--un));
+    top: calc(195 * var(--un));
+    cursor: pointer;
+}
+
+#botao-duvida-t7 {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(80 * var(--un));
+    width: calc(80 * var(--un));
+    right: calc(148 * var(--un));
+    top: calc(195 * var(--un));
+    cursor: pointer;
+}
+
+#botao-ok {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    width: calc(327 * var(--un));
+    height: calc(82 * var(--un));
+    bottom: calc(220 * var(--un));
+    left: calc(533 * var(--un));
+    cursor: pointer;
+}
+
+#duvida-t1,
+#duvida-t2,
+#duvida-t3,
+#duvida-t4,
+#duvida-t5,
+#duvida-t6,
+#duvida-t7 {
+    position: absolute;
+    height: calc(714 * var(--un));
+    width: calc(1285 * var(--un));
+    top: calc(140 * var(--un));
+    left: calc(58 * var(--un));
+}
+
+#duvida-t1 {
+    background-image: url('../../assets/pc/tarefas/1/duvida.png');
+}
+
+#duvida-t2 {
+    background-image: url('../../assets/pc/tarefas/2/duvida.png');
+}
+
+#duvida-t3 {
+    background-image: url('../../assets/pc/tarefas/3/duvida.png');
+}
+
+#duvida-t4 {
+    background-image: url('../../assets/pc/tarefas/4/duvida.png');
+}
+
+#duvida-t5 {
+    background-image: url('../../assets/pc/tarefas/5/duvida.png');
+}
+
+#duvida-t6 {
+    background-image: url('../../assets/pc/tarefas/6/duvida.png');
+}
+
+#duvida-t7 {
+    background-image: url('../../assets/pc/tarefas/7/duvida.png');
+}
+
 #tela-tarefa-2 {
     position: absolute;
     background-image: url('../../assets/pc/tarefas/2/tela.png');
@@ -1438,6 +1550,26 @@ button {
     font-size: calc(18 * var(--un));
     top: calc(227 * var(--un));
     left: calc(615 * var(--un));
+}
+
+#clique-errado-t6 {
+    background-image: url('../../assets/pc/tarefas/6/errado.png');
+    position: absolute;
+    height: 75%;
+    aspect-ratio: 186/192;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#clique-certo-t6 {
+    background-image: url('../../assets/pc/tarefas/6/certo.png');
+    position: absolute;
+    height: 75%;
+    aspect-ratio: 714/566;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 #tela-tarefa-7 {
