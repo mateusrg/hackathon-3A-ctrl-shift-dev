@@ -96,7 +96,7 @@ button {
     bottom: calc(13 * var(--un));
     left: calc(590 * var(--un));
     cursor: pointer;
-    z-index: 100;
+    z-index: 5;
 }
 
 .advertencia_cheia {
@@ -1068,7 +1068,7 @@ button {
     bottom: calc(407 * var(--un));
     left: calc(1150 * var(--un));
     cursor: pointer;
-    z-index: 100;
+    z-index: 2;
     rotate: 270deg;
 }
 
@@ -1080,7 +1080,7 @@ button {
     bottom: calc(407 * var(--un));
     left: calc(98 * var(--un));
     cursor: pointer;
-    z-index: 100;
+    z-index: 2;
     rotate: 90deg;
 }
 
@@ -1200,7 +1200,7 @@ button {
     top: calc(200 * var(--un));
     left: calc(127 * var(--un));
     cursor: pointer;
-    z-index: 120;
+    z-index: 4;
 }
 
 #play-jogo {
@@ -1211,7 +1211,7 @@ button {
     top: calc(200 * var(--un));
     left: calc(127 * var(--un));
     cursor: pointer;
-    z-index: 120;
+    z-index: 4;
 }
 
 #blur-jogo {
@@ -1221,7 +1221,7 @@ button {
     width: calc(1162 * var(--un));
     top: calc(180 * var(--un));
     left: calc(120 * var(--un));
-    z-index: 110;
+    z-index: 3;
 }
 
 #texto-jogo {
@@ -1230,7 +1230,7 @@ button {
     color: #fff;
     top: calc(490 * var(--un));
     left: calc(400 * var(--un));
-    z-index: 120;
+    z-index: 4;
     text-align: center;
 }
 
@@ -1668,4 +1668,142 @@ button {
     font-size: calc(40 * var(--un));
     top: calc(215 * var(--un));
     left: calc(650 * var(--un));
+}
+
+#cse,
+#csd,
+#adv_1,
+#adv_2,
+#adv_3,
+#adv_4 {
+    z-index: 10000;
+}
+
+#mesa {
+    display: none;
+    position: absolute;
+    background-image: url("../../assets/pc/mesa.png");
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+#cafe {
+    position: absolute;
+    border-radius: calc(50 * var(--un));
+    height: calc(255 * var(--un));
+    width: calc(275 * var(--un));
+    right: calc(150 * var(--un));
+    bottom: calc(98 * var(--un));
+    cursor: pointer;
+}
+
+#monitor {
+    position: absolute;
+    border-radius: 0 0 calc(50 * var(--un)) 0;
+    height: calc(592 * var(--un));
+    width: calc(837 * var(--un));
+    top: calc(49 * var(--un));
+    left: calc(269 * var(--un));
+    cursor: pointer;
+}
+
+#bebendo {
+    display: none;
+    position: absolute;
+    background-image: url('../../assets/cafe/bebendo.png');
+    right: 0;
+    bottom: 0;
+    width: calc(1149 * var(--un));
+    height: calc(543 * var(--un));
+}
+
+#escritorio {
+    display: none;
+    position: absolute;
+    background-image: url("../../assets/escritorio.png");
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+#mesa-escritorio {
+    position: absolute;
+    height: calc(696 * var(--un));
+    width: calc(1032 * var(--un));
+    bottom: 0;
+    right: calc(194 * var(--un));
+    z-index: 10;
+    cursor: pointer;
+}
+
+#seta-direita-escritorio {
+    position: absolute;
+    height: calc(230 * var(--un));
+    width: calc(135 * var(--un));
+    bottom: calc(380 * var(--un));
+    right: calc(21 * var(--un));
+    cursor: pointer;
+}
+
+#cafeteira {
+    display: none;
+    position: absolute;
+    background-image: url("../../assets/cafeteira.png");
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+#seta-esquerda-cafeteira {
+    position: absolute;
+    height: calc(230 * var(--un));
+    width: calc(135 * var(--un));
+    bottom: calc(380 * var(--un));
+    left: calc(21 * var(--un));
+    cursor: pointer;
+}
+
+#cafeteira-obj {
+    position: absolute;
+    height: calc(619 * var(--un));
+    width: calc(675 * var(--un));
+    left: calc(355 * var(--un));
+    bottom: calc(61 * var(--un));
+    cursor: pointer;
+}
+
+#texto-cafeteira {
+    position: absolute;
+    width: calc(800 * var(--un));
+    font-size: calc(50 * var(--un));
+    top: calc(225 * var(--un));
+    left: calc(320 * var(--un));
+    text-align: center;
+}
+
+#cafeteira-ligada {
+    display: none;
+    position: absolute;
+    background-color: #14ce02;
+    height: calc(47.6 * var(--un));
+    width: calc(62.8 * var(--un));
+    top: calc(368 * var(--un));
+    right: calc(559.3 * var(--un));
+}
+
+#cafe-cafeteira {
+    display: none;
+    pointer-events: none;
+    position: absolute;
+    height: calc(150 * var(--un));
+    aspect-ratio: 182/169;
+    left: calc(600 * var(--un));
+    bottom: calc(157 * var(--un));
 }

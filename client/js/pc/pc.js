@@ -1101,11 +1101,255 @@ let tarefaAberta = -1; // -1 (nenhuma), [índices das tarefas]
 
 let microfoneAberto = false;
 let cameraAberto = true;
+let nivelCafe = 3;
 
-document.querySelector('#seta-baixo-pc').addEventListener('click', () => {
-    document.querySelector('#pc').style.display = 'none';
-    document.querySelector('#game').style.backgroundImage = 'url("../../assets/pc/mesa.png")';
+
+function atualizarCafe() {
+    switch (nivelCafe) {
+        case 0:
+            cafe.style.backgroundImage = 'url("../../assets/cafe/0.png")';
+            break;
+        case 1:
+            cafe.style.backgroundImage = 'url("../../assets/cafe/1.png")';
+            break;
+        case 2:
+            cafe.style.backgroundImage = 'url("../../assets/cafe/2.png")';
+            break;
+        case 3:
+            cafe.style.backgroundImage = 'url("../../assets/cafe/3.png")';
+            break;
+        default:
+            cafe.style.backgroundImage = 'url("../../assets/cafe/4.png")';
+    }
+}
+
+const cafe = document.querySelector('#cafe');
+
+cafe.addEventListener('click', () => {
+    if (nivelCafe > 0) {
+        const bebendo = document.querySelector('#bebendo');
+        const cafe = document.querySelector('#cafe');
+        const monitor = document.querySelector('#monitor');
+        const seta = document.querySelector('#seta-baixo-mesa');
+
+        bebendo.style.display = 'block';
+        cafe.style.display = 'none';
+        monitor.style.pointerEvents = 'none';
+        seta.style.pointerEvents = 'none';
+
+        setTimeout(() => {
+            bebendo.style.display = 'none';
+            cafe.style.display = 'block';
+            monitor.style.pointerEvents = 'auto';
+            seta.style.pointerEvents = 'auto';
+
+            energia = Math.min(100, energia + energiaCafeRestaura);
+            nivelCafe--;
+            console.log(nivelCafe);
+            atualizarCafe();
+            atualizarHUD();
+        }, 1000);
+    }
 });
+
+document.querySelector('#monitor').addEventListener('click', () => {
+    const mesa = document.querySelector('#mesa');
+    mesa.style.display = 'none';
+    document.querySelector('body').style.backgroundImage = 'url("../../assets/entorno/bg/computador.png")';
+    document.querySelector('.frame').style.borderImageSource = "url('../../assets/entorno/borda/computador.png')";
+});
+
+document.querySelector('#mesa-escritorio').addEventListener('click', carregarMesa);
+
+let advertencias = [];
+function notificar(id) {
+    const nomeJogador = JSON.parse(localStorage.getItem('usuario'))['nome'];
+    let advertencia;
+    let imagem;
+    let texto;
+    let tempo;
+    let documento;
+    switch (id) {
+        case 1:
+            advertencia = false;
+            texto = `Ligue o microfone, ${nomeJogador}.`;
+            tempo = toleranciaMicrofone;
+            break;
+        case 2:
+            advertencia = false;
+            documento = ['slides_site.docx', 'dados_aplicativo.docx', 'index.pdf', 'banco_app.txt', 'server.txt'][Math.floor(Math.random() * 5)];
+            texto = `Compartilhe o documento ${documento}, ${nomeJogador}.`;
+            tempo = toleranciaCompartilhamento;
+            break;
+        case 3:
+            advertencia = false;
+            texto = `Ligue a câmera, ${nomeJogador}.`;
+            tempo = 7;
+            break;
+        case 4:
+            advertencia = true;
+            texto = `POR QUE NÃO LIGOU O MICROFONE, ${nomeJogador.toUpperCase()}!?`;
+            break;
+        case 5:
+            advertencia = true;
+            texto = `POR QUE DESLIGOU O MICROFONE, ${nomeJogador.toUpperCase()}!?`;
+            break;
+        case 6:
+            advertencia = true;
+            texto = `POR QUE DESLIGOU A CÂMERA, ${nomeJogador.toUpperCase()}!?`;
+            break;
+        case 7:
+            advertencia = true;
+            texto = `AONDE VOCÊ VAI, ${nomeJogador.toUpperCase()}!?`;
+            break;
+        case 8:
+            advertencia = true;
+            texto = `POR QUE NÃO COMPARTILHOU A TELA, ${nomeJogador.toUpperCase()}!?`;
+            break;
+        case 9:
+            advertencia = true;
+            texto = `NÃO É ESTE DOCUMENTO QUE EU PEDI, ${nomeJogador.toUpperCase()}!`;
+            break;
+        case 10:
+            advertencia = true;
+            texto = `QUE ABAS PARALELAS ABERTAS SÃO ESSAS, ${nomeJogador.toUpperCase()}!?`;
+            break;
+    }
+
+    if (advertencia) {
+        imagem = 'url("../../assets/")';
+        advertencias.push(id);
+    }
+}
+
+function atualizarCafeteira() {
+    const cafeCafeteira = document.querySelector('#cafe-cafeteira');
+    switch (nivelCafe) {
+        case 0:
+            cafeCafeteira.style.backgroundImage = 'url("../../assets/cafe/0.png")';
+            break;
+        case 1:
+            cafeCafeteira.style.backgroundImage = 'url("../../assets/cafe/1.png")';
+            break;
+        case 2:
+            cafeCafeteira.style.backgroundImage = 'url("../../assets/cafe/2.png")';
+            break;
+        case 3:
+            cafeCafeteira.style.backgroundImage = 'url("../../assets/cafe/3.png")';
+            break;
+        default:
+            cafeCafeteira.style.backgroundImage = 'url("../../assets/cafe/4.png")';
+    }
+}
+
+let cafeteiraLigada = false;
+let tempoCafeteira = 5;
+let intervaloCafeteira;
+
+function carregarMesa() {
+    document.querySelector('#escritorio').style.display = 'none';
+    const mesa = document.querySelector('#mesa');
+    mesa.style.display = 'block';
+    document.querySelector('body').style.backgroundImage = 'url("../../assets/entorno/bg/escritorio.png")';
+    document.querySelector('.frame').style.borderImageSource = "url('../../assets/entorno/borda/escritorio.png')";
+    if (cafeteiraLigada) {
+        document.querySelector('#cafe').style.display = 'none';
+    } else {
+        document.querySelector('#cafe').style.display = 'block';
+        atualizarCafe();
+    }
+}
+
+function carregarEscritorio() {
+    const escritorio = document.querySelector('#escritorio');
+    document.querySelector('#mesa').style.display = 'none';
+    document.querySelector('#cafeteira').style.display = 'none';
+    document.querySelector('body').style.backgroundImage = 'url("../../assets/entorno/bg/escritorio.png")';
+    document.querySelector('.frame').style.borderImageSource = "url('../../assets/entorno/borda/escritorio.png')";
+    escritorio.style.display = 'block';
+}
+
+function carregarCafeteira() {
+    document.querySelector('body').style.backgroundImage = 'url("../../assets/entorno/bg/cafeteira.png")';
+    document.querySelector('.frame').style.borderImageSource = "url('../../assets/entorno/borda/cafeteira.png')";
+    const cafeteira = document.querySelector('#cafeteira');
+    const escritorio = document.querySelector('#escritorio');
+    cafeteira.style.display = 'block';
+    escritorio.style.display = 'none';
+    if (document.querySelector('#texto-cafeteira').textContent != 'Vazou!') {
+        atualizarCafeteira();
+    }
+}
+
+function ligarCafeteira() {
+    atualizarCafeteira();
+    cafeteiraLigada = true;
+    document.querySelector('#cafe-cafeteira').style.display = 'block';
+    document.querySelector('#cafeteira-ligada').style.display = 'block';
+    let countdown = tempoCafeteira;
+    const textoCafeteira = document.querySelector('#texto-cafeteira');
+    if (nivelCafe < 3) {
+        textoCafeteira.textContent = `${countdown}s (${nivelCafe}/3)`;
+    } else {
+        countdown = Math.min(countdown, 3);
+        textoCafeteira.textContent = `Vazando em ${countdown}...`;
+    }
+
+    intervaloCafeteira = setInterval(() => {
+        countdown--;
+
+        if (nivelCafe < 3) {
+            textoCafeteira.textContent = `${countdown}s (${nivelCafe}/3)`;
+        } else {
+            countdown = Math.min(countdown, 3);
+            textoCafeteira.textContent = `Vazando em ${countdown}...`;
+        }
+
+        if (countdown === 0) {
+            if (nivelCafe < 3) {
+                nivelCafe++;
+                atualizarCafeteira();
+                countdown = tempoCafeteira;
+                if (nivelCafe < 3) {
+                    textoCafeteira.textContent = `${countdown}s (${nivelCafe}/3)`;
+                } else {
+                    countdown = Math.min(countdown, 3);
+                    textoCafeteira.textContent = `Vazando em ${countdown}...`;
+                }
+            } else {
+                clearInterval(intervaloCafeteira);
+                textoCafeteira.textContent = '';
+                document.querySelector('#cafe-cafeteira').style.backgroundImage = 'url("../../assets/cafe/4.png")';
+                tempoCafeteira += aumentoTempoCafeteiraVazamento;
+
+                textoCafeteira.innerHTML = 'Vazou!';
+                textoCafeteira.style.color = 'red';
+            }
+        }
+    }, 1000);
+}
+
+function desligarCafeteira() {
+    cafeteiraLigada = false;
+    document.querySelector('#cafe-cafeteira').style.display = 'none';
+    document.querySelector('#cafeteira-ligada').style.display = 'none';
+    document.querySelector('#texto-cafeteira').textContent = '';
+    document.querySelector('#texto-cafeteira').style.color = 'black';
+    clearInterval(intervaloCafeteira);
+}
+
+document.querySelector('#cafeteira-obj').addEventListener('click', () => {
+    if (cafeteiraLigada) {
+        desligarCafeteira();
+    } else {
+        ligarCafeteira();
+    }
+});
+
+document.querySelector('#seta-baixo-pc').addEventListener('click', carregarMesa);
+document.querySelector('#seta-baixo-mesa').addEventListener('click', carregarEscritorio);
+document.querySelector('#seta-direita-escritorio').addEventListener('click', carregarCafeteira);
+document.querySelector('#seta-esquerda-cafeteira').addEventListener('click', carregarEscritorio);
 
 function desselecionaAbas() {
     const game = document.querySelector('#game');
@@ -3005,6 +3249,8 @@ function selecionaReuniao() {
     game.appendChild(reuniaoSelecionado);
 }
 
+let documentoAberto;
+
 function selecionaPasta() {
     desselecionaAbas();
     destruirTelaReuniao();
@@ -3046,6 +3292,8 @@ function selecionaPasta() {
 
     xisPasta.addEventListener('click', () => {
         destruirTelaPasta();
+        destruirTelaDocumento();
+        documentoAberto = null;
         game.querySelector('#tb-pasta-selecionado')?.remove();
         statusPasta = 'fechado';
     });
@@ -3054,29 +3302,58 @@ function selecionaPasta() {
 
     [doc1, doc2, doc3, doc4, doc5].forEach((doc, index) => {
         doc.addEventListener('click', () => {
-            let documentoAberto = document.querySelector('#documento-aberto');
-            if (documentoAberto) {
-                if (documentoAberto.querySelector('div').textContent === nomesDocs[index]) return;
-            }
-            documentoAberto = document.createElement('div');
-            documentoAberto.id = 'documento-aberto';
+            if (documentoAberto === nomesDocs[index]) return;
+
+            destruirTelaDocumento();
+            documentoAberto = nomesDocs[index];
+
+            const documentoAbertoDiv = document.createElement('div');
+            documentoAbertoDiv.id = 'documento-aberto';
             const documentoAbertoTexto = document.createElement('div');
             documentoAbertoTexto.id = 'documento-aberto-texto';
             documentoAbertoTexto.textContent = nomesDocs[index];
-            const game = document.querySelector('#game');
             const documentoAbertoFechar = document.createElement('div');
             const documentoAbertoMinimizar = document.createElement('div');
             documentoAbertoFechar.id = 'documento-aberto-fechar';
             documentoAbertoMinimizar.id = 'documento-aberto-minimizar';
-            game.appendChild(documentoAberto);
+            game.appendChild(documentoAbertoDiv);
             game.appendChild(documentoAbertoTexto);
             game.appendChild(documentoAbertoFechar);
             game.appendChild(documentoAbertoMinimizar);
 
-            documentoAbertoFechar.addEventListener('click', destruirTelaDocumento);
-            documentoAbertoMinimizar.addEventListener('click', destruirTelaDocumento);
+            documentoAbertoFechar.addEventListener('click', () => {
+                destruirTelaDocumento();
+                documentoAberto = null;
+            });
+            documentoAbertoMinimizar.addEventListener('click', () => {
+                destruirTelaDocumento();
+            });
         });
     });
+
+    if (documentoAberto) {
+        const documentoAbertoDiv = document.createElement('div');
+        documentoAbertoDiv.id = 'documento-aberto';
+        const documentoAbertoTexto = document.createElement('div');
+        documentoAbertoTexto.id = 'documento-aberto-texto';
+        documentoAbertoTexto.textContent = documentoAberto;
+        const documentoAbertoFechar = document.createElement('div');
+        const documentoAbertoMinimizar = document.createElement('div');
+        documentoAbertoFechar.id = 'documento-aberto-fechar';
+        documentoAbertoMinimizar.id = 'documento-aberto-minimizar';
+        game.appendChild(documentoAbertoDiv);
+        game.appendChild(documentoAbertoTexto);
+        game.appendChild(documentoAbertoFechar);
+        game.appendChild(documentoAbertoMinimizar);
+
+        documentoAbertoFechar.addEventListener('click', () => {
+            destruirTelaDocumento();
+            documentoAberto = null;
+        });
+        documentoAbertoMinimizar.addEventListener('click', () => {
+            destruirTelaDocumento();
+        });
+    }
 
     minimizarPasta.addEventListener('click', () => {
         destruirTelaPasta();
@@ -3093,6 +3370,7 @@ function selecionaPasta() {
     pastaSelecionado.className = 'selecionado';
     game.appendChild(pastaSelecionado);
 }
+
 function selecionaLista() {
     desselecionaAbas();
     destruirTelaReuniao();
@@ -4121,3 +4399,5 @@ const intervaloTempo = setInterval(atualizarTempo, 1000);
 const intervaloDecaimento = setInterval(atualizarDecaimento, decaimentoEnergiaEmS * 1000);
 
 const intervaloInimigo = setInterval(gerarInimigo, 1000);
+
+selecionaReuniao();
