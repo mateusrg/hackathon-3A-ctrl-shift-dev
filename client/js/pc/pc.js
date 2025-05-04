@@ -19,8 +19,7 @@ verificarLogin();
 const dificuldade = Number(localStorage.getItem('dificuldadeSelecionada'));
 
 let limiteAdvertencias;
-let decaimentoEnergiaEmS;
-let decaimentoFelicidadeEmS;
+let decaimentoEnergiaEFelicidadeEmS;
 let aumentoTempoCafeteiraVazamento;
 let toleranciaMicrofone;
 let toleranciaCompartilhamento;
@@ -33,8 +32,7 @@ let frequenciaEventosMaximo;
 switch (dificuldade) {
     case 1:
         limiteAdvertencias = 3;
-        decaimentoEnergiaEmS = 1 / 0.5;
-        decaimentoFelicidadeEmS = 1 / 0.5;
+        decaimentoEnergiaEFelicidadeEmS = 1 / 0.5;
         aumentoTempoCafeteiraVazamento = 1;
         toleranciaMicrofone = 7;
         toleranciaCompartilhamento = 15;
@@ -46,8 +44,7 @@ switch (dificuldade) {
         break;
     case 2:
         limiteAdvertencias = 2;
-        decaimentoEnergiaEmS = 1 / 1;
-        decaimentoFelicidadeEmS = 1 / 1;
+        decaimentoEnergiaEFelicidadeEmS = 1 / 1;
         aumentoTempoCafeteiraVazamento = 2;
         toleranciaMicrofone = 5;
         toleranciaCompartilhamento = 10;
@@ -60,8 +57,7 @@ switch (dificuldade) {
         break;
     case 3:
         limiteAdvertencias = 1;
-        decaimentoEnergiaEmS = 1 / 1.5;
-        decaimentoFelicidadeEmS = 1 / 1.5;
+        decaimentoEnergiaEFelicidadeEmS = 1 / 1.5;
         aumentoTempoCafeteiraVazamento = 3;
         toleranciaMicrofone = 4;
         toleranciaCompartilhamento = 7;
@@ -75,8 +71,7 @@ switch (dificuldade) {
         break;
     default:
         limiteAdvertencias = 0;
-        decaimentoEnergiaEmS = 1 / 2;
-        decaimentoFelicidadeEmS = 1 / 2;
+        decaimentoEnergiaEFelicidadeEmS = 1 / 2;
         aumentoTempoCafeteiraVazamento = 5;
         toleranciaMicrofone = 3;
         toleranciaCompartilhamento = 5;
@@ -89,6 +84,9 @@ switch (dificuldade) {
         document.querySelector('#adv_3').style.display = 'none';
         document.querySelector('#adv_4').style.display = 'none';
 }
+
+frequenciaEventosMinimo = 3;
+frequenciaEventosMaximo = 5;
 
 // Funções de Geração e Validação de Desafio
 function gerarDesafioTipo1() {
@@ -1077,10 +1075,8 @@ function preencherTarefas() {
     }
 }
 preencherTarefas();
-console.log(tarefas);
 
 // Resto do Código
-
 function gameOver() {
     clearInterval(intervaloTempo);
     clearInterval(intervaloDecaimento);
@@ -1103,6 +1099,43 @@ let microfoneAberto = false;
 let cameraAberto = true;
 let nivelCafe = 3;
 
+const removeOriginal = Element.prototype.remove;
+
+Element.prototype.remove = function () {
+    removeOriginal.call(this);
+    // Verifica se o elemento é uma notificação
+    if (this.classList.contains('notificacao')) {
+        // Atualiza a posição das notificações restantes
+        const notificacoes = document.querySelectorAll('.notificacao');
+        notificacoes.forEach((notificacao, index) => {
+            notificacao.style.bottom = `calc(${140 + 135 * index} * var(--un))`;
+        });
+
+        const texto = this.querySelector('.texto-notificacao').textContent;
+
+        let listaBaloes = ['#balao-espetado-mesa', '#balao-espetado-escritorio', '#balao-espetado-cafeteira'];
+
+        if (texto.startsWith('Ligue o microfone') || texto.startsWith('Compartilhe o documento') || texto.startsWith('Religue')) {
+            listaBaloes = ['#balao-mesa', '#balao-escritorio', '#balao-cafeteira'];
+        }
+
+        listaBaloes.forEach(balaoId => {
+            const balao = document.querySelector(balaoId);
+            if (balao) {
+                let textoAtual = balao.innerHTML;
+                textoAtual = textoAtual.replace('<br>', '\n');
+                textoAtual = textoAtual.replace(texto, '');
+                textoAtual.replace('\n', '<br>');
+                textoAtual = textoAtual.replace('<br>', '').replace('<br>', '');
+                balao.innerHTML = textoAtual;
+            }
+
+            if (balao.textContent.trim() === '') {
+                balao.style.display = 'none';
+            }
+        });
+    }
+};
 
 function atualizarCafe() {
     switch (nivelCafe) {
@@ -1145,7 +1178,6 @@ cafe.addEventListener('click', () => {
 
             energia = Math.min(100, energia + energiaCafeRestaura);
             nivelCafe--;
-            console.log(nivelCafe);
             atualizarCafe();
             atualizarHUD();
         }, 1000);
@@ -1164,62 +1196,164 @@ document.querySelector('#mesa-escritorio').addEventListener('click', carregarMes
 let advertencias = [];
 function notificar(id) {
     const nomeJogador = JSON.parse(localStorage.getItem('usuario'))['nome'];
-    let advertencia;
+    let advertencia = true;
     let imagem;
     let texto;
     let tempo;
     let documento;
+
     switch (id) {
         case 1:
             advertencia = false;
+            imagem = 'url("../../assets/pc/reuniao/microfone_aberto.png")';
             texto = `Ligue o microfone, ${nomeJogador}.`;
             tempo = toleranciaMicrofone;
             break;
         case 2:
             advertencia = false;
+            imagem = 'url("../../assets/pc/reuniao/compartilhar_tela.png")';
             documento = ['slides_site.docx', 'dados_aplicativo.docx', 'index.pdf', 'banco_app.txt', 'server.txt'][Math.floor(Math.random() * 5)];
             texto = `Compartilhe o documento ${documento}, ${nomeJogador}.`;
             tempo = toleranciaCompartilhamento;
             break;
         case 3:
             advertencia = false;
-            texto = `Ligue a câmera, ${nomeJogador}.`;
+            imagem = 'url("../../assets/pc/reuniao/camera_aberto.png")';
+            texto = `Religue a câmera, ${nomeJogador}.`;
             tempo = 7;
             break;
         case 4:
-            advertencia = true;
             texto = `POR QUE NÃO LIGOU O MICROFONE, ${nomeJogador.toUpperCase()}!?`;
             break;
         case 5:
-            advertencia = true;
             texto = `POR QUE DESLIGOU O MICROFONE, ${nomeJogador.toUpperCase()}!?`;
             break;
         case 6:
-            advertencia = true;
             texto = `POR QUE DESLIGOU A CÂMERA, ${nomeJogador.toUpperCase()}!?`;
             break;
         case 7:
-            advertencia = true;
             texto = `AONDE VOCÊ VAI, ${nomeJogador.toUpperCase()}!?`;
             break;
         case 8:
-            advertencia = true;
             texto = `POR QUE NÃO COMPARTILHOU A TELA, ${nomeJogador.toUpperCase()}!?`;
             break;
         case 9:
-            advertencia = true;
-            texto = `NÃO É ESTE DOCUMENTO QUE EU PEDI, ${nomeJogador.toUpperCase()}!`;
+            texto = `CADÊ O DOCUMENTO QUE EU PEDI, ${nomeJogador.toUpperCase()}!?`;
             break;
         case 10:
-            advertencia = true;
+            texto = `NÃO É ESTE DOCUMENTO QUE EU PEDI, ${nomeJogador.toUpperCase()}!`;
+            break;
+        case 11:
             texto = `QUE ABAS PARALELAS ABERTAS SÃO ESSAS, ${nomeJogador.toUpperCase()}!?`;
             break;
+        case 12:
+            texto = `NÃO LIGUE O MICROFONE SEM SER SOLICITADO, ${nomeJogador.toUpperCase()}!`;
+            break;
+        case 13:
+            texto = `NÃO COMPARTILHE A TELA SEM SER SOLICITADO, ${nomeJogador.toUpperCase()}!`;
+            break;
+        case 14:
+            texto = `QUE BARULHO É ESSE? VOCÊ ESTÁ JOGANDO, ${nomeJogador.toUpperCase()}!?`;
+            break;
+        case 15:
+            texto = `POR QUE SAIU DO DOCUMENTO, ${nomeJogador.toUpperCase()}!?`;
+            break;
+        default:
+            texto = `Erro desconhecido.`;
     }
 
     if (advertencia) {
-        imagem = 'url("../../assets/")';
+        imagem = 'url("../../assets/pc/notificacoes/info.png")';
         advertencias.push(id);
+        console.log(advertencias);
+        const advertenciaElement = document.querySelector(`#adv_${advertencias.length}`);
+        advertenciaElement?.classList.remove('advertencia_vazia');
+        advertenciaElement?.classList.add('advertencia_cheia');
+
+        if (advertencias.length > limiteAdvertencias) {
+            gameOver();
+        }
     }
+
+    const quantNotificacoes = document.querySelectorAll('.notificacao').length;
+
+    const notificacao = document.createElement('div');
+    notificacao.className = 'notificacao';
+    notificacao.style.backgroundImage = `url("../../assets/pc/notificacoes/${advertencia ? 'vermelho' : 'azul'}.png`;
+    notificacao.style.bottom = `calc(${140 + 135 * quantNotificacoes} * var(--un))`;
+
+    const imagemNotificacao = document.createElement('div');
+    imagemNotificacao.className = 'imagem-notificacao';
+    imagemNotificacao.style.backgroundImage = imagem;
+    notificacao.appendChild(imagemNotificacao);
+
+    const textoNotificacao = document.createElement('div');
+    textoNotificacao.className = 'texto-notificacao';
+    textoNotificacao.textContent = texto;
+    notificacao.appendChild(textoNotificacao);
+
+    game.appendChild(notificacao);
+
+    const notificacoes = document.querySelectorAll('.notificacao');
+    notificacoes.forEach((notificacao, index) => {
+        notificacao.style.bottom = `calc(${140 + 135 * (index)} * var(--un))`;
+    });
+
+
+    if (tempo) {
+        const countdown = document.createElement('div');
+        countdown.className = 'countdown-notificacao';
+        countdown.textContent = tempo + 's';
+        notificacao.appendChild(countdown);
+    }
+
+    // Remover notificação automaticamente após 4 segundos ou ao clicar
+    if (advertencia) {
+        notificacao.addEventListener('click', () => {
+            notificacao.remove();
+        });
+
+        setTimeout(() => {
+            notificacao.remove();
+        }, 4000);
+    }
+
+    // Para notificações de eventos (microfone ou compartilhamento de tela)
+    if (id < 3) {
+        const intervalo = setInterval(() => {
+            if (!document.body.contains(notificacao)) {
+                clearInterval(intervalo);
+            }
+        }, 1000);
+
+        setTimeout(() => {
+            if (document.body.contains(notificacao)) {
+                if (!eventoAtendido) {
+                    notificacao.remove();
+                }
+            }
+            clearInterval(intervalo);
+        }, tempo * 1000);
+    }
+
+    let listaBaloes = ['#balao-espetado-mesa', '#balao-espetado-escritorio', '#balao-espetado-cafeteira'];
+
+    if (id <= 3) {
+        listaBaloes = ['#balao-mesa', '#balao-escritorio', '#balao-cafeteira'];
+    }
+
+    listaBaloes.forEach(balaoId => {
+        const balao = document.querySelector(balaoId);
+        if (balao) {
+            const textoAtual = balao.innerHTML;
+            if (balao.innerHTML.trim() != '') {
+                balao.innerHTML = `${textoAtual}<br><br>${texto}`;
+            } else {
+                balao.innerHTML = texto;
+            }
+            balao.style.display = 'flex';
+        }
+    });
 }
 
 function atualizarCafeteira() {
@@ -1347,7 +1481,12 @@ document.querySelector('#cafeteira-obj').addEventListener('click', () => {
 });
 
 document.querySelector('#seta-baixo-pc').addEventListener('click', carregarMesa);
-document.querySelector('#seta-baixo-mesa').addEventListener('click', carregarEscritorio);
+document.querySelector('#seta-baixo-mesa').addEventListener('click', () => {
+    if (cameraAberto) {
+        notificar(7);
+    }
+    carregarEscritorio();
+});
 document.querySelector('#seta-direita-escritorio').addEventListener('click', carregarCafeteira);
 document.querySelector('#seta-esquerda-cafeteira').addEventListener('click', carregarEscritorio);
 
@@ -1631,8 +1770,6 @@ function criarTelaTarefaTipo1(indiceTarefa) {
         .sort((a, b) => a.valor - b.valor)
         .map(item => item.index);
 
-    console.log('Ordem: ' + ordemCorreta);
-
     const telaTarefa = document.createElement('div');
     telaTarefa.id = 'tela-tarefa-1';
     game.appendChild(telaTarefa);
@@ -1723,9 +1860,7 @@ function criarTelaTarefaTipo1(indiceTarefa) {
         // Remove onclicks do botão "Entregar"
         botaoEntregar.style.pointerEvents = 'none';
 
-        console.log(tarefas);
         tarefas[indiceTarefa - 1] = null;
-        console.log(tarefas);
         preencherTarefas();
 
         // Define função para destruir a tela da tarefa
@@ -2031,7 +2166,6 @@ function criarTelaTarefaTipo1(indiceTarefa) {
 
 function criarTelaTarefaTipo2(indiceTarefa) {
     const tarefa = tarefas[indiceTarefa - 1];
-    console.log(tarefa);
     let numeroLinhaAtual = 0;
     let codigoPython = tarefa['codigo_python']
         .split('\n')
@@ -2131,7 +2265,6 @@ function criarTelaTarefaTipo2(indiceTarefa) {
 
     const botaoEntregar = document.createElement('div');
     botaoEntregar.id = 'botao-entregar-t2';
-    console.log(tarefa);
     botaoEntregar.addEventListener('click', () => {
         // Desabilita os cliques no botão "Entregar", "Testar" e no input
         botaoEntregar.style.pointerEvents = 'none';
@@ -2405,7 +2538,6 @@ function criarTelaTarefaTipo3(indiceTarefa) {
         linhaCodigo.addEventListener('click', () => {
             const linhas = document.querySelectorAll('.linha-codigo-t2');
             if (estadoTarefas[indiceTarefa].linhaMarcada === linha['numeroLinha']) {
-                console.log('Teste')
                 // If the clicked line is already marked, reset all lines to normal
                 linhas.forEach(linha => {
                     linha.style.textDecoration = 'none';
@@ -2458,7 +2590,6 @@ function criarTelaTarefaTipo3(indiceTarefa) {
             });
             const linha = codigoPython.find(linha => linha.numeroLinha === tarefa['resposta_correta']);
             const linhaCodigo = Array.from(document.querySelectorAll('.linha-codigo-t2')).find(l => l.textContent === linha['linha']);
-            console.log(linhaCodigo);
             linhaCodigo.style.textDecoration = 'line-through';
             linhaCodigo.style.color = '#00cf0a';
             pontuacao -= Math.abs(tarefa['pontosPerdidos']);
@@ -2496,7 +2627,6 @@ function criarTelaTarefaTipo3(indiceTarefa) {
 
 function criarTelaTarefaTipo4(indiceTarefa) {
     const tarefa = tarefas[indiceTarefa - 1];
-    console.log(tarefa);
     const game = document.querySelector('#game');
 
     const telaTarefa = document.createElement('div');
@@ -2996,7 +3126,6 @@ function criarTelaTarefaTipo6(indiceTarefa) {
                     mensagem.id = 'errado-t6';
                     mensagem.textContent = "Errado. +3 questões.";
                     game.appendChild(mensagem);
-                    console.log(tarefa);
 
                     setTimeout(() => {
                         mensagem.remove();
@@ -3180,6 +3309,10 @@ function criarTelaTarefaTipo7(indiceTarefa) {
     }
 }
 
+let intervaloEvento;
+let intervaloCamera;
+let eventoAtendido = false;
+
 function selecionaReuniao() {
     desselecionaAbas();
     destruirTelaPasta();
@@ -3206,11 +3339,38 @@ function selecionaReuniao() {
     camera.addEventListener('click', () => {
         camera.id = cameraAberto ? 'camera-fechado' : 'camera-aberto';
         cameraAberto = !cameraAberto;
+
+        if (cameraAberto) {
+            clearInterval(intervaloCamera);
+            const notificacaoCamera = Array.from(document.querySelectorAll('.notificacao')).find(n =>
+                n.querySelector('.texto-notificacao')?.textContent.startsWith('Religue a câmera')
+            );
+            notificacaoCamera?.remove();
+        } else {
+            iniciarEventoCamera();
+        }
     });
 
     microfone.addEventListener('click', () => {
         microfone.id = microfoneAberto ? 'microfone-fechado' : 'microfone-aberto';
         microfoneAberto = !microfoneAberto;
+
+        if (!microfoneAberto && eventoAtivo === 'microfone') {
+            notificar(5);
+            const notificacaoFalando = Array.from(document.querySelectorAll('.notificacao')).find(n =>
+                n.querySelector('.texto-notificacao')?.textContent.startsWith('Falando...')
+            );
+            notificacaoFalando?.remove();
+        } else if (microfoneAberto && eventoAtivo === 'microfone') {
+            if (jogoRodando && !estaPausado) {
+                notificar(14);
+                const notificacaoFalando = Array.from(document.querySelectorAll('.notificacao')).find(n =>
+                    n.querySelector('.texto-notificacao')?.textContent.startsWith('Falando...')
+                );
+                notificacaoFalando?.remove();
+                return;
+            }
+        }
     });
 
     const xisReuniao = document.createElement('div');
@@ -3247,6 +3407,160 @@ function selecionaReuniao() {
     reuniaoSelecionado.id = 'tb-reuniao-selecionado';
     reuniaoSelecionado.className = 'selecionado';
     game.appendChild(reuniaoSelecionado);
+
+    document.querySelector('#compartilhar-tela').addEventListener('click', () => {
+        const notificacaoCompartilharTela = Array.from(document.querySelectorAll('.notificacao')).find(n =>
+            n.querySelector('.texto-notificacao')?.textContent.startsWith('Compartilhe ')
+        );
+        const textoNotificacaoCompartilharTela = notificacaoCompartilharTela?.querySelector('.texto-notificacao');
+        const countdownNotificacaoCompartilharTela = notificacaoCompartilharTela?.querySelector('.countdown-notificacao');
+        const documento = textoNotificacaoCompartilharTela?.textContent.split('documento ')[1]?.split(',')[0];
+
+        if (eventoAtivo === 'compartilharTela') {
+            eventoAtendido = true;
+            clearInterval(intervaloEvento);
+
+            if (statusPasta === 'aberto') {
+                selecionaPasta();
+            } else {
+                minimizarReuniao.click();
+            }
+
+            if (statusLista === 'aberto' || statusTarefa === 'aberto' || statusJogo === 'aberto') {
+                eventoAtivo = null;
+                iniciarEventosAleatorios();
+                notificacaoCompartilharTela?.remove();
+                notificar(11);
+                setTimeout(selecionaReuniao, 500);
+            } else if (!documentoAberto) {
+                eventoAtivo = null;
+                iniciarEventosAleatorios();
+                notificacaoCompartilharTela?.remove();
+                notificar(9);
+                setTimeout(selecionaReuniao, 500);
+            } else if (documentoAberto != documento) {
+                eventoAtivo = null;
+                iniciarEventosAleatorios();
+                notificacaoCompartilharTela?.remove();
+                notificar(10);
+                setTimeout(selecionaReuniao, 500);
+            } else {
+                textoNotificacaoCompartilharTela.textContent = 'Compartilhando...';
+                notificacaoCompartilharTela.style.backgroundImage = 'url("../../assets/pc/notificacoes/verde.png")';
+                countdownNotificacaoCompartilharTela.style.color = '#00cf0a';
+                countdownNotificacaoCompartilharTela.textContent = '3s';
+
+                let countdownCompartilhando = 3;
+                const intervaloCompartilhando = setInterval(() => {
+                    countdownCompartilhando--;
+                    countdownNotificacaoCompartilharTela.textContent = `${countdownCompartilhando}s`;
+                    if (countdownCompartilhando <= 0) {
+                        notificacaoCompartilharTela.remove();
+                        clearInterval(intervaloCompartilhando);
+                        eventoAtivo = null;
+                        iniciarEventosAleatorios();
+                        console.log('Tela compartilhada a tempo e tarefa concluída com sucesso!');
+                        selecionaReuniao();
+                    }
+                }, 1000);
+
+                const verificarInterrupcao = () => {
+                    const abas = ['#tb-reuniao', '#tb-pasta', '#tb-lista', '#tb-jogo', '#tb-tarefa', '#xis-pasta', '#minimizar-pasta', '#documento-aberto-fechar', '#documento-aberto-minimizar', '#doc-1', '#doc-2', '#doc-3', '#doc-4', '#doc-5'];
+
+                    switch (documento) {
+                        case 'slides_site.docx':
+                            abas.splice(abas.indexOf('#doc-1'), 1);
+                            break;
+                        case 'dados_aplicativo.docx':
+                            abas.splice(abas.indexOf('#doc-2'), 1);
+                            break;
+                        case 'index.pdf':
+                            abas.splice(abas.indexOf('#doc-3'), 1);
+                            break;
+                        case 'banco_app.txt':
+                            abas.splice(abas.indexOf('#doc-4'), 1);
+                            break;
+                        case 'server.txt':
+                            abas.splice(abas.indexOf('#doc-5'), 1);
+                            break;
+                    }
+
+                    const handleClick = () => {
+                        if (eventoAtivo !== 'compartilharTela') return;
+                        notificacaoCompartilharTela.remove();
+                        clearInterval(intervaloCompartilhando);
+                        eventoAtivo = null;
+                        iniciarEventosAleatorios();
+                        selecionaReuniao();
+                        notificar(15);
+
+                        // Remove o evento de todos os elementos
+                        abas.forEach(selector => {
+                            document.querySelector(selector)?.removeEventListener('click', handleClick);
+                        });
+                    };
+
+                    abas.forEach(selector => {
+                        document.querySelector(selector)?.addEventListener('click', handleClick, { once: true });
+                    });
+                };
+
+                verificarInterrupcao();
+            }
+        } else {
+            if (statusPasta === 'aberto') {
+                selecionaPasta();
+            } else {
+                minimizarReuniao.click();
+            }
+            notificar(13);
+            setTimeout(selecionaReuniao, 500);
+        }
+    });
+
+    // Simular jogador ligando o microfone
+    document.querySelector('#microfone-fechado')?.addEventListener('click', () => {
+        if (!microfoneAberto) {
+            return;
+        }
+        const notificacao = Array.from(document.querySelectorAll('.notificacao')).find(n =>
+            n.querySelector('.texto-notificacao')?.textContent.startsWith('Ligue o microfone')
+        );
+        const textoNotificacao = notificacao?.querySelector('.texto-notificacao');
+        const countdownNotificacao = notificacao?.querySelector('.countdown-notificacao');
+        if (eventoAtivo === 'microfone') {
+            eventoAtendido = true;
+            clearInterval(intervaloEvento);
+            if (textoNotificacao) {
+                textoNotificacao.textContent = 'Falando...';
+                notificacao.style.backgroundImage = 'url("../../assets/pc/notificacoes/verde.png")';
+            }
+
+            countdownNotificacao.style.color = '#00cf0a';
+            countdownNotificacao.textContent = '3s';
+
+            let countdownFalando = 3;
+            const intervaloCompartilhando = setInterval(() => {
+                countdownFalando--;
+                countdownNotificacao.textContent = `${countdownFalando}s`;
+                if (countdownFalando <= 0) {
+                    notificacao.remove();
+                    clearInterval(intervaloCompartilhando);
+                    eventoAtivo = null;
+                    iniciarEventosAleatorios();
+                    document.querySelector('#microfone-aberto')?.click();
+                    console.log('Microfone ligado a tempo e tarefa concluída com sucesso!');
+                }
+            }, 1000);
+
+        } else {
+            notificar(12); // Advertência por ligar o microfone fora do evento
+            setTimeout(() => {
+                // Desligar automaticamente
+                document.querySelector('#microfone-aberto')?.click();
+            }, 500);
+        }
+    });
 }
 
 let documentoAberto;
@@ -3538,77 +3852,53 @@ function eliminarInimigo(ladoInimigo) {
     switch (posicaoMapa) {
         case 1:
             srcMapa = mataInimigo[`mapa ${posicaoAtual}`][0][3];
-            console.log(posicaoMapa)
             posicaoMapa = 0;
-            console.log(posicaoMapa)
             break;
         case 2:
             srcMapa = mataInimigo[`mapa ${posicaoAtual}`][0][3];
-            console.log(posicaoMapa)
             posicaoMapa = 0;
-            console.log(posicaoMapa)
             break;
         case 3:
             srcMapa = mataInimigo[`mapa ${posicaoAtual}`][0][3];
-            console.log(posicaoMapa)
             posicaoMapa = 0;
-            console.log(posicaoMapa)
             break;
         case 4:
             if (ladoInimigo == 'esquerda') {
                 srcMapa = mataInimigo[`mapa ${posicaoAtual}`][2][3];
-                console.log(posicaoMapa)
                 posicaoMapa = 2;
-                console.log(posicaoMapa)
             } else {
                 srcMapa = mataInimigo[`mapa ${posicaoAtual}`][1][3];
-                console.log(posicaoMapa)
                 posicaoMapa = 1;
-                console.log(posicaoMapa)
             }
             break;
         case 5:
             if (ladoInimigo == 'esquerda') {
                 srcMapa = mataInimigo[`mapa ${posicaoAtual}`][3][3];
-                console.log(posicaoMapa)
                 posicaoMapa = 3;
-                console.log(posicaoMapa)
             } else {
                 srcMapa = mataInimigo[`mapa ${posicaoAtual}`][1][3];
-                console.log(posicaoMapa)
                 posicaoMapa = 1;
-                console.log(posicaoMapa)
             }
             break;
         case 6:
             if (ladoInimigo == 'meio') {
                 srcMapa = mataInimigo[`mapa ${posicaoAtual}`][3][3];
-                console.log(posicaoMapa)
                 posicaoMapa = 3;
-                console.log(posicaoMapa)
             } else {
                 srcMapa = mataInimigo[`mapa ${posicaoAtual}`][2][3];
-                console.log(posicaoMapa)
                 posicaoMapa = 2;
-                console.log(posicaoMapa)
             }
             break;
         case 7:
             if (ladoInimigo == 'esquerda') {
                 srcMapa = mataInimigo[`mapa ${posicaoAtual}`][6][3];
-                console.log(posicaoMapa)
                 posicaoMapa = 6;
-                console.log(posicaoMapa)
             } else if (ladoInimigo == 'meio') {
                 srcMapa = mataInimigo[`mapa ${posicaoAtual}`][5][3];
-                console.log(posicaoMapa)
                 posicaoMapa = 5;
-                console.log(posicaoMapa)
             } else {
                 srcMapa = mataInimigo[`mapa ${posicaoAtual}`][4][3];
-                console.log(posicaoMapa)
                 posicaoMapa = 4;
-                console.log(posicaoMapa)
             }
             break;
     }
@@ -3731,11 +4021,6 @@ function gerarInimigo() {
                     }
                 }
             }
-
-            console.log(`Indice Mapa 1: ${mataInimigo["mapa 1"][8]}
-                Indice Mapa 2: ${mataInimigo["mapa 2"][8]}
-                Indice Mapa 3: ${mataInimigo["mapa 3"][8]}
-                Indice Mapa 4: ${mataInimigo["mapa 4"][8]}`)
         }
     }
 }
@@ -4396,8 +4681,108 @@ function atualizarHUD() {
 }
 
 const intervaloTempo = setInterval(atualizarTempo, 1000);
-const intervaloDecaimento = setInterval(atualizarDecaimento, decaimentoEnergiaEmS * 1000);
+const intervaloDecaimento = setInterval(atualizarDecaimento, decaimentoEnergiaEFelicidadeEmS * 1000);
 
 const intervaloInimigo = setInterval(gerarInimigo, 1000);
+
+let eventoAtivo = null;
+let intervaloAleatorio;
+
+function iniciarEventosAleatorios() {
+    const intervalo = Math.random() * (frequenciaEventosMaximo - frequenciaEventosMinimo) + frequenciaEventosMinimo;
+    intervaloAleatorio = setTimeout(() => {
+        eventoAtendido = false;
+        const tipoEvento = Math.random() < 0.5 ? 'microfone' : 'compartilharTela';
+        if (tipoEvento === 'microfone') {
+            iniciarEventoMicrofone();
+        } else {
+            iniciarEventoCompartilharTela();
+        }
+    }, intervalo * 1000);
+}
+
+function iniciarEventoMicrofone() {
+    eventoAtivo = 'microfone';
+    notificar(1);
+    let countdown = toleranciaMicrofone;
+    const notificacao = Array.from(document.querySelectorAll('.notificacao')).find(n =>
+        n.querySelector('.texto-notificacao')?.textContent.startsWith('Ligue o microfone')
+    );
+    const textoNotificacao = notificacao?.querySelector('.texto-notificacao');
+    const countdownNotificacao = notificacao?.querySelector('.countdown-notificacao');
+
+    clearInterval(intervaloEvento);
+    intervaloEvento = setInterval(() => {
+        countdown--;
+        if (textoNotificacao) {
+            countdownNotificacao.textContent = `${countdown}s`;
+        }
+        if (countdown <= 0) {
+            clearInterval(intervaloEvento);
+            notificar(4); // Advertência por não ligar o microfone
+            eventoAtivo = null;
+            iniciarEventosAleatorios();
+            console.log('Microfone não ligado a tempo!');
+        }
+    }, 1000);
+}
+
+function iniciarEventoCompartilharTela() {
+    eventoAtivo = 'compartilharTela';
+    notificar(2);
+    let countdown = toleranciaCompartilhamento;
+
+    const notificacaoCompartilharTela = Array.from(document.querySelectorAll('.notificacao')).find(n =>
+        n.querySelector('.texto-notificacao')?.textContent.startsWith('Compartilhe ')
+    );
+    const textoNotificacaoCompartilharTela = notificacaoCompartilharTela?.querySelector('.texto-notificacao');
+    const countdownNotificacaoCompartilharTela = notificacaoCompartilharTela?.querySelector('.countdown-notificacao');
+
+    clearInterval(intervaloEvento);
+    intervaloEvento = setInterval(() => {
+        countdown--;
+        if (textoNotificacaoCompartilharTela) {
+            countdownNotificacaoCompartilharTela.textContent = `${countdown}s`;
+        }
+        console.log(`Compartilhe a tela, ${countdown}s restantes.`);
+
+        if (countdown <= 0) {
+            clearInterval(intervaloEvento);
+            notificar(8); // Advertência por não compartilhar a tela
+            eventoAtivo = null;
+            iniciarEventosAleatorios();
+            console.log('Compartilhamento de tela não realizado a tempo!');
+        }
+    }, 1000);
+}
+
+function iniciarEventoCamera() {
+    notificar(3);
+    let countdown = 7;
+    const notificacaoCamera = Array.from(document.querySelectorAll('.notificacao')).find(n =>
+        n.querySelector('.texto-notificacao')?.textContent.startsWith('Religue a câmera')
+    );
+    const textoNotificacaoCamera = notificacaoCamera?.querySelector('.texto-notificacao');
+    const countdownNotificacaoCamera = notificacaoCamera?.querySelector('.countdown-notificacao');
+
+    clearInterval(intervaloCamera);
+    intervaloCamera = setInterval(() => {
+        countdown--;
+        if (textoNotificacaoCamera) {
+            countdownNotificacaoCamera.textContent = `${countdown}s`;
+        }
+        if (countdown <= 0) {
+            notificacaoCamera.remove();
+            clearInterval(intervaloCamera);
+            if (!cameraAberto) {
+                notificar(6); // Advertência por não religar a câmera
+                iniciarEventoCamera();
+            }
+            console.log('Câmera não religada a tempo!');
+        }
+    }, 1000);
+}
+
+iniciarEventosAleatorios();
 
 selecionaReuniao();
