@@ -85,9 +85,6 @@ switch (dificuldade) {
         document.querySelector('#adv_4').style.display = 'none';
 }
 
-frequenciaEventosMinimo = 3;
-frequenciaEventosMaximo = 5;
-
 // Funções de Geração e Validação de Desafio
 function gerarDesafioTipo1() {
     const lista = [1, 2, 3, 4, 5];
