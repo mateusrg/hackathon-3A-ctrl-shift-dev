@@ -2,7 +2,6 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    image-rendering: pixelated;
 }
 
 html,
@@ -1806,4 +1805,117 @@ button {
     aspect-ratio: 182/169;
     left: calc(600 * var(--un));
     bottom: calc(157 * var(--un));
+}
+
+.notificacao {
+    position: absolute;
+    height: calc(124 * var(--un));
+    width: calc(496 * var(--un));
+    right: calc(70 * var(--un));
+    z-index: 5;
+}
+
+.imagem-notificacao {
+    position: absolute;
+    background-size: contain;
+    height: calc(47 * var(--un));
+    width: calc(60 * var(--un));
+    top: calc(38 * var(--un));
+    left: calc(36 * var(--un));
+}
+
+.texto-notificacao {
+    position: absolute;
+    line-height: calc(25 * var(--un));
+    font-size: calc(15 * var(--un));
+    color: #fff;
+    top: calc(17 * var(--un));
+    left: calc(105 * var(--un));
+    height: calc(90 * var(--un));
+    width: calc(360 * var(--un));
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.countdown-notificacao {
+    position: absolute;
+    right: calc(31 * var(--un));
+    bottom: calc(19 * var(--un));
+    font-size: calc(20 * var(--un));
+    color: #ff4949;
+}
+
+#balao-mesa,
+#balao-escritorio,
+#balao-cafeteira,
+#balao-espetado-mesa,
+#balao-espetado-escritorio,
+#balao-espetado-cafeteira {
+    display: none;
+    background-size: contain;
+    position: absolute;
+    pointer-events: none;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: calc(20 * var(--un));
+}
+
+#balao-espetado-mesa,
+#balao-espetado-escritorio,
+#balao-espetado-cafeteira {
+    color: #df0000;
+}
+
+#balao-mesa,
+#balao-escritorio {
+    background-image: url('../../assets/pc/baloes/balao_escritorio.png');
+    height: calc(435 * var(--un));
+    width: calc(533 * var(--un));
+    left: calc(11 * var(--un));
+    bottom: calc(13 * var(--un));
+    padding: calc(15 * var(--un));
+}
+
+#balao-cafeteira {
+    background-image: url('../../assets/pc/baloes/balao_cafeteira.png');
+    height: calc(340 * var(--un));
+    aspect-ratio: 435/315;
+    left: calc(11 * var(--un));
+    bottom: calc(13 * var(--un));
+    padding-left: calc(70 * var(--un));
+}
+
+#balao-espetado-mesa {
+    background-image: url('../../assets/pc/baloes/balao_espetado_escritorio.png');
+    height: calc(364 * var(--un));
+    width: calc(464 * var(--un));
+    top: calc(176 * var(--un));
+    right: 0; 
+    padding: 0 calc(45 * var(--un));
+}
+
+#balao-espetado-escritorio {
+    background-image: url('../../assets/pc/baloes/balao_espetado_escritorio.png');
+    height: calc(364 * var(--un));
+    width: calc(464 * var(--un));
+    top: calc(140 * var(--un));
+    right: calc(166 * var(--un));  
+    padding: 0 calc(45 * var(--un));
+}
+
+#balao-espetado-cafeteira {
+    background-image: url('../../assets/pc/baloes/balao_espetado_cafeteira.png');
+    height: calc(261 * var(--un));
+    width: calc(360 * var(--un));
+    top: calc(142 * var(--un));
+    left: calc(22 * var(--un));
+    font-size: calc(15 * var(--un));
+    padding-left: calc(45 * var(--un));
+    padding-right: calc(25 * var(--un));
 }
