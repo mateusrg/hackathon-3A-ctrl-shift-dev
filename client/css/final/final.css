@@ -1,0 +1,202 @@
+* {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+html,
+body {
+    background-image: url('../../assets/entorno/bg/derrota.png');
+}
+
+.frame {
+    position: relative;
+}
+
+#game {
+    background-image: url('../../assets/final/gameover.png');
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#tela-vitoria {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: calc(0 * var(--un));
+    left: calc(0 * var(--un));
+    background-color: transparent;
+    z-index: 10000;
+    cursor: pointer;
+}
+
+#pontuacao {
+    position: absolute;
+    width: calc(500 * var(--un));
+    top: calc(150 * var(--un));
+    left: 50%;
+    transform: translate(-50%, 0);
+    font-size: calc(50 * var(--un));
+    color: #fff;
+    border: none;
+    outline: none;
+    width: calc(1000 * var(--un));
+    text-align: center;
+}
+
+#promocao {
+    position: absolute;
+    width: calc(500 * var(--un));
+    top: calc(750 * var(--un));
+    left: 50%;
+    transform: translate(-50%, 0);
+    font-size: calc(25 * var(--un));
+    color: #fff;
+    border: none;
+    outline: none;
+    width: calc(1200 * var(--un));
+    text-align: center;
+}
+
+#advertencias {
+    position: absolute;
+    height: calc(360 * var(--un));
+    width: calc(1100 * var(--un));
+    top: calc(310 * var(--un));
+    left: 50%;
+    transform: translate(-50%, 0);
+    border: none;
+    outline: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#advertencia {
+    color: #590000;
+    font-size: calc(25 * var(--un));
+    text-align: center;
+    line-height: calc(45 * var(--un));
+}
+
+#causa-morte {
+    position: absolute;
+    width: calc(1000 * var(--un));
+    top: calc(450 * var(--un));
+    left: 50%;
+    transform: translate(-50%, 0);
+    font-size: calc(40 * var(--un));
+    color: #fff;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    text-align: center;
+}
+
+#blur {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: calc(0 * var(--un));
+    left: calc(0 * var(--un));
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+#pop-up-como-evitar {
+    position: absolute;
+    width: calc(1196 * var(--un));
+    height: calc(769 * var(--un));
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url('../../assets/final/popup.png');
+}
+
+#titulo-como-evitar {
+    position: absolute;
+    width: calc(1000 * var(--un));
+    top: calc(45 * var(--un));
+    left: 50%;
+    transform: translate(-50%, 0);
+    font-size: calc(40 * var(--un));
+    color: #fff;
+    border: none;
+    outline: none;
+    text-align: center;
+    line-height: calc(45 * var(--un));
+}
+
+#fechar-como-evitar {
+    position: absolute;
+    cursor: pointer;
+    border-radius: calc(20 * var(--un));
+    height: calc(130 * var(--un));
+    width: calc(953 * var(--un));
+    top: calc(60 * var(--un));
+    left: calc(1100 * var(--un));
+    font-size: calc(50 * var(--un));
+    color: #fff;
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+
+#div-texto-como-evitar {
+    position: absolute;
+    height: calc(570 * var(--un));
+    width: calc(1100 * var(--un));
+    top: calc(150 * var(--un));
+    left: 50%;
+    transform: translate(-50%, 0);
+    border: none;
+    outline: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#advertencia-como-evitar {
+    color: #fff;
+    font-size: calc(20 * var(--un));
+    text-align: center;
+    line-height: calc(45 * var(--un));
+}
+
+#voltar {
+    position: absolute;
+    cursor: pointer;
+    border-radius: calc(20 * var(--un));
+    height: calc(130 * var(--un));
+    width: calc(953 * var(--un));
+    top: calc(843 * var(--un));
+    left: 50%;
+    transform: translate(-50%, 0);
+    color: transparent;
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+
+#como-evitar {
+    position: absolute;
+    cursor: pointer;
+    border-radius: calc(20 * var(--un));
+    height: calc(130 * var(--un));
+    width: calc(953 * var(--un));
+    top: calc(703 * var(--un));
+    left: 50%;
+    transform: translate(-50%, 0);
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
