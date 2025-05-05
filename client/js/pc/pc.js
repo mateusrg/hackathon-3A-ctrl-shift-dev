@@ -1752,9 +1752,10 @@ function desselecionaAbas() {
         jogoAberto.className = 'aberto';
         game.appendChild(jogoAberto);
     }
-
+    console.log(statusTarefa);
     if (statusTarefa === 'selecionado') {
         statusTarefa = 'aberto';
+        console.log(game.querySelector('#tb-tarefa-selecionado'))
         game.querySelector('#tb-tarefa-selecionado')?.remove();
 
         const tarefaAberto = document.createElement('div');
@@ -4888,6 +4889,8 @@ function selecionaJogo() {
 }
 
 function selecionaTarefa(indiceTarefa) {
+    console.log('INFERNO')
+    statusTarefa = 'selecionado';
     tarefaAberta = indiceTarefa;
     desselecionaAbas();
     destruirTelaReuniao();
@@ -5267,6 +5270,10 @@ document.querySelector('#cafeteira').style.display = 'none';
 document.querySelector('#tb-tarefa').style.display = 'none';
 
 document.addEventListener('keydown', (event) => {
+    if (document.activeElement.tagName === 'INPUT') {
+        return;
+    }
+
     const pcSelecionado = document.querySelector('#escritorio').style.display == 'none' && document.querySelector('#cafeteira').style.display == 'none' && document.querySelector('#mesa').style.display == 'none';
     const mesaSelecionado = document.querySelector('#mesa').style.display != 'none';
     const escritorioSelecionado = document.querySelector('#escritorio').style.display != 'none';
