@@ -1099,17 +1099,29 @@ function preencherTarefas() {
 preencherTarefas();
 
 // Resto do Código
-function gameOver(causaMorte, conquistasDesbloqueadas = []) {
-    let final = {
-        "advertencias": advertencias,
-        "causaMorte": causaMorte,
-        "isGameOver": causaMorte !== 0,
-        "pontuacao": pontuacao,
-        "conquistasDesbloqueadas": conquistasDesbloqueadas,
-    };
+async function gameOver(causaMorte, conquistasDesbloqueadas = []) {
+    try {
+        if (pontuacao >= 50 && dificuldade === 4) {
+            desbloquearConquista(35);
+        }
 
-    localStorage.setItem('final', JSON.stringify(final));
-    window.location.href = "../../html/final/final.html";
+        Usuario.aumentarRunsJogadas(usuarioId, 1);
+        const usuario = await Usuario.getUsuario(usuarioId);
+        if (usuario.runs_jogadas >= 50) {
+            desbloquearConquista(31);
+        }
+    } finally {
+        let final = {
+            "advertencias": advertencias,
+            "causaMorte": causaMorte,
+            "isGameOver": causaMorte !== 0,
+            "pontuacao": pontuacao,
+            "conquistasDesbloqueadas": conquistasDesbloqueadas,
+        };
+
+        localStorage.setItem('final', JSON.stringify(final));
+        window.location.href = "../../html/final/final.html";
+    }
 }
 
 let tempoRestante = 600;
@@ -1197,6 +1209,10 @@ cafe.addEventListener('click', () => {
         quantVezesBebeuCafe++;
         if (quantVezesBebeuCafe >= 30) {
             desbloquearConquista(5);
+        }
+
+        if (energia < 5) {
+            desbloquearConquista(33);
         }
 
         const bebendo = document.querySelector('#bebendo');
@@ -1388,6 +1404,10 @@ async function desbloquearConquista(idConquista) {
             conquista.remove();
         }
     }, 5000);
+
+    if (usuario.conquistas_desbloqueadas == '111111111111111111111111111111111110') {
+        desbloquearConquista(36);
+    }
 }
 
 let advertencias = [];
@@ -1467,7 +1487,7 @@ function notificar(id) {
         advertenciaElement?.classList.add('advertencia_cheia');
 
         if (advertencias.length > limiteAdvertencias) {
-            let conquistasGO = [];
+            let conquistasGO = [28];
             if (tempoRestante > 530) {
                 conquistasGO.push(18);
             }
@@ -4234,6 +4254,10 @@ async function eliminarInimigo(ladoInimigo) {
     const telaJogo = document.querySelector('#tela-jogo');
     const inimigo = document.querySelector(`#inimigo-${posicaoAtual}-${ladoInimigo}`);
 
+    if (felicidade < 5) {
+        desbloquearConquista(34);
+    }
+
     let srcMapa;
 
     let posicaoMapa = mataInimigo[`mapa ${posicaoAtual}`][8];
@@ -5117,10 +5141,21 @@ async function atualizarTempo() {
     }
 }
 
+let countdownDesb32 = 0;
+
 function atualizarDecaimento() {
     energia = Math.max(0, energia - 1);
     felicidade = Math.max(0, felicidade - 1);
     atualizarHUD();
+
+    if (Math.abs(energia - felicidade) < 10) {
+        countdownDesb32++;
+        if (countdownDesb32 >= 300) {
+            desbloquearConquista(32);
+        }
+    } else {
+        countdownDesb32 = 0;
+    }
 
     if (energia <= 75) {
         energiaDesb8 = false;
@@ -5132,15 +5167,17 @@ function atualizarDecaimento() {
             conquistasGO.push(18);
         }
         if (energia <= 0 && felicidade <= 0) {
+            conquistasGO.push(29, 30);
             gameOver(5, conquistasGO);
         } else if (energia <= 0) {
+            conquistasGO.push(30);
             gameOver(3, conquistasGO);
         } else {
+            conquistasGO.push(29);
             gameOver(4, conquistasGO);
         }
     }
 }
-
 
 function atualizarHUD() {
     const minutos = Math.floor(tempoRestante / 60).toString().padStart(2, '0');
