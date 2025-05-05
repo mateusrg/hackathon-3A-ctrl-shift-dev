@@ -998,6 +998,8 @@ function validarDesafioTipo3(desafio, respostaPlayer) {
 }
 
 let tarefasConcluidasUltimosDoisMin = 0;
+let quantVezesBebeuCafe = 0;
+let quantVezesDerramouCafe = 0;
 let tarefas = [];
 let estadoTarefas = {
     1: '',
@@ -1174,6 +1176,11 @@ const cafe = document.querySelector('#cafe');
 
 cafe.addEventListener('click', () => {
     if (nivelCafe > 0) {
+        quantVezesBebeuCafe++;
+        if (quantVezesBebeuCafe >= 30) {
+            desbloquearConquista(5);
+        }
+
         const bebendo = document.querySelector('#bebendo');
         const cafe = document.querySelector('#cafe');
         const monitor = document.querySelector('#monitor');
@@ -1629,6 +1636,11 @@ function ligarCafeteira() {
 
                 textoCafeteira.innerHTML = 'Vazou!';
                 textoCafeteira.style.color = 'red';
+                quantVezesDerramouCafe++;
+
+                if (quantVezesDerramouCafe >= 3) {
+                    desbloquearConquista(6);
+                }
             }
         }
     }, 1000);
@@ -1922,7 +1934,12 @@ function porTarefasNaTelaLista() {
         const itemLista = document.createElement('div');
         itemLista.className = 'item-lista';
         itemLista.id = `item-lista-${i + 1}`;
-        itemLista.addEventListener('click', () => selecionaTarefa(i + 1));
+        itemLista.addEventListener('click', () => {
+            if (contadorTarefas[i] === 0) {
+                contadorTarefas[i] = Date.now();
+            }
+            selecionaTarefa(i + 1)
+        });
         game.appendChild(itemLista);
     });
 }
@@ -2022,6 +2039,12 @@ function criarTelaTarefaTipo1(indiceTarefa) {
         if (todosCorretos) {
             pontuacao += tarefas[indiceTarefa - 1].pontosGanhos;
             aumentarTarefasConcluidas();
+            try {
+                if (Date.now() - contadorTarefas[indiceTarefa - 1] < 3000) {
+                    desbloquearConquista(11);
+                }
+                contadorTarefas[indiceTarefa - 1] = 0;
+            } finally { }
             mensagem.id = 'sucesso-t1';
             mensagem.textContent = `+${tarefas[indiceTarefa - 1].pontosGanhos} ponto${tarefas[indiceTarefa - 1].pontosGanhos === 1 ? '' : 's'}`;
         } else {
@@ -2281,9 +2304,14 @@ function criarTelaTarefaTipo1(indiceTarefa) {
         }, 1000);
     }
 
-    botaoTestar.addEventListener('click', () => {
+    botaoTestar.addEventListener('click', async () => {
         if (estadoTarefas[indiceTarefa]['selecionados'].length === 1) {
             testarT1();
+            Usuario.aumentarQuantTestesFeitos(usuarioId, 1);
+            const usuario = await Usuario.getUsuarioLogado();
+            if (usuario.testes_feitos > 30) {
+                desbloquearConquista(12);
+            }
         }
     });
 
@@ -2362,7 +2390,7 @@ async function aumentarTarefasConcluidas() {
     Usuario.aumentarQuantTarefasConcluidas(usuarioId, 1);
     const usuario = await Usuario.getUsuarioLogado();
     if (usuario.tarefas_concluidas >= 50) {
-        console.log('Desbloqueou conquista 1!');
+        desbloquearConquista(3);
     }
 
 }
@@ -2489,6 +2517,12 @@ function criarTelaTarefaTipo2(indiceTarefa) {
 
         if (respostaCorreta) {
             pontuacao += tarefa['pontosGanhos'];
+            try {
+                if (Date.now() - contadorTarefas[indiceTarefa - 1] < 3000) {
+                    desbloquearConquista(11);
+                }
+                contadorTarefas[indiceTarefa - 1] = 0;
+            } finally { }
             aumentarTarefasConcluidas();
             mensagem.id = 'sucesso-t2';
             mensagem.textContent = `+${tarefa['pontosGanhos']} ponto${tarefa['pontosGanhos'] === 1 ? '' : 's'}`;
@@ -2624,7 +2658,7 @@ function criarTelaTarefaTipo2(indiceTarefa) {
         game.appendChild(resultadoDiv);
     };
 
-    botaoTestar.addEventListener('click', () => {
+    botaoTestar.addEventListener('click', async () => {
         // Remove any existing result button
         const existingResult = document.querySelector('#resultado-t2');
         if (existingResult) {
@@ -2635,6 +2669,11 @@ function criarTelaTarefaTipo2(indiceTarefa) {
         estadoTarefas[indiceTarefa]['resultado'] = null;
 
         iniciarCountdown();
+        Usuario.aumentarQuantTestesFeitos(usuarioId, 1);
+        const usuario = await Usuario.getUsuarioLogado();
+        if (usuario.testes_feitos > 30) {
+            desbloquearConquista(12);
+        }
     });
 
     if (estadoTarefas[indiceTarefa]['countdown'] !== null) {
@@ -2784,7 +2823,17 @@ function criarTelaTarefaTipo3(indiceTarefa) {
 
         const mensagem = document.createElement('div');
         if (respostaCorreta) {
+
+            if (estadoTarefas[indiceTarefa].totalQuestoes == 3) {
+                verificarDesbloqueio13();
+            }
             pontuacao += tarefa['pontosGanhos'];
+            try {
+                if (Date.now() - contadorTarefas[indiceTarefa - 1] < 3000) {
+                    desbloquearConquista(11);
+                }
+                contadorTarefas[indiceTarefa - 1] = 0;
+            } finally { }
             aumentarTarefasConcluidas();
             mensagem.id = 'sucesso-t3';
             mensagem.textContent = `+${tarefa['pontosGanhos']} ponto${tarefa['pontosGanhos'] === 1 ? '' : 's'}`;
@@ -2826,6 +2875,14 @@ function criarTelaTarefaTipo3(indiceTarefa) {
 
         // Chama destruir a tela da tarefa após 2 segundos, caso não tenha sido destruída antes
         setTimeout(destruirTela, 2000);
+
+        async function verificarDesbloqueio13() {
+            Usuario.aumentarQuantQuizzesGabaritados(usuarioId, 1);
+            const usuario = await Usuario.getUsuarioLogado();
+            if (usuario.quizzes_gabaritados >= 10) {
+                desbloquearConquista(13);
+            }
+        }
     });
     game.appendChild(botaoEntregar);
 }
@@ -2932,6 +2989,12 @@ function criarTelaTarefaTipo4(indiceTarefa) {
             if (resultado) {
                 const mensagem = document.createElement('div');
                 pontuacao += tarefa.pontosGanhos;
+                try {
+                    if (Date.now() - contadorTarefas[indiceTarefa - 1] < 3000) {
+                        desbloquearConquista(11);
+                    }
+                    contadorTarefas[indiceTarefa - 1] = 0;
+                } finally { }
                 aumentarTarefasConcluidas();
                 mensagem.id = 'sucesso-t4';
                 mensagem.textContent = `+${tarefa.pontosGanhos}p.`;
@@ -2944,6 +3007,7 @@ function criarTelaTarefaTipo4(indiceTarefa) {
                 mensagem.id = 'falha-t4';
                 mensagem.textContent = `-${Math.abs(tarefa.pontosPerdidos)}p.`;
                 game.appendChild(mensagem);
+                desbloquearConquista(4);
             }
 
             tarefas[indiceTarefa - 1] = null;
@@ -3161,6 +3225,12 @@ function criarTelaTarefaTipo5(indiceTarefa) {
 
         if (respostaCorreta) {
             pontuacao += tarefa['pontosGanhos'];
+            try {
+                if (Date.now() - contadorTarefas[indiceTarefa - 1] < 3000) {
+                    desbloquearConquista(11);
+                }
+                contadorTarefas[indiceTarefa - 1] = 0;
+            } finally { }
             aumentarTarefasConcluidas();
             const mensagem = document.createElement('div');
             mensagem.id = 'sucesso-t5';
@@ -3265,6 +3335,12 @@ function criarTelaTarefaTipo6(indiceTarefa) {
             if (alternativa.correta) {
                 if (questaoAtual + 1 === totalQuestoes) {
                     pontuacao += tarefa.pontosGanhos;
+                    try {
+                        if (Date.now() - contadorTarefas[indiceTarefa - 1] < 3000) {
+                            desbloquearConquista(11);
+                        }
+                        contadorTarefas[indiceTarefa - 1] = 0;
+                    } finally { }
                     aumentarTarefasConcluidas();
                     const mensagem = document.createElement('div');
                     mensagem.id = 'sucesso-t6';
@@ -3430,6 +3506,12 @@ function criarTelaTarefaTipo7(indiceTarefa) {
                 if (estadoTarefas[indiceTarefa].etapaAtual === tarefa.alternativas.length) {
                     document.querySelector('#campo-texto-tarefa-7').textContent = tarefa.alternativas.map(a => a.opcoes[a.indiceCorreta]).join(' ');
                     pontuacao += tarefa.pontosGanhos;
+                    try {
+                        if (Date.now() - contadorTarefas[indiceTarefa - 1] < 3000) {
+                            desbloquearConquista(11);
+                        }
+                        contadorTarefas[indiceTarefa - 1] = 0;
+                    } finally { }
                     aumentarTarefasConcluidas();
                     const mensagem = document.createElement('div');
                     mensagem.id = 'sucesso-t7';
@@ -3522,6 +3604,15 @@ let intervaloEvento;
 let intervaloCamera;
 let eventoAtendido = false;
 
+let ligarCameraDesb7 = false;
+let energiaDesb8 = true;
+let felicidadeDesb9 = true;
+let contadorTarefas = [0, 0, 0, 0];
+let quantMicNinjaDesb14 = 0;
+let verifDesb14 = false;
+let quantCampCompDesb15 = 0;
+let verifDesb15 = false;
+
 function selecionaReuniao() {
     desselecionaAbas();
     destruirTelaPasta();
@@ -3556,6 +3647,9 @@ function selecionaReuniao() {
         cameraAberto = !cameraAberto;
 
         if (cameraAberto) {
+            if (ligarCameraDesb7) {
+                desbloquearConquista(7);
+            }
             clearInterval(intervaloCamera);
             const notificacaoCamera = Array.from(document.querySelectorAll('.notificacao')).find(n =>
                 n.querySelector('.texto-notificacao')?.textContent.startsWith('Religue a câmera')
@@ -3577,6 +3671,12 @@ function selecionaReuniao() {
             );
             notificacaoFalando?.remove();
         } else if (microfoneAberto && eventoAtivo === 'microfone') {
+            if (verifDesb14) {
+                quantMicNinjaDesb14++;
+                if (quantMicNinjaDesb14 >= 5) {
+                    desbloquearConquista(14);
+                }
+            }
             if (jogoRodando && !estaPausado) {
                 notificar(14);
                 const notificacaoFalando = Array.from(document.querySelectorAll('.notificacao')).find(n =>
@@ -4111,7 +4211,7 @@ const mataInimigo = {
     ],
 }
 
-function eliminarInimigo(ladoInimigo) {
+async function eliminarInimigo(ladoInimigo) {
     const telaJogo = document.querySelector('#tela-jogo');
     const inimigo = document.querySelector(`#inimigo-${posicaoAtual}-${ladoInimigo}`);
 
@@ -4181,6 +4281,12 @@ function eliminarInimigo(ladoInimigo) {
 
     if (statusJogo == 'selecionado') {
         telaJogo.style.backgroundImage = `url(${imagensPrecarregadas[srcMapa].src})`;
+    }
+
+    Usuario.aumentarQuantInimigosDerrotados(usuarioId, 1);
+    const usuario = await Usuario.getUsuarioLogado();
+    if (usuario.inimigos_derrotados >= 100) {
+        desbloquearConquista(10);
     }
 }
 
@@ -4943,7 +5049,7 @@ document.querySelector('#tb-lista').addEventListener('click', () => clicaAba('li
 document.querySelector('#tb-jogo').addEventListener('click', () => clicaAba('jogo'));
 document.querySelector('#tb-tarefa').addEventListener('click', () => clicaAba('tarefa'));
 
-function atualizarTempo() {
+async function atualizarTempo() {
     if (tempoRestante > 0) {
         tempoRestante--;
         atualizarHUD();
@@ -4951,6 +5057,12 @@ function atualizarTempo() {
 
     if (tempoRestante <= 0) {
         if (pontuacao >= pontuacaoMinima) {
+            if (energiaDesb8) {
+                await desbloquearConquista(8);
+            }
+            if (felicidadeDesb9) {
+                await desbloquearConquista(9);
+            }
             gameOver(0);
         } else {
             gameOver(6);
@@ -4962,6 +5074,10 @@ function atualizarDecaimento() {
     energia = Math.max(0, energia - 1);
     felicidade = Math.max(0, felicidade - 1);
     atualizarHUD();
+
+    if (energia <= 75) {
+        energiaDesb8 = false;
+    }
 
     if (energia <= 0 || felicidade <= 0) {
         if (energia <= 0 && felicidade <= 0) {
@@ -5010,6 +5126,7 @@ function iniciarEventoMicrofone() {
     eventoAtivo = 'microfone';
     notificar(1);
     let countdown = toleranciaMicrofone;
+    verifDesb14 = true;
     const notificacao = Array.from(document.querySelectorAll('.notificacao')).find(n =>
         n.querySelector('.texto-notificacao')?.textContent.startsWith('Ligue o microfone')
     );
@@ -5018,6 +5135,9 @@ function iniciarEventoMicrofone() {
 
     clearInterval(intervaloEvento);
     intervaloEvento = setInterval(() => {
+        if (countdown < toleranciaMicrofone) {
+            verifDesb14 = false;
+        }
         countdown--;
         if (textoNotificacao) {
             countdownNotificacao.textContent = `${countdown}s`;
@@ -5076,7 +5196,11 @@ function iniciarEventoCamera() {
         if (textoNotificacaoCamera) {
             countdownNotificacaoCamera.textContent = `${countdown}s`;
         }
+        if (countdown <= 1) {
+            ligarCameraDesb7 = true;
+        }
         if (countdown <= 0) {
+            ligarCameraDesb7 = false;
             notificacaoCamera.remove();
             clearInterval(intervaloCamera);
             if (!cameraAberto) {
