@@ -20,7 +20,7 @@ async function verificarLogin() {
     }
 }
 
-const contaVerificada = setInterval(verificarLogin, 1000);
+verificarLogin();
 
 function voltar() {
     window.location.href = '../../html/tela_inicial/pagina_inicial.html';

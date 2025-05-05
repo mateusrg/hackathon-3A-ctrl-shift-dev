@@ -20,6 +20,6 @@ async function verificarLogin() {
     }
 }
 
-const contaVerificada = setInterval(verificarLogin, 1000);
+verificarLogin();
 
 document.querySelector('#ok').addEventListener('click', () => window.location.href = '../../html/tela_inicial/tutorial.html');

@@ -20,7 +20,9 @@ async function verificarLogin() {
     }
 }
 
-const contaVerificada = setInterval(verificarLogin, 1000);
+localStorage.setItem('isRun', true);
+
+verificarLogin();
 
 // 🔁 Preload das 16 imagens do tutorial
 const imagensTutorial = [];

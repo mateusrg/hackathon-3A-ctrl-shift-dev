@@ -20,10 +20,21 @@ async function verificarLogin() {
     }
 }
 
+if (localStorage.getItem('isRun') == null) {
+    localStorage.setItem('isRun', false);
+}
+
+if (localStorage.getItem('isRun') == 'false') {
+    window.location.href = '../../html/tela_inicial/pagina_inicial.html';
+}
+
+localStorage.setItem('isRun', false);
+
+verificarLogin();
+
 const usuarioParaObterId = await Usuario.getUsuarioLogado();
 const usuarioId = usuarioParaObterId.id;
 
-verificarLogin();
 
 const dificuldade = Number(localStorage.getItem('dificuldadeSelecionada'));
 

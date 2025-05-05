@@ -20,7 +20,7 @@ async function verificarLogin() {
     }
 }
 
-const contaVerificada = setInterval(verificarLogin, 1000);
+verificarLogin();
 
 document.querySelector('#voltar').addEventListener('click', () => window.location.href = '../../html/tela_inicial/dificuldade.html');
 

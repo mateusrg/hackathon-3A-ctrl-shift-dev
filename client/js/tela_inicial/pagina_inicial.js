@@ -20,7 +20,11 @@ async function verificarLogin() {
     }
 }
 
-const contaVerificada = setInterval(verificarLogin, 1000);
+if (localStorage.getItem('usuarioLogado')) {
+    window.location.href = '../../html/login/pagina_inicial_deslogado.html';
+}
+
+verificarLogin();
 
 function iniciar() {
     window.location.href = '../../html/tela_inicial/dificuldade.html';
