@@ -1,15 +1,21 @@
 import Usuario from '../funcoes/usuario.js';
 
 async function verificarLogin() {
-    const usuarioStorage = JSON.parse(localStorage.getItem('usuario')); 
+    const usuarioStorage = JSON.parse(localStorage.getItem('usuario'));
 
-    if (usuarioStorage == null || usuarioStorage.length == 0) {
+    if (!usuarioStorage || usuarioStorage.length === 0) {
         window.location.href = '../../html/login/pagina_inicial_deslogado.html';
+        return;
     }
 
-    const usuario = await Usuario.selecionarUsuarioPorId(usuarioStorage.id);
+    try {
+        const usuario = await Usuario.selecionarUsuarioPorId(usuarioStorage.id);
 
-    if (usuario.email != usuarioStorage.email) {
+        if (!usuario || usuario.email !== usuarioStorage.email) {
+            window.location.href = '../../html/login/pagina_inicial_deslogado.html';
+        }
+    } catch (error) {
+        console.error("Erro ao acessar o servidor:", error);
         window.location.href = '../../html/login/pagina_inicial_deslogado.html';
     }
 }
