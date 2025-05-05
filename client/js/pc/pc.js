@@ -1093,10 +1093,10 @@ function gameOver(causaMorte) {
     window.location.href = "../../html/final/final.html";
 }
 
-let tempoRestante = 3;
+let tempoRestante = 600;
 let energia = 100;
 let felicidade = 100;
-let pontuacao = 200000;
+let pontuacao = 0;
 
 let statusReuniao = 'fechado'; // "fechado", "aberto", "selecionado"
 let statusPasta = 'fechado'; // "fechado", "aberto", "selecionado"
@@ -1341,8 +1341,6 @@ async function desbloquearConquista(idConquista) {
         case 36:
             texto = 'Ctrl+Shift+Dev';
             break;
-        default:
-            console.log('Conquista não reconhecida!');
     }
 
     const conquista = document.createElement('div');
@@ -1443,7 +1441,6 @@ function notificar(id) {
     if (advertencia) {
         imagem = 'url("../../assets/pc/notificacoes/info.png")';
         advertencias.push(id);
-        console.log(advertencias);
         const advertenciaElement = document.querySelector(`#adv_${advertencias.length}`);
         advertenciaElement?.classList.remove('advertencia_vazia');
         advertenciaElement?.classList.add('advertencia_cheia');
@@ -3791,7 +3788,6 @@ function selecionaReuniao() {
                         clearInterval(intervaloCompartilhando);
                         eventoAtivo = null;
                         iniciarEventosAleatorios();
-                        console.log('Tela compartilhada a tempo e tarefa concluída com sucesso!');
                         selecionaReuniao();
                     }
                 }, 1000);
@@ -3888,7 +3884,6 @@ function selecionaReuniao() {
                     eventoAtivo = null;
                     iniciarEventosAleatorios();
                     document.querySelector('#microfone-aberto')?.click();
-                    console.log('Microfone ligado a tempo e tarefa concluída com sucesso!');
                 }
             }, 1000);
 
@@ -5147,7 +5142,6 @@ function iniciarEventoMicrofone() {
             notificar(4); // Advertência por não ligar o microfone
             eventoAtivo = null;
             iniciarEventosAleatorios();
-            console.log('Microfone não ligado a tempo!');
         }
     }, 1000);
 }
@@ -5169,14 +5163,12 @@ function iniciarEventoCompartilharTela() {
         if (textoNotificacaoCompartilharTela) {
             countdownNotificacaoCompartilharTela.textContent = `${countdown}s`;
         }
-        console.log(`Compartilhe a tela, ${countdown}s restantes.`);
 
         if (countdown <= 0) {
             clearInterval(intervaloEvento);
             notificar(8); // Advertência por não compartilhar a tela
             eventoAtivo = null;
             iniciarEventosAleatorios();
-            console.log('Compartilhamento de tela não realizado a tempo!');
         }
     }, 1000);
 }
@@ -5207,7 +5199,6 @@ function iniciarEventoCamera() {
                 notificar(6); // Advertência por não religar a câmera
                 iniciarEventoCamera();
             }
-            console.log('Câmera não religada a tempo!');
         }
     }, 1000);
 }

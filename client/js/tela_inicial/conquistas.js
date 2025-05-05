@@ -233,7 +233,6 @@ async function conquista24() {
 
     const imagemConquista = document.createElement('div');
     imagemConquista.classList.add('imagem-conquista-notificacao');
-    console.log(conquistasDescricao[24].imagem);
     imagemConquista.style.backgroundImage = `url('../../assets/conquistas/icones/conquistas25.png')`;
     conquistaNotificacao.appendChild(imagemConquista);
 
