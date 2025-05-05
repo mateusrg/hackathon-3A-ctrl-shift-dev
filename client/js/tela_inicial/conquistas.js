@@ -96,7 +96,7 @@ const conquistasDescricao = [
     },
     {
         nome: "Microfone Ninja",
-        descricao: "Ative o microfone em menos de 1 segundo em 5 solicitações.",
+        descricao: "Ative o microfone em menos de 1 segundo em 5 solicitações de uma run.",
         imagem: "../../assets/conquistas/icones/conquistas14.png"
     },
     {
@@ -111,7 +111,7 @@ const conquistasDescricao = [
     },
     {
         nome: "Advertência Zero",
-        descricao: "Acumule 0 advertências em 10 runs consecutivas.",
+        descricao: "Acumule 0 advertências em 5 runs consecutivas.",
         imagem: "../../assets/conquistas/icones/conquistas17.png"
     },
     {

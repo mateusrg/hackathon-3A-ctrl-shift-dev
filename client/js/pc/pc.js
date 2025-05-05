@@ -49,7 +49,7 @@ let energiaCafeRestaura;
 let felicidadeInimigoDerrotado;
 let frequenciaEventosMinimo;
 let frequenciaEventosMaximo;
-let toleranciaCamera = 7;
+let toleranciaCamera = 15;
 
 switch (dificuldade) {
     case 1:
@@ -3823,7 +3823,7 @@ function selecionaReuniao() {
                     countdownCompartilhando--;
                     countdownNotificacaoCompartilharTela.textContent = `${countdownCompartilhando}s`;
                     if (countdownCompartilhando <= 0) {
-                        abas.forEach(selector => {
+                        abasCT.forEach(selector => {
                             try {
                                 document.querySelector(selector)?.removeEventListener('click', handleClick);
                             } finally { }
@@ -5267,9 +5267,11 @@ function iniciarEventoCompartilharTela() {
         }
 
         if (countdown <= 0) {
-            try {
-                document.querySelector(selector)?.removeEventListener('click', handleClick);
-            } finally { }
+            abasCT.forEach(selector => {
+                try {
+                    document.querySelector(selector)?.removeEventListener('click', handleClick);
+                } finally { }
+            });
             clearInterval(intervaloEvento);
             notificar(8); // Advertência por não compartilhar a tela
             eventoAtivo = null;

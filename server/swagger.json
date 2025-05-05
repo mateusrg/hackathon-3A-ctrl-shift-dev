@@ -1,9 +1,9 @@
 {
     "openapi": "3.0.0",
     "info": {
-      "title": "API de Estacionamento",
+      "title": "API do Ctrl+Shift+Dev",
       "version": "1.0.0",
-      "description": "Documentação da API para cadastro de usuários, login e gestão de vagas."
+      "description": "Documentação da API para cadastro, login, alteração e exclusão de usuário."
     },
     "servers": [
       {
@@ -12,7 +12,7 @@
       }
     ],
     "paths": {
-      "/cadastro": {
+      "/usuario": {
         "post": {
           "summary": "Cadastro de usuário",
           "requestBody": {
@@ -22,14 +22,10 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "username": { "type": "string" },
-                    "password": { "type": "string" },
                     "email": { "type": "string" },
-                    "placa": { "type": "string" },
-                    "cor": { "type": "string" },
-                    "modelo": { "type": "string" }
+                    "senha": { "type": "string" }
                   },
-                  "required": ["username", "password", "email", "placa", "cor", "modelo"]
+                  "required": ["email", "senha"]
                 }
               }
             }
