@@ -1127,7 +1127,6 @@ let tarefaAberta = -1; // -1 (nenhuma), [índices das tarefas]
 let microfoneAberto = false;
 let cameraAberto = true;
 let nivelCafe = 3;
-let abasOrdenadas = [];
 
 const removeOriginal = Element.prototype.remove;
 
@@ -1145,7 +1144,7 @@ Element.prototype.remove = function () {
 
         let listaBaloes = ['#balao-espetado-mesa', '#balao-espetado-escritorio', '#balao-espetado-cafeteira'];
 
-        if (texto.startsWith('Ligue o microfone') || texto.startsWith('Compartilhe o documento') || texto.startsWith('Religue')) {
+        if (texto.startsWith('Ligue o microfone') || texto.startsWith('Compartilhe o documento') || texto.startsWith('Religue') || texto.startsWith('Compartilhando') || texto.startsWith('Falando')) {
             listaBaloes = ['#balao-mesa', '#balao-escritorio', '#balao-cafeteira'];
         }
 
@@ -2374,11 +2373,6 @@ function criarTelaTarefaTipo1(indiceTarefa) {
         document.querySelector('#tb-tarefa').style.display = 'none';
         game.querySelector('#tb-tarefa-selecionado')?.remove();
         statusTarefa = 'fechado';
-
-        abasOrdenadas.splice(abasOrdenadas.indexOf('tarefa'), 1);
-        if (abasOrdenadas.length > 0) {
-            clicaAba(abasOrdenadas[abasOrdenadas.length - 1]);
-        }
     });
     game.appendChild(xisTarefa);
 
@@ -2392,10 +2386,6 @@ function criarTelaTarefaTipo1(indiceTarefa) {
         tarefaAberto.className = 'aberto';
         game.appendChild(tarefaAberto);
         statusTarefa = 'aberto';
-        abasOrdenadas.splice(abasOrdenadas.indexOf('tarefa'), 1);
-        if (abasOrdenadas.length > 0) {
-            clicaAba(abasOrdenadas[abasOrdenadas.length - 1]);
-        }
     });
     game.appendChild(minimizarTarefa);
 }
@@ -3653,12 +3643,6 @@ function selecionaReuniao() {
     destruirTelaJogo();
     statusReuniao = 'selecionado';
 
-    const index = abasOrdenadas.indexOf('reuniao');
-    if (index !== -1) {
-        abasOrdenadas.splice(index, 1);
-    }
-    abasOrdenadas.push('reuniao');
-
     const telaReuniao = document.createElement('div');
     const compartilharTela = document.createElement('div');
     const camera = document.createElement('div');
@@ -3759,11 +3743,6 @@ function selecionaReuniao() {
         reuniaoAberto.className = 'aberto';
         game.appendChild(reuniaoAberto);
         statusReuniao = 'aberto';
-
-        abasOrdenadas.splice(abasOrdenadas.indexOf('reuniao'), 1);
-        if (abasOrdenadas.length > 0) {
-            clicaAba(abasOrdenadas[abasOrdenadas.length - 1]);
-        }
     });
 
     const reuniaoAberto = game.querySelector('#tb-reuniao-aberto');
@@ -3813,6 +3792,23 @@ function selecionaReuniao() {
                 notificar(10);
                 setTimeout(selecionaReuniao, 500);
             } else {
+                let texto = textoNotificacaoCompartilharTela.textContent;
+                const listaBaloes = ['#balao-mesa', '#balao-escritorio', '#balao-cafeteira'];
+                listaBaloes.forEach(balaoId => {
+                    const balao = document.querySelector(balaoId);
+                    if (balao) {
+                        let textoAtual = balao.innerHTML;
+                        textoAtual = textoAtual.replace('<br>', '\n');
+                        textoAtual = textoAtual.replace(texto, '');
+                        textoAtual.replace('\n', '<br>');
+                        textoAtual = textoAtual.replace('<br>', '').replace('<br>', '');
+                        balao.innerHTML = textoAtual;
+                    }
+
+                    if (balao.textContent.trim() === '') {
+                        balao.style.display = 'none';
+                    }
+                });
                 textoNotificacaoCompartilharTela.textContent = 'Compartilhando...';
                 notificacaoCompartilharTela.style.backgroundImage = 'url("../../assets/pc/notificacoes/verde.png")';
                 countdownNotificacaoCompartilharTela.style.color = '#00cf0a';
@@ -3911,8 +3907,25 @@ function selecionaReuniao() {
             eventoAtendido = true;
             clearInterval(intervaloEvento);
             if (textoNotificacao) {
+                let texto = textoNotificacao.textContent;
                 textoNotificacao.textContent = 'Falando...';
                 notificacao.style.backgroundImage = 'url("../../assets/pc/notificacoes/verde.png")';
+                const listaBaloes = ['#balao-mesa', '#balao-escritorio', '#balao-cafeteira'];
+                listaBaloes.forEach(balaoId => {
+                    const balao = document.querySelector(balaoId);
+                    if (balao) {
+                        let textoAtual = balao.innerHTML;
+                        textoAtual = textoAtual.replace('<br>', '\n');
+                        textoAtual = textoAtual.replace(texto, '');
+                        textoAtual.replace('\n', '<br>');
+                        textoAtual = textoAtual.replace('<br>', '').replace('<br>', '');
+                        balao.innerHTML = textoAtual;
+                    }
+
+                    if (balao.textContent.trim() === '') {
+                        balao.style.display = 'none';
+                    }
+                });
             }
 
             countdownNotificacao.style.color = '#00cf0a';
@@ -3952,12 +3965,6 @@ function selecionaPasta() {
     destruirTelaJogo();
     statusPasta = 'selecionado';
 
-    const index = abasOrdenadas.indexOf('pasta');
-    if (index !== -1) {
-        abasOrdenadas.splice(index, 1);
-    }
-    abasOrdenadas.push('pasta');
-
     const telaPasta = document.createElement('div');
     const minimizarPasta = document.createElement('div');
     const xisPasta = document.createElement('div');
@@ -3994,11 +4001,6 @@ function selecionaPasta() {
         documentoAberto = null;
         game.querySelector('#tb-pasta-selecionado')?.remove();
         statusPasta = 'fechado';
-
-        abasOrdenadas.splice(abasOrdenadas.indexOf('pasta'), 1);
-        if (abasOrdenadas.length > 0) {
-            clicaAba(abasOrdenadas[abasOrdenadas.length - 1]);
-        }
     });
 
     const nomesDocs = ['slides_site.docx', 'dados_aplicativo.docx', 'index.pdf', 'banco_app.txt', 'server.txt'];
@@ -4066,11 +4068,6 @@ function selecionaPasta() {
         pastaAberto.className = 'aberto';
         game.appendChild(pastaAberto);
         statusPasta = 'aberto';
-
-        abasOrdenadas.splice(abasOrdenadas.indexOf('pasta'), 1);
-        if (abasOrdenadas.length > 0) {
-            clicaAba(abasOrdenadas[abasOrdenadas.length - 1]);
-        }
     });
 
     const pastaSelecionado = document.createElement('div');
@@ -4087,12 +4084,6 @@ function selecionaLista() {
     destruirTelaTarefa();
     destruirTelaJogo();
     statusLista = 'selecionado';
-
-    const index = abasOrdenadas.indexOf('lista');
-    if (index !== -1) {
-        abasOrdenadas.splice(index, 1);
-    }
-    abasOrdenadas.push('lista');
 
     const listaAberto = game.querySelector('#tb-lista-aberto');
     if (listaAberto) {
@@ -4124,23 +4115,12 @@ function selecionaLista() {
         listaAberto.addEventListener('click', () => {
             selecionaLista();
         });
-
-        statusLista = 'aberto';
-        abasOrdenadas.splice(abasOrdenadas.indexOf('lista'), 1);
-        if (abasOrdenadas.length > 0) {
-            clicaAba(abasOrdenadas[abasOrdenadas.length - 1]);
-        }
     });
 
     xisLista.addEventListener('click', () => {
         destruirTelaLista();
         document.querySelector('#tb-lista-selecionado')?.remove();
         statusLista = 'fechado';
-
-        abasOrdenadas.splice(abasOrdenadas.indexOf('lista'), 1);
-        if (abasOrdenadas.length > 0) {
-            clicaAba(abasOrdenadas[abasOrdenadas.length - 1]);
-        }
     });
 
     game.querySelector('#tb-lista-selecionado')?.remove();
@@ -4878,11 +4858,6 @@ function criarTelaJogo() {
         jogoRodando = false;
         estaPausado = false;
         botaoIniciarJogoJaClicado = false;
-
-        abasOrdenadas.splice(abasOrdenadas.indexOf('jogo'), 1);
-        if (abasOrdenadas.length > 0) {
-            clicaAba(abasOrdenadas[abasOrdenadas.length - 1]);
-        }
     });
 
     minimizarJogo.addEventListener('click', () => {
@@ -4893,10 +4868,6 @@ function criarTelaJogo() {
         jogoAberto.className = 'aberto';
         game.appendChild(jogoAberto);
         statusJogo = 'aberto';
-        abasOrdenadas.splice(abasOrdenadas.indexOf('jogo'), 1);
-        if (abasOrdenadas.length > 0) {
-            clicaAba(abasOrdenadas[abasOrdenadas.length - 1]);
-        }
     });
 
     const jogoAberto = game.querySelector('#tb-jogo-aberto');
@@ -4928,12 +4899,6 @@ function selecionaJogo() {
     }
     statusJogo = 'selecionado';
 
-    const index = abasOrdenadas.indexOf('jogo');
-    if (index !== -1) {
-        abasOrdenadas.splice(index, 1);
-    }
-    abasOrdenadas.push('jogo');
-
     const jogoAberto = game.querySelector('#tb-jogo-aberto');
     if (jogoAberto) {
         jogoAberto.remove();
@@ -4955,13 +4920,6 @@ function selecionaTarefa(indiceTarefa) {
     destruirTelaLista();
     destruirTelaTarefa();
     destruirTelaJogo();
-
-    statusTarefa = 'selecionado';
-    const index = abasOrdenadas.indexOf('tarefa');
-    if (index !== -1) {
-        abasOrdenadas.splice(index, 1);
-    }
-    abasOrdenadas.push('tarefa');
 
     document.querySelector('#tb-tarefa').style.display = 'block';
 
