@@ -1,0 +1,74 @@
+* {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+.frame {
+    position: relative;
+}
+
+#game {
+    background-image: url('../../assets/tutorial/ver-tutorial.png');
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#sim {
+    position: absolute;
+    height: calc(110 * var(--un));
+    width: calc(420 * var(--un));
+    top: calc(530 * var(--un));
+    left: calc(260 * var(--un));
+    cursor: pointer;
+    border-radius: calc(20 * var(--un));
+    background-color: transparent;
+    border: none;
+}
+
+#nao {
+    position: absolute;
+    height: calc(110 * var(--un));
+    width: calc(420 * var(--un));
+    top: calc(530 * var(--un));
+    left: calc(720 * var(--un));
+    cursor: pointer;
+    border-radius: calc(20 * var(--un));
+    background-color: transparent;
+    border: none;
+}
+
+#seta-direita {
+    position: absolute;
+    height: calc(199 * var(--un));
+    width: calc(117 * var(--un));
+    top: calc(395 * var(--un));
+    left: calc(1240 * var(--un));
+    cursor: pointer;
+    border: none;
+}
+
+#seta-esquerda {
+    position: absolute;
+    height: calc(199 * var(--un));
+    width: calc(117 * var(--un));
+    top: calc(395 * var(--un));
+    left: calc(22 * var(--un));
+    cursor: pointer;
+    border: none;
+}
+
+#voltar {
+    position: absolute;
+    height: calc(100 * var(--un));
+    width: calc(380 * var(--un));
+    top: calc(845 * var(--un));
+    left: 50%;
+    transform: translate(-50%, 0);
+    cursor: pointer;
+    border-radius: calc(20 * var(--un));
+    background-color: transparent;
+    border: none;
+}

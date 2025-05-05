@@ -38,7 +38,7 @@ function comoEvitarTela() {
     const finalJSON = localStorage.getItem('final');
     const final = JSON.parse(finalJSON);
 
-    const advertencias = JSON.parse(final.advertencias);
+    const advertencias = final.advertencias;
 
     let numeroAdvertencia = 0;
 
@@ -147,7 +147,7 @@ function gameOver() {
 
     if (final.causaMorte == 1) {
         game.style.backgroundImage = "url('../../assets/final/gameover-adv.png')";
-        const advertencias = JSON.parse(final.advertencias);
+        const advertencias = final.advertencias;
         const divAdvertencias = document.getElementById('advertencias');
 
         let numeroAdvertencia = 0;
