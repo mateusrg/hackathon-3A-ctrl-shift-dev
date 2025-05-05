@@ -34,7 +34,8 @@ verificarLogin();
 
 const usuarioParaObterId = await Usuario.getUsuarioLogado();
 const usuarioId = usuarioParaObterId.id;
-
+const abasCT = ['#tb-reuniao', '#tb-pasta', '#tb-lista', '#tb-jogo', '#tb-tarefa', '#xis-pasta', '#minimizar-pasta', '#documento-aberto-fechar', '#documento-aberto-minimizar', '#doc-1', '#doc-2', '#doc-3', '#doc-4', '#doc-5'];
+let handleClick;
 
 const dificuldade = Number(localStorage.getItem('dificuldadeSelecionada'));
 
@@ -3801,6 +3802,11 @@ function selecionaReuniao() {
                     countdownCompartilhando--;
                     countdownNotificacaoCompartilharTela.textContent = `${countdownCompartilhando}s`;
                     if (countdownCompartilhando <= 0) {
+                        abas.forEach(selector => {
+                            try {
+                                document.querySelector(selector)?.removeEventListener('click', handleClick);
+                            } finally { }
+                        });
                         notificacaoCompartilharTela.remove();
                         clearInterval(intervaloCompartilhando);
                         eventoAtivo = null;
@@ -3830,7 +3836,7 @@ function selecionaReuniao() {
                             break;
                     }
 
-                    const handleClick = () => {
+                    handleClick = () => {
                         if (eventoAtivo !== 'compartilharTela') return;
                         notificacaoCompartilharTela.remove();
                         clearInterval(intervaloCompartilhando);
@@ -5182,6 +5188,9 @@ function iniciarEventoCompartilharTela() {
         }
 
         if (countdown <= 0) {
+            try {
+                document.querySelector(selector)?.removeEventListener('click', handleClick);
+            } finally { }
             clearInterval(intervaloEvento);
             notificar(8); // Advertência por não compartilhar a tela
             eventoAtivo = null;
