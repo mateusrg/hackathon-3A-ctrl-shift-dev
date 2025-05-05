@@ -46,74 +46,81 @@ function comoEvitarTela() {
 
     const advertencias = final.advertencias;
 
-    let numeroAdvertencia = 0;
-
-    advertencias.forEach((advertencia) => {
-        numeroAdvertencia += 1;
-        const advertenciaTipo = document.createElement('p');
-        switch (advertencia) {
-            case 4:
-                advertenciaTipo.id = 'advertencia-como-evitar';
-                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando o chefe solicita, é preciso abrir o microfone antes que o tempo se esgote.`;
-                divTexto.appendChild(advertenciaTipo);
-                break;
-            case 5:
-                advertenciaTipo.id = 'advertencia-como-evitar';
-                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Enquanto você está falando na reunião, você não deve fechar o microfone, ele fecha automaticamente ao final da ação.`;
-                divTexto.appendChild(advertenciaTipo);
-                break;
-            case 6:
-                advertenciaTipo.id = 'advertencia-como-evitar';
-                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você desligar a câmera, você precisa ligar ela antes que o tempo se esgote.`;
-                divTexto.appendChild(advertenciaTipo);
-                break;
-            case 7:
-                advertenciaTipo.id = 'advertencia-como-evitar';
-                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você for até a cafeteira, você sempre deverá desligar a câmera, pois o chefe não pode ver que você saiu.`;
-                divTexto.appendChild(advertenciaTipo);
-                break;
-            case 8:
-                advertenciaTipo.id = 'advertencia-como-evitar';
-                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando o chefe solicita, é preciso compartilhar a tela antes que o tempo se esgote.`;
-                divTexto.appendChild(advertenciaTipo);
-                break;
-            case 9:
-                advertenciaTipo.id = 'advertencia-como-evitar';
-                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você for compartilhar a tela, deverá deixar aberto o documento solicitado pelo chefe.`;
-                divTexto.appendChild(advertenciaTipo);
-                break;
-            case 10:
-                advertenciaTipo.id = 'advertencia-como-evitar';
-                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Você precisa compartilhar o documento solicitado pelo chefe.`;
-                divTexto.appendChild(advertenciaTipo);
-                break;
-            case 11:
-                advertenciaTipo.id = 'advertencia-como-evitar';
-                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você for compartilhar a tela, não esqueça de fechar todas as outras abas.`;
-                divTexto.appendChild(advertenciaTipo);
-                break;
-            case 12:
-                advertenciaTipo.id = 'advertencia-como-evitar';
-                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Você só deve ligar o microfone quando o chefe solicitar.`;
-                divTexto.appendChild(advertenciaTipo);
-                break;
-            case 13:
-                advertenciaTipo.id = 'advertencia-como-evitar';
-                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Você só deve compartilhar a tela quando o chefe solicitar.`;
-                divTexto.appendChild(advertenciaTipo);
-                break;
-            case 14:
-                advertenciaTipo.id = 'advertencia-como-evitar';
-                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você for abrir o microfone, não se esqueça de fehcar ou pausar o jogo, caso contrário, o chefe irá ouvir.`;
-                divTexto.appendChild(advertenciaTipo);
-                break;
-            case 15:
-                advertenciaTipo.id = 'advertencia-como-evitar';
-                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Enquanto estiver compartilhando a tela, não feche o documento.`;
-                divTexto.appendChild(advertenciaTipo);
-                break;
-        }
-    });
+    if (advertencias.length == 0) {
+        const semAdvertencia = document.createElement('p');
+        semAdvertencia.id = 'sem-advertencia-como-evitar';
+        popUp.appendChild(semAdvertencia);
+        semAdvertencia.textContent = 'Você não teve nenhuma advertência';
+    } else {
+        let numeroAdvertencia = 0;
+    
+        advertencias.forEach((advertencia) => {
+            numeroAdvertencia += 1;
+            const advertenciaTipo = document.createElement('p');
+            switch (advertencia) {
+                case 4:
+                    advertenciaTipo.id = 'advertencia-como-evitar';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando o chefe solicita, é preciso abrir o microfone antes que o tempo se esgote.`;
+                    divTexto.appendChild(advertenciaTipo);
+                    break;
+                case 5:
+                    advertenciaTipo.id = 'advertencia-como-evitar';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Enquanto você está falando na reunião, você não deve fechar o microfone, ele fecha automaticamente ao final da ação.`;
+                    divTexto.appendChild(advertenciaTipo);
+                    break;
+                case 6:
+                    advertenciaTipo.id = 'advertencia-como-evitar';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você desligar a câmera, você precisa ligar ela antes que o tempo se esgote.`;
+                    divTexto.appendChild(advertenciaTipo);
+                    break;
+                case 7:
+                    advertenciaTipo.id = 'advertencia-como-evitar';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você for até a cafeteira, você sempre deverá desligar a câmera, pois o chefe não pode ver que você saiu.`;
+                    divTexto.appendChild(advertenciaTipo);
+                    break;
+                case 8:
+                    advertenciaTipo.id = 'advertencia-como-evitar';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando o chefe solicita, é preciso compartilhar a tela antes que o tempo se esgote.`;
+                    divTexto.appendChild(advertenciaTipo);
+                    break;
+                case 9:
+                    advertenciaTipo.id = 'advertencia-como-evitar';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você for compartilhar a tela, deverá deixar aberto o documento solicitado pelo chefe.`;
+                    divTexto.appendChild(advertenciaTipo);
+                    break;
+                case 10:
+                    advertenciaTipo.id = 'advertencia-como-evitar';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Você precisa compartilhar o documento solicitado pelo chefe.`;
+                    divTexto.appendChild(advertenciaTipo);
+                    break;
+                case 11:
+                    advertenciaTipo.id = 'advertencia-como-evitar';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você for compartilhar a tela, não esqueça de fechar todas as outras abas.`;
+                    divTexto.appendChild(advertenciaTipo);
+                    break;
+                case 12:
+                    advertenciaTipo.id = 'advertencia-como-evitar';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Você só deve ligar o microfone quando o chefe solicitar.`;
+                    divTexto.appendChild(advertenciaTipo);
+                    break;
+                case 13:
+                    advertenciaTipo.id = 'advertencia-como-evitar';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Você só deve compartilhar a tela quando o chefe solicitar.`;
+                    divTexto.appendChild(advertenciaTipo);
+                    break;
+                case 14:
+                    advertenciaTipo.id = 'advertencia-como-evitar';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você for abrir o microfone, não se esqueça de fehcar ou pausar o jogo, caso contrário, o chefe irá ouvir.`;
+                    divTexto.appendChild(advertenciaTipo);
+                    break;
+                case 15:
+                    advertenciaTipo.id = 'advertencia-como-evitar';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Enquanto estiver compartilhando a tela, não feche o documento.`;
+                    divTexto.appendChild(advertenciaTipo);
+                    break;
+            }
+        });
+    }
 
     const fechar = document.createElement('fechar');
     fechar.id = 'fechar-como-evitar';

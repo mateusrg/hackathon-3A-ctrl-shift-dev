@@ -172,6 +172,14 @@ body {
     line-height: calc(45 * var(--un));
 }
 
+#sem-advertencia-como-evitar {
+    color: #fff;
+    font-size: calc(30 * var(--un));
+    top: calc(150 * var(--un));
+    text-align: center;
+    line-height: calc(45 * var(--un));
+}
+
 #voltar {
     position: absolute;
     cursor: pointer;
