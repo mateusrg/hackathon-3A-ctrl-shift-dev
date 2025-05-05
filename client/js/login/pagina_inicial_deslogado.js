@@ -9,6 +9,6 @@ function cadastrar() {
 document.querySelector('#entrar').addEventListener('click', entrar);
 document.querySelector('#cadastrar').addEventListener('click', cadastrar);
 
-if (localStorage.getItem('usuarioLogado')) {
-    window.location.href = '../../html/login/pagina_inicial.html';
+if (localStorage.getItem('usuario')) {
+    window.location.href = '../../html/tela_inicial/pagina_inicial.html';
 }
