@@ -1948,3 +1948,32 @@ button {
     bottom: calc(379 * var(--un));
     cursor: pointer;
 }
+
+.conquista {
+    background-size: contain;
+    position: absolute;
+    height: calc(124 * var(--un));
+    width: calc(585 * var(--un));
+    left: calc(427 * var(--un));
+    bottom: calc(189 * var(--un));
+    background-image: url('../../assets/conquistas/conquista.png');
+    z-index: 10000;
+}
+
+.texto-conquista {
+    position: absolute;
+    width: calc(405 * var(--un));
+    color: #fff;
+    font-size: calc(15 * var(--un));
+    top: calc(54 * var(--un));
+    right: calc(50 * var(--un));
+}
+
+.imagem-conquista {
+    position: absolute;
+    background-size: contain;
+    height: calc(50 * var(--un));
+    aspect-ratio: 1/1;
+    top: calc(37 * var(--un));
+    left: calc(57 * var(--un));
+}

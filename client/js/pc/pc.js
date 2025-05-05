@@ -14,6 +14,9 @@ async function verificarLogin() {
     }
 }
 
+const usuarioParaObterId = await Usuario.getUsuarioLogado();
+const usuarioId = usuarioParaObterId.id;
+
 verificarLogin();
 
 const dificuldade = Number(localStorage.getItem('dificuldadeSelecionada'));
@@ -28,6 +31,7 @@ let energiaCafeRestaura;
 let felicidadeInimigoDerrotado;
 let frequenciaEventosMinimo;
 let frequenciaEventosMaximo;
+let toleranciaCamera = 7;
 
 switch (dificuldade) {
     case 1:
@@ -993,6 +997,7 @@ function validarDesafioTipo3(desafio, respostaPlayer) {
     return respostaPlayer == desafio.resposta_correta;
 }
 
+let tarefasConcluidasUltimosDoisMin = 0;
 let tarefas = [];
 let estadoTarefas = {
     1: '',
@@ -1075,6 +1080,7 @@ preencherTarefas();
 
 // Resto do Código
 function gameOver(causaMorte) {
+    return; // temporário enquanto codo
     let final = {
         "advertencias": advertencias,
         "causaMorte": causaMorte,
@@ -1138,6 +1144,11 @@ Element.prototype.remove = function () {
                 balao.style.display = 'none';
             }
         });
+    } else if (this.classList.contains('conquista')) {
+        const conquistas = document.querySelectorAll('.conquista');
+        conquistas.forEach((conquista, index) => {
+            conquista.style.bottom = `calc(${189 + 140 * index} * var(--un))`;
+        });
     }
 };
 
@@ -1197,6 +1208,163 @@ document.querySelector('#monitor').addEventListener('click', () => {
 
 document.querySelector('#mesa-escritorio').addEventListener('click', carregarMesa);
 
+async function isConquistaJaDesbloqueada(idConquista) {
+    const usuario = await Usuario.getUsuarioLogado();
+    return usuario.conquistas_desbloqueadas[idConquista - 1] != '0';
+}
+
+async function desbloquearConquista(idConquista) {
+    const conquistaJaDesbloqueada = await isConquistaJaDesbloqueada(idConquista);
+    if (conquistaJaDesbloqueada) {
+        return;
+    }
+
+    const usuario = await Usuario.getUsuarioLogado();
+    const usuarioId = usuario.id;
+
+    Usuario.desbloquearConquista(usuarioId, idConquista);
+
+    const imagem = `url("../../assets/conquistas/icones/conquistas${idConquista < 10 ? `0${idConquista}` : idConquista}.png")`;
+    let texto;
+    switch (idConquista) {
+        case 1:
+            texto = 'Mestre do Compartilhamento';
+            break;
+        case 2:
+            texto = 'Relâmpago do Código';
+            break;
+        case 3:
+            texto = 'Task Slayer';
+            break;
+        case 4:
+            texto = 'Sem Condições';
+            break;
+        case 5:
+            texto = 'Café com Leite';
+            break;
+        case 6:
+            texto = 'Barista Desastrado';
+            break;
+        case 7:
+            texto = 'Equilíbrio Tóxico';
+            break;
+        case 8:
+            texto = 'Maratona de Energético';
+            break;
+        case 9:
+            texto = 'Zen Developer';
+            break;
+        case 10:
+            texto = 'Jogador Incansável';
+            break;
+        case 11:
+            texto = 'Dev Relâmpago';
+            break;
+        case 12:
+            texto = 'Testador Implacável';
+            break;
+        case 13:
+            texto = 'Quizmaníaco';
+            break;
+        case 14:
+            texto = 'Microfone Ninja';
+            break;
+        case 15:
+            texto = 'Campeão do Compartilhamento';
+            break;
+        case 16:
+            texto = 'Bebum Profissional';
+            break;
+        case 17:
+            texto = 'Advertência Zero';
+            break;
+        case 18:
+            texto = 'Incompetente';
+            break;
+        case 19:
+            texto = 'Promovido a Pleno';
+            break;
+        case 20:
+            texto = 'Promovido a Sênior';
+            break;
+        case 21:
+            texto = 'Promovido a Tech Lead';
+            break;
+        case 22:
+            texto = 'Sobrevivente Tech Lead';
+            break;
+        case 23:
+            texto = 'Júnior Competente';
+            break;
+        case 24:
+            texto = 'Pleno Superior';
+            break;
+        case 25:
+            texto = 'Easter Eggs';
+            break;
+        case 26:
+            texto = 'Sênior Absoluto';
+            break;
+        case 27:
+            texto = 'Tech Lead Perfeito';
+            break;
+        case 28:
+            texto = 'Amante do Caos';
+            break;
+        case 29:
+            texto = 'Chega';
+            break;
+        case 30:
+            texto = 'Mais café';
+            break;
+        case 31:
+            texto = 'Maratona de Runs';
+            break;
+        case 32:
+            texto = 'Diversão Equilibrada';
+            break;
+        case 33:
+            texto = 'Um Último Suspiro';
+            break;
+        case 34:
+            texto = 'Pós-Depressão';
+            break;
+        case 35:
+            texto = 'O Verdadeiro Deus Gamer';
+            break;
+        case 36:
+            texto = 'Ctrl+Shift+Dev';
+            break;
+        default:
+            console.log('Conquista não reconhecida!');
+    }
+
+    const conquista = document.createElement('div');
+    conquista.className = 'conquista';
+    const quantidadeConquistasNaTela = document.querySelectorAll('.conquista').length;
+    conquista.style.bottom = `calc(${189 + 140 * quantidadeConquistasNaTela} * var(--un))`;
+    conquista.addEventListener('click', () => {
+        conquista.remove();
+    });
+    game.appendChild(conquista);
+
+    const imagemConquista = document.createElement('div');
+    imagemConquista.className = 'imagem-conquista';
+    imagemConquista.style.backgroundImage = imagem;
+    conquista.appendChild(imagemConquista);
+
+    const textoConquista = document.createElement('div');
+    textoConquista.className = 'texto-conquista';
+    textoConquista.textContent = texto;
+    conquista.appendChild(textoConquista);
+
+    setTimeout(() => {
+        if (document.body.contains(conquista)) {
+            conquista.remove();
+        }
+    }, 5000);
+}
+
 let advertencias = [];
 function notificar(id) {
     const nomeJogador = JSON.parse(localStorage.getItem('usuario'))['nome'];
@@ -1224,7 +1392,7 @@ function notificar(id) {
             advertencia = false;
             imagem = 'url("../../assets/pc/reuniao/camera_aberto.png")';
             texto = `Religue a câmera, ${nomeJogador}.`;
-            tempo = 7;
+            tempo = toleranciaCamera;
             break;
         case 4:
             texto = `POR QUE NÃO LIGOU O MICROFONE, ${nomeJogador.toUpperCase()}!?`;
@@ -1854,6 +2022,7 @@ function criarTelaTarefaTipo1(indiceTarefa) {
         const mensagem = document.createElement('div');
         if (todosCorretos) {
             pontuacao += tarefas[indiceTarefa - 1].pontosGanhos;
+            aumentarTarefasConcluidas();
             mensagem.id = 'sucesso-t1';
             mensagem.textContent = `+${tarefas[indiceTarefa - 1].pontosGanhos} ponto${tarefas[indiceTarefa - 1].pontosGanhos === 1 ? '' : 's'}`;
         } else {
@@ -2180,6 +2349,25 @@ function criarTelaTarefaTipo1(indiceTarefa) {
     game.appendChild(minimizarTarefa);
 }
 
+async function aumentarTarefasConcluidas() {
+    tarefasConcluidasUltimosDoisMin++;
+
+    setTimeout(() => {
+        tarefasConcluidasUltimosDoisMin = Math.max(0, tarefasConcluidasUltimosDoisMin - 1);
+    }, 120000);
+
+    if (tarefasConcluidasUltimosDoisMin >= 10) {
+        desbloquearConquista(2);
+    }
+
+    Usuario.aumentarQuantTarefasConcluidas(usuarioId, 1);
+    const usuario = await Usuario.getUsuarioLogado();
+    if (usuario.tarefas_concluidas >= 50) {
+        console.log('Desbloqueou conquista 1!');
+    }
+
+}
+
 function criarTelaTarefaTipo2(indiceTarefa) {
     const tarefa = tarefas[indiceTarefa - 1];
     let numeroLinhaAtual = 0;
@@ -2302,6 +2490,7 @@ function criarTelaTarefaTipo2(indiceTarefa) {
 
         if (respostaCorreta) {
             pontuacao += tarefa['pontosGanhos'];
+            aumentarTarefasConcluidas();
             mensagem.id = 'sucesso-t2';
             mensagem.textContent = `+${tarefa['pontosGanhos']} ponto${tarefa['pontosGanhos'] === 1 ? '' : 's'}`;
         } else {
@@ -2597,6 +2786,7 @@ function criarTelaTarefaTipo3(indiceTarefa) {
         const mensagem = document.createElement('div');
         if (respostaCorreta) {
             pontuacao += tarefa['pontosGanhos'];
+            aumentarTarefasConcluidas();
             mensagem.id = 'sucesso-t3';
             mensagem.textContent = `+${tarefa['pontosGanhos']} ponto${tarefa['pontosGanhos'] === 1 ? '' : 's'}`;
         } else {
@@ -2743,6 +2933,7 @@ function criarTelaTarefaTipo4(indiceTarefa) {
             if (resultado) {
                 const mensagem = document.createElement('div');
                 pontuacao += tarefa.pontosGanhos;
+                aumentarTarefasConcluidas();
                 mensagem.id = 'sucesso-t4';
                 mensagem.textContent = `+${tarefa.pontosGanhos}p.`;
                 game.appendChild(mensagem);
@@ -2971,6 +3162,7 @@ function criarTelaTarefaTipo5(indiceTarefa) {
 
         if (respostaCorreta) {
             pontuacao += tarefa['pontosGanhos'];
+            aumentarTarefasConcluidas();
             const mensagem = document.createElement('div');
             mensagem.id = 'sucesso-t5';
             mensagem.textContent = `+${tarefa['pontosGanhos']} ponto${tarefa['pontosGanhos'] === 1 ? '' : 's'}`;
@@ -3074,6 +3266,7 @@ function criarTelaTarefaTipo6(indiceTarefa) {
             if (alternativa.correta) {
                 if (questaoAtual + 1 === totalQuestoes) {
                     pontuacao += tarefa.pontosGanhos;
+                    aumentarTarefasConcluidas();
                     const mensagem = document.createElement('div');
                     mensagem.id = 'sucesso-t6';
                     mensagem.textContent = `+${tarefa.pontosGanhos} ponto${tarefa.pontosGanhos === 1 ? '' : 's'}`;
@@ -3238,6 +3431,7 @@ function criarTelaTarefaTipo7(indiceTarefa) {
                 if (estadoTarefas[indiceTarefa].etapaAtual === tarefa.alternativas.length) {
                     document.querySelector('#campo-texto-tarefa-7').textContent = tarefa.alternativas.map(a => a.opcoes[a.indiceCorreta]).join(' ');
                     pontuacao += tarefa.pontosGanhos;
+                    aumentarTarefasConcluidas();
                     const mensagem = document.createElement('div');
                     mensagem.id = 'sucesso-t7';
                     mensagem.textContent = `+${tarefa.pontosGanhos} ponto${tarefa.pontosGanhos === 1 ? '' : 's'}`;
@@ -3447,7 +3641,7 @@ function selecionaReuniao() {
     reuniaoSelecionado.className = 'selecionado';
     game.appendChild(reuniaoSelecionado);
 
-    document.querySelector('#compartilhar-tela').addEventListener('click', () => {
+    document.querySelector('#compartilhar-tela').addEventListener('click', async () => {
         const notificacaoCompartilharTela = Array.from(document.querySelectorAll('.notificacao')).find(n =>
             n.querySelector('.texto-notificacao')?.textContent.startsWith('Compartilhe ')
         );
@@ -3554,6 +3748,13 @@ function selecionaReuniao() {
             }
             notificar(13);
             setTimeout(selecionaReuniao, 500);
+        }
+        const usuario = await Usuario.getUsuarioLogado();
+        const usuarioId = usuario.id;
+        await Usuario.aumentarQuantTelaCompartilhada(usuarioId, 1);
+        const quantTelaCompartilhada = usuario.quant_tela_compartilhada;
+        if (quantTelaCompartilhada >= 30) {
+            desbloquearConquista(1);
         }
     });
 
@@ -4863,7 +5064,7 @@ function iniciarEventoCompartilharTela() {
 
 function iniciarEventoCamera() {
     notificar(3);
-    let countdown = 7;
+    let countdown = toleranciaCamera;
     const notificacaoCamera = Array.from(document.querySelectorAll('.notificacao')).find(n =>
         n.querySelector('.texto-notificacao')?.textContent.startsWith('Religue a câmera')
     );
@@ -4889,5 +5090,6 @@ function iniciarEventoCamera() {
 }
 
 iniciarEventosAleatorios();
-
 selecionaReuniao();
+
+['#balao-mesa', '#balao-escritorio', '#balao-cafeteira', '#balao-espetado-mesa', '#balao-espetado-escritorio', '#balao-espetado-cafeteira'].forEach((id) => document.querySelector(id).style.display = 'none');

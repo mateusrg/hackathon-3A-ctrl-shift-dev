@@ -14,5 +14,5 @@ CREATE TABLE usuarios (
     quizzes_gabaritados INT NOT NULL DEFAULT 0,
     runs_consecutivas_sem_advertencia INT NOT NULL DEFAULT 0,
     runs_jogadas INT NOT NULL DEFAULT 0,
-    dificuldade_maxima_desbloqueada ENUM("Pleno", "Sênior", "Tech Lead") NOT NULL DEFAULT "Pleno"
+    dificuldade_maxima_desbloqueada INT NOT NULL DEFAULT 2
 );

@@ -28,9 +28,10 @@ export function logout() {
   localStorage.removeItem('usuario');
 }
 
-export function getUsuarioLogado() {
-  const conteudo = localStorage.getItem('usuario');
-  return conteudo ? JSON.parse(conteudo) : null;
+export async function getUsuarioLogado() {
+  const id = JSON.parse(localStorage.getItem('usuario')).id;
+  const usuario = await selecionarUsuarioPorId(id);
+  return usuario;
 }
 
 export async function listarUsuarios() {
