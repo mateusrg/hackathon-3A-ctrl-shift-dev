@@ -107,7 +107,6 @@ switch (dificuldade) {
         document.querySelector('#adv_4').style.display = 'none';
 }
 
-// Funções de Geração e Validação de Desafio
 function gerarDesafioTipo1() {
     const lista = [1, 2, 3, 4, 5];
     for (let i = lista.length - 1; i > 0; i--) {
@@ -1027,7 +1026,6 @@ let estadoTarefas = {
 };
 
 function preencherTarefas() {
-    // Mapeamento tipos → funções
     const geradores = {
         1: gerarDesafioTipo1,
         2: gerarDesafioTipo2,
@@ -1098,7 +1096,6 @@ function preencherTarefas() {
 }
 preencherTarefas();
 
-// Resto do Código
 async function gameOver(causaMorte, conquistasDesbloqueadas = []) {
     try {
         if (pontuacao >= 50 && dificuldade === 4) {
@@ -1129,12 +1126,12 @@ let energia = 100;
 let felicidade = 100;
 let pontuacao = 0;
 
-let statusReuniao = 'fechado'; // "fechado", "aberto", "selecionado"
-let statusPasta = 'fechado'; // "fechado", "aberto", "selecionado"
-let statusLista = 'fechado'; // "fechado", "aberto", "selecionado"
-let statusJogo = 'fechado'; // "fechado", "aberto", "selecionado"
-let statusTarefa = 'fechado'; // "fechado", "aberto", "selecionado"
-let tarefaAberta = -1; // -1 (nenhuma), [índices das tarefas]
+let statusReuniao = 'fechado';
+let statusPasta = 'fechado';
+let statusLista = 'fechado';
+let statusJogo = 'fechado';
+let statusTarefa = 'fechado';
+let tarefaAberta = -1;
 
 let microfoneAberto = false;
 let cameraAberto = true;
@@ -1144,9 +1141,7 @@ const removeOriginal = Element.prototype.remove;
 
 Element.prototype.remove = function () {
     removeOriginal.call(this);
-    // Verifica se o elemento é uma notificação
     if (this.classList.contains('notificacao')) {
-        // Atualiza a posição das notificações restantes
         const notificacoes = document.querySelectorAll('.notificacao');
         notificacoes.forEach((notificacao, index) => {
             notificacao.style.bottom = `calc(${140 + 135 * index} * var(--un))`;
@@ -1527,7 +1522,6 @@ function notificar(id) {
         notificacao.appendChild(countdown);
     }
 
-    // Remover notificação automaticamente após 4 segundos ou ao clicar
     if (advertencia) {
         notificacao.addEventListener('click', () => {
             notificacao.remove();
@@ -1538,7 +1532,6 @@ function notificar(id) {
         }, 4000);
     }
 
-    // Para notificações de eventos (microfone ou compartilhamento de tela)
     if (id < 3) {
         const intervalo = setInterval(() => {
             if (!document.body.contains(notificacao)) {
@@ -1718,7 +1711,6 @@ document.querySelector('#seta-esquerda-cafeteira').addEventListener('click', car
 function desselecionaAbas() {
     const game = document.querySelector('#game');
 
-    // Remove elementos de reunião, se existirem
     if (statusReuniao === 'selecionado') {
         statusReuniao = 'aberto';
         game.querySelector('#tb-reuniao-selecionado')?.remove();
@@ -1730,7 +1722,6 @@ function desselecionaAbas() {
         game.appendChild(reuniaoAberto);
     }
 
-    // Remove elementos de pasta, se existirem
     if (statusPasta === 'selecionado') {
         statusPasta = 'aberto';
         game.querySelector('#tb-pasta-selecionado')?.remove();
@@ -1742,7 +1733,6 @@ function desselecionaAbas() {
         game.appendChild(pastaAberto);
     }
 
-    // Remove elementos de lista, se existirem
     if (statusLista === 'selecionado') {
         statusLista = 'aberto';
         game.querySelector('#tb-lista-selecionado')?.remove();
@@ -1753,7 +1743,6 @@ function desselecionaAbas() {
         game.appendChild(listaAberto);
     }
 
-    // Remove elementos de jogo, se existirem
     if (statusJogo === 'selecionado') {
         statusJogo = 'aberto';
         game.querySelector('#tb-jogo-selecionado')?.remove();
@@ -1764,7 +1753,6 @@ function desselecionaAbas() {
         game.appendChild(jogoAberto);
     }
 
-    // Remove elementos de tarefa, se existirem
     if (statusTarefa === 'selecionado') {
         statusTarefa = 'aberto';
         game.querySelector('#tb-tarefa-selecionado')?.remove();
@@ -2018,7 +2006,6 @@ function criarTelaTarefaTipo1(indiceTarefa) {
     const botaoEntregar = document.createElement('div');
     botaoEntregar.id = 'botao-entregar-t1';
     botaoEntregar.addEventListener('click', () => {
-        // Finaliza o teste em andamento, se houver
         if (estadoTarefas[indiceTarefa]['countdownInterval']) {
             clearInterval(estadoTarefas[indiceTarefa]['countdownInterval']);
             estadoTarefas[indiceTarefa]['countdownInterval'] = null;
@@ -2026,26 +2013,22 @@ function criarTelaTarefaTipo1(indiceTarefa) {
             document.querySelector('#countdown-t1')?.remove();
         }
 
-        // Desseleciona todos os elementos
         estadoTarefas[indiceTarefa]['selecionados'] = [];
         const elementos = document.querySelectorAll('[id^="elemento"]');
         elementos.forEach(elemento => {
             elemento.style.backgroundImage = 'url("../../assets/pc/tarefas/1/azul.png")';
 
-            // Remove div de esmaecimento, se existir
             const esmaecidoDiv = elemento.querySelector('.elemento-esmaecido-t1');
             if (esmaecidoDiv) {
                 esmaecidoDiv.remove();
             }
         });
 
-        // Remove qualquer comparação da UI
         const comparacaoDiv = document.querySelector('#comparacao-t1');
         if (comparacaoDiv) {
             comparacaoDiv.remove();
         }
 
-        // Atualiza os botões "Testar" e "Trocar" para esmaecidos
         botaoTrocar.innerHTML = '';
         const esmaecidoTrocar = document.createElement('div');
         esmaecidoTrocar.id = 'trocar-esmaecido-t1';
@@ -2072,11 +2055,9 @@ function criarTelaTarefaTipo1(indiceTarefa) {
                 todosCorretos = false;
             }
 
-            // Remove onclicks dos elementos
             elemento.style.pointerEvents = 'none';
         });
 
-        // Exibe mensagem de sucesso ou falha
         const mensagem = document.createElement('div');
         if (todosCorretos) {
             pontuacao += tarefas[indiceTarefa - 1].pontosGanhos;
@@ -2098,13 +2079,11 @@ function criarTelaTarefaTipo1(indiceTarefa) {
         }
         game.appendChild(mensagem);
 
-        // Remove onclicks do botão "Entregar"
         botaoEntregar.style.pointerEvents = 'none';
 
         tarefas[indiceTarefa - 1] = null;
         preencherTarefas();
 
-        // Define função para destruir a tela da tarefa
         const destruirTela = () => {
             destruirTelaTarefa();
             document.querySelector('#tb-tarefa').style.display = 'none';
@@ -2113,13 +2092,11 @@ function criarTelaTarefaTipo1(indiceTarefa) {
             statusTarefa = 'fechado';
         };
 
-        // Adiciona evento para destruir a tela imediatamente ao clicar em outra aba, fechar ou minimizar
         const abas = ['#tb-reuniao', '#tb-pasta', '#tb-lista', '#tb-jogo', '#tb-tarefa', '#xis-tarefa', '#minimizar-tarefa'];
         abas.forEach(selector => {
             document.querySelector(selector)?.addEventListener('click', destruirTela, { once: true });
         });
 
-        // Chama destruir a tela da tarefa após 2 segundos, caso não tenha sido destruída antes
         setTimeout(destruirTela, 2000);
     });
     game.appendChild(botaoEntregar);
@@ -2531,12 +2508,10 @@ function criarTelaTarefaTipo2(indiceTarefa) {
     const botaoEntregar = document.createElement('div');
     botaoEntregar.id = 'botao-entregar-t2';
     botaoEntregar.addEventListener('click', () => {
-        // Desabilita os cliques no botão "Entregar", "Testar" e no input
         botaoEntregar.style.pointerEvents = 'none';
         botaoTestar.style.pointerEvents = 'none';
         input.disabled = true;
 
-        // Finaliza o teste em andamento, se houver
         if (estadoTarefas[indiceTarefa]['countdownInterval']) {
             clearInterval(estadoTarefas[indiceTarefa]['countdownInterval']);
             estadoTarefas[indiceTarefa]['countdownInterval'] = null;
@@ -2574,11 +2549,9 @@ function criarTelaTarefaTipo2(indiceTarefa) {
 
         game.appendChild(mensagem);
 
-        // Remove a tarefa da lista e atualiza
         tarefas[indiceTarefa - 1] = null;
         preencherTarefas();
 
-        // Define função para destruir a tela da tarefa
         const destruirTela = () => {
             destruirTelaTarefa();
             document.querySelector('#tb-tarefa').style.display = 'none';
@@ -2587,13 +2560,11 @@ function criarTelaTarefaTipo2(indiceTarefa) {
             statusTarefa = 'fechado';
         };
 
-        // Adiciona evento para destruir a tela imediatamente ao clicar em outra aba, fechar ou minimizar
         const abas = ['#tb-reuniao', '#tb-pasta', '#tb-lista', '#tb-jogo', '#tb-tarefa', '#xis-tarefa', '#minimizar-tarefa'];
         abas.forEach(selector => {
             document.querySelector(selector)?.addEventListener('click', destruirTela, { once: true });
         });
 
-        // Chama destruir a tela da tarefa após 2 segundos, caso não tenha sido destruída antes
         setTimeout(destruirTela, 2000);
     });
     game.appendChild(botaoEntregar);
@@ -2615,7 +2586,6 @@ function criarTelaTarefaTipo2(indiceTarefa) {
     });
     game.appendChild(botaoDuvida);
 
-    // Countdown
     if (!estadoTarefas[indiceTarefa]) {
         estadoTarefas[indiceTarefa] = { countdown: null, countdownInterval: null, resultado: null };
     }
@@ -2664,15 +2634,12 @@ function criarTelaTarefaTipo2(indiceTarefa) {
                 const resultado = respostaCorreta ? 'Certo' : 'Errado';
                 estadoTarefas[indiceTarefa]['resultado'] = resultado;
 
-                // Only add the result to the screen if the task screen is still open
                 if (document.querySelector('#tela-tarefa-2')) {
-                    // Remove any existing result button
                     const existingResult = document.querySelector('#resultado-t2');
                     if (existingResult) {
                         existingResult.remove();
                     }
 
-                    // Add result button based on correctness
                     const resultadoDiv = document.createElement('div');
                     resultadoDiv.id = 'resultado-t2';
                     resultadoDiv.style.color = resultado === 'Certo' ? '#00cf0a' : '#df0000';
@@ -2683,7 +2650,6 @@ function criarTelaTarefaTipo2(indiceTarefa) {
         }, 1000);
     };
 
-    // If there is already a result stored in the state, display it
     if (estadoTarefas[indiceTarefa]['resultado']) {
         const resultado = estadoTarefas[indiceTarefa]['resultado'];
         const resultadoDiv = document.createElement('div');
@@ -2694,13 +2660,11 @@ function criarTelaTarefaTipo2(indiceTarefa) {
     };
 
     botaoTestar.addEventListener('click', async () => {
-        // Remove any existing result button
         const existingResult = document.querySelector('#resultado-t2');
         if (existingResult) {
             existingResult.remove();
         }
 
-        // Reset the result state
         estadoTarefas[indiceTarefa]['resultado'] = null;
 
         iniciarCountdown();
@@ -2816,19 +2780,16 @@ function criarTelaTarefaTipo3(indiceTarefa) {
         linhaCodigo.addEventListener('click', () => {
             const linhas = document.querySelectorAll('.linha-codigo-t2');
             if (estadoTarefas[indiceTarefa].linhaMarcada === linha['numeroLinha']) {
-                // If the clicked line is already marked, reset all lines to normal
                 linhas.forEach(linha => {
                     linha.style.textDecoration = 'none';
                     linha.style.color = '';
                 });
                 estadoTarefas[indiceTarefa].linhaMarcada = null;
             } else {
-                // Reset all lines to normal
                 linhas.forEach(linha => {
                     linha.style.textDecoration = 'none';
                     linha.style.color = '';
                 });
-                // Mark the clicked line
                 estadoTarefas[indiceTarefa].linhaMarcada = linha['numeroLinha'];
                 linhaCodigo.style.textDecoration = 'line-through';
                 linhaCodigo.style.color = '#df0000';
@@ -2847,7 +2808,6 @@ function criarTelaTarefaTipo3(indiceTarefa) {
     const botaoEntregar = document.createElement('div');
     botaoEntregar.id = 'botao-entregar-t3';
     botaoEntregar.addEventListener('click', () => {
-        // Desabilita cliques nas linhas e no botão "Entregar"
         document.querySelectorAll('.linha-codigo-t2').forEach(linha => {
             linha.style.pointerEvents = 'none';
         });
@@ -2890,11 +2850,9 @@ function criarTelaTarefaTipo3(indiceTarefa) {
 
         game.appendChild(mensagem);
 
-        // Remove a tarefa da lista e atualiza
         tarefas[indiceTarefa - 1] = null;
         preencherTarefas();
 
-        // Define função para destruir a tela da tarefa
         const destruirTela = () => {
             destruirTelaTarefa();
             document.querySelector('#tb-tarefa').style.display = 'none';
@@ -2903,13 +2861,11 @@ function criarTelaTarefaTipo3(indiceTarefa) {
             statusTarefa = 'fechado';
         };
 
-        // Adiciona evento para destruir a tela imediatamente ao clicar em outra aba, fechar ou minimizar
         const abas = ['#tb-reuniao', '#tb-pasta', '#tb-lista', '#tb-jogo', '#tb-tarefa', '#xis-tarefa', '#minimizar-tarefa'];
         abas.forEach(selector => {
             document.querySelector(selector)?.addEventListener('click', destruirTela, { once: true });
         });
 
-        // Chama destruir a tela da tarefa após 2 segundos, caso não tenha sido destruída antes
         setTimeout(destruirTela, 2000);
 
         async function verificarDesbloqueio13() {
@@ -3014,7 +2970,6 @@ function criarTelaTarefaTipo4(indiceTarefa) {
         botao.innerHTML = texto;
 
         const finalizarTarefa = (resultado) => {
-            // Bloqueia o clique de todos os botões
             ['verde', 'vermelho', 'azul', 'amarelo', 'desistir', 'duvida', 'resetar'].forEach(cor => {
                 const botao = document.querySelector(`#botao-${cor}-t4`);
                 if (botao) {
@@ -3099,7 +3054,6 @@ function criarTelaTarefaTipo4(indiceTarefa) {
                 }
             });
 
-            // Atualiza os valores na tela
             ['Vermelho', 'Amarelo', 'Verde', 'Azul'].forEach(cor => {
                 const elemento = document.querySelector(`#elemento-${cor.toLowerCase()}-t4`);
                 const valor = estadoTarefas[indiceTarefa].valores[cor];
@@ -3122,7 +3076,6 @@ function criarTelaTarefaTipo4(indiceTarefa) {
     document.querySelector('#botao-resetar-t4').addEventListener('click', () => {
         estadoTarefas[indiceTarefa].valores = { ...tarefa.valoresIniciais };
 
-        // Atualiza os valores na tela
         ['Vermelho', 'Amarelo', 'Verde', 'Azul'].forEach(cor => {
             const elemento = document.querySelector(`#elemento-${cor.toLowerCase()}-t4`);
             elemento.textContent = estadoTarefas[indiceTarefa].valores[cor];
@@ -3228,7 +3181,6 @@ function criarTelaTarefaTipo5(indiceTarefa) {
     game.appendChild(tentativasRestantes);
 
     function destruirTela() {
-        // Desabilita todos os botões (exceto os botões de fechar e minimizar)
         document.querySelectorAll('[id^="botao-"]').forEach(botao => {
             if (!botao.id.includes('xis') && !botao.id.includes('minimizar')) {
                 botao.style.pointerEvents = 'none';
@@ -3244,13 +3196,11 @@ function criarTelaTarefaTipo5(indiceTarefa) {
             statusTarefa = 'fechado';
         };
 
-        // Adiciona evento para destruir a tela imediatamente ao clicar em outra aba, fechar ou minimizar
         const abas = ['#tb-reuniao', '#tb-pasta', '#tb-lista', '#tb-jogo', '#tb-tarefa', '#xis-tarefa', '#minimizar-tarefa'];
         abas.forEach(selector => {
             document.querySelector(selector)?.addEventListener('click', destruirTela, { once: true });
         });
 
-        // Chama destruir a tela da tarefa após 2 segundos, caso não tenha sido destruída antes
         setTimeout(destruirTela, 2000);
     }
 
@@ -3614,7 +3564,6 @@ function criarTelaTarefaTipo7(indiceTarefa) {
     game.appendChild(botaoDuvida);
 
     function destruirTela() {
-        // Desabilita todos os botões (exceto os botões de fechar e minimizar)
         document.querySelectorAll('[id^="botao-"]').forEach(botao => {
             if (!botao.id.includes('xis') && !botao.id.includes('minimizar')) {
                 botao.style.pointerEvents = 'none';
@@ -3629,13 +3578,11 @@ function criarTelaTarefaTipo7(indiceTarefa) {
             statusTarefa = 'fechado';
         };
 
-        // Adiciona evento para destruir a tela imediatamente ao clicar em outra aba, fechar ou minimizar
         const abas = ['#tb-reuniao', '#tb-pasta', '#tb-lista', '#tb-jogo', '#tb-tarefa', '#xis-tarefa', '#minimizar-tarefa'];
         abas.forEach(selector => {
             document.querySelector(selector)?.addEventListener('click', destruirTela, { once: true });
         });
 
-        // Chama destruir a tela da tarefa após 2 segundos, caso não tenha sido destruída antes
         setTimeout(destruirTela, 2000);
     }
 }
@@ -3882,7 +3829,6 @@ function selecionaReuniao() {
                         selecionaReuniao();
                         notificar(15);
 
-                        // Remove o evento de todos os elementos
                         abas.forEach(selector => {
                             document.querySelector(selector)?.removeEventListener('click', handleClick);
                         });
@@ -3913,7 +3859,6 @@ function selecionaReuniao() {
         }
     });
 
-    // Simular jogador ligando o microfone
     document.querySelector('#microfone-fechado')?.addEventListener('click', () => {
         if (!microfoneAberto) {
             return;
@@ -4138,7 +4083,6 @@ function selecionaLista() {
         listaAberto.className = 'aberto';
         game.appendChild(listaAberto);
 
-        // Adiciona o evento para reabrir a lista ao clicar no ícone minimizado
         listaAberto.addEventListener('click', () => {
             selecionaLista();
         });
@@ -4869,6 +4813,7 @@ function criarTelaJogo() {
     destruirTelaDocumento();
     destruirTelaPasta();
     destruirTelaTarefa();
+    destruirTelaLista();
     destruirTelaJogo();
 
     const telaJogo = document.createElement('div');
@@ -5238,7 +5183,7 @@ function iniciarEventoMicrofone() {
         }
         if (countdown <= 0) {
             clearInterval(intervaloEvento);
-            notificar(4); // Advertência por não ligar o microfone
+            notificar(4);
             eventoAtivo = null;
             iniciarEventosAleatorios();
         }
@@ -5274,7 +5219,7 @@ function iniciarEventoCompartilharTela() {
                 } finally { }
             });
             clearInterval(intervaloEvento);
-            notificar(8); // Advertência por não compartilhar a tela
+            notificar(8);
             eventoAtivo = null;
             iniciarEventosAleatorios();
         }
@@ -5304,7 +5249,7 @@ function iniciarEventoCamera() {
             notificacaoCamera.remove();
             clearInterval(intervaloCamera);
             if (!cameraAberto) {
-                notificar(6); // Advertência por não religar a câmera
+                notificar(6);
                 iniciarEventoCamera();
             }
         }
@@ -5315,3 +5260,78 @@ iniciarEventosAleatorios();
 selecionaReuniao();
 
 ['#balao-mesa', '#balao-escritorio', '#balao-cafeteira', '#balao-espetado-mesa', '#balao-espetado-escritorio', '#balao-espetado-cafeteira'].forEach((id) => document.querySelector(id).style.display = 'none');
+
+document.querySelector('#mesa').style.display = 'none';
+document.querySelector('#escritorio').style.display = 'none';
+document.querySelector('#cafeteira').style.display = 'none';
+
+document.addEventListener('keydown', (event) => {
+    const pcSelecionado = document.querySelector('#escritorio').style.display == 'none' && document.querySelector('#cafeteira').style.display == 'none' && document.querySelector('#mesa').style.display == 'none';
+    const mesaSelecionado = document.querySelector('#mesa').style.display != 'none';
+    const escritorioSelecionado = document.querySelector('#escritorio').style.display != 'none';
+    const cafeteiraSelecionado = document.querySelector('#cafeteira').style.display != 'none';
+
+    switch (event.key) {
+        case 'ArrowUp':
+            if (escritorioSelecionado) {
+                document.querySelector('#mesa-escritorio').click();
+            } else if (mesaSelecionado) {
+                document.querySelector('#monitor').click();
+            }
+            break;
+        case 'ArrowDown':
+            if (pcSelecionado) {
+                document.querySelector('#seta-baixo-pc').click();
+            } else if (mesaSelecionado) {
+                document.querySelector('#seta-baixo-mesa').click();
+            }
+            break;
+        case 'ArrowLeft':
+            if (cafeteiraSelecionado) {
+                document.querySelector('#seta-esquerda-cafeteira').click();
+            } else if (pcSelecionado) {
+                const setaEsquerdaJogo = document.querySelector('#seta-esquerda-jogo');
+                if (setaEsquerdaJogo) {
+                    setaEsquerdaJogo.click();
+                }
+            }
+            break;
+        case 'ArrowRight':
+            if (escritorioSelecionado) {
+                document.querySelector('#seta-direita-escritorio').click();
+            } else if (pcSelecionado) {
+                const setaDireitaJogo = document.querySelector('#seta-direita-jogo');
+                if (setaDireitaJogo) {
+                    setaDireitaJogo.click();
+                }
+            }
+            break;
+        case '1':
+            if (pcSelecionado) {
+                document.querySelector('#tb-reuniao').click();
+            }
+            break;
+        case '2':
+            if (pcSelecionado) {
+                document.querySelector('#tb-pasta').click();
+            }
+            break;
+        case '3':
+            if (pcSelecionado) {
+                document.querySelector('#tb-lista').click();
+            }
+            break;
+        case '4':
+            if (pcSelecionado) {
+                document.querySelector('#tb-jogo').click();
+            }
+            break;
+        case '5':
+            if (document.querySelector('#tb-tarefa') && pcSelecionado) {
+                document.querySelector('#tb-tarefa')?.click();
+            }
+            break;
+        default:
+            break;
+    }
+});
