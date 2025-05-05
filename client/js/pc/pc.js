@@ -1075,9 +1075,15 @@ preencherTarefas();
 
 // Resto do Código
 function gameOver(causaMorte) {
-    clearInterval(intervaloTempo);
-    clearInterval(intervaloDecaimento);
-    console.log('Fim do jogo!');
+    let final = {
+        "advertencias": advertencias,
+        "causaMorte": causaMorte,
+        "isGameOver": causaMorte !== 0,
+        "pontuacao": pontuacao,
+    };
+
+    localStorage.setItem('final', JSON.stringify(final));
+    window.location.href = "../../html/final/final.html";
 }
 
 let tempoRestante = 600;

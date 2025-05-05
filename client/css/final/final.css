@@ -177,10 +177,9 @@ body {
     cursor: pointer;
     border-radius: calc(20 * var(--un));
     height: calc(130 * var(--un));
-    width: calc(953 * var(--un));
-    top: calc(843 * var(--un));
-    left: 50%;
-    transform: translate(-50%, 0);
+    width: calc(927 * var(--un));
+    top: calc(844 * var(--un));
+    left: calc(240 * var(--un));
     color: transparent;
     border: none;
     background-color: transparent;
@@ -192,10 +191,9 @@ body {
     cursor: pointer;
     border-radius: calc(20 * var(--un));
     height: calc(130 * var(--un));
-    width: calc(953 * var(--un));
+    width: calc(933 * var(--un));
     top: calc(703 * var(--un));
-    left: 50%;
-    transform: translate(-50%, 0);
+    left: calc(234 * var(--un));
     border: none;
     background-color: transparent;
     outline: none;
