@@ -1752,11 +1752,10 @@ function desselecionaAbas() {
         jogoAberto.className = 'aberto';
         game.appendChild(jogoAberto);
     }
-    console.log(statusTarefa);
+
     if (statusTarefa === 'selecionado') {
+        document.querySelector('#tb-tarefa-selecionado').remove();
         statusTarefa = 'aberto';
-        console.log(game.querySelector('#tb-tarefa-selecionado'))
-        game.querySelector('#tb-tarefa-selecionado')?.remove();
 
         const tarefaAberto = document.createElement('div');
         tarefaAberto.id = 'tb-tarefa-aberto';
@@ -4889,10 +4888,9 @@ function selecionaJogo() {
 }
 
 function selecionaTarefa(indiceTarefa) {
-    console.log('INFERNO')
+    desselecionaAbas();
     statusTarefa = 'selecionado';
     tarefaAberta = indiceTarefa;
-    desselecionaAbas();
     destruirTelaReuniao();
     destruirTelaPasta();
     destruirTelaDocumento();
