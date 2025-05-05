@@ -3960,15 +3960,22 @@ function selecionaReuniao() {
                     clearInterval(intervaloCompartilhando);
                     eventoAtivo = null;
                     iniciarEventosAleatorios();
-                    document.querySelector('#microfone-aberto')?.click();
+                    if (document.querySelector('#microfone-aberto')) {
+                        document.querySelector('#microfone-aberto')?.click();
+                    } else {
+                        microfoneAberto = false;
+                    }
                 }
             }, 1000);
 
         } else {
-            notificar(12); // Advertência por ligar o microfone fora do evento
+            notificar(12);
             setTimeout(() => {
-                // Desligar automaticamente
-                document.querySelector('#microfone-aberto')?.click();
+                if (document.querySelector('#microfone-aberto')) {
+                    document.querySelector('#microfone-aberto')?.click();
+                } else {
+                    microfoneAberto = false;
+                }
             }, 500);
         }
     });
@@ -5070,7 +5077,17 @@ document.querySelector('#tb-lista').addEventListener('click', () => clicaAba('li
 document.querySelector('#tb-jogo').addEventListener('click', () => clicaAba('jogo'));
 document.querySelector('#tb-tarefa').addEventListener('click', () => clicaAba('tarefa'));
 
+let countdownDesb32 = 0;
 async function atualizarTempo() {
+    if (Math.abs(energia - felicidade) < 10) {
+        countdownDesb32++;
+        if (countdownDesb32 >= 300) {
+            desbloquearConquista(32);
+        }
+    } else {
+        countdownDesb32 = 0;
+    }
+
     if (tempoRestante > 0) {
         tempoRestante--;
         atualizarHUD();
@@ -5141,21 +5158,10 @@ async function atualizarTempo() {
     }
 }
 
-let countdownDesb32 = 0;
-
 function atualizarDecaimento() {
     energia = Math.max(0, energia - 1);
     felicidade = Math.max(0, felicidade - 1);
     atualizarHUD();
-
-    if (Math.abs(energia - felicidade) < 10) {
-        countdownDesb32++;
-        if (countdownDesb32 >= 300) {
-            desbloquearConquista(32);
-        }
-    } else {
-        countdownDesb32 = 0;
-    }
 
     if (energia <= 75) {
         energiaDesb8 = false;
