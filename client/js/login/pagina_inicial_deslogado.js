@@ -8,3 +8,7 @@ function cadastrar() {
 
 document.querySelector('#entrar').addEventListener('click', entrar);
 document.querySelector('#cadastrar').addEventListener('click', cadastrar);
+
+if (localStorage.getItem('usuarioLogado')) {
+    window.location.href = '../../html/login/pagina_inicial.html';
+}
