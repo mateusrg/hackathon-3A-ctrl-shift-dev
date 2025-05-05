@@ -1468,7 +1468,11 @@ function notificar(id) {
         advertenciaElement?.classList.add('advertencia_cheia');
 
         if (advertencias.length > limiteAdvertencias) {
-            gameOver(1);
+            let conquistasGO = [];
+            if (tempoRestante > 530) {
+                conquistasGO.push(18);
+            }
+            gameOver(1, conquistasGO);
         }
     }
 
@@ -2068,6 +2072,7 @@ function criarTelaTarefaTipo1(indiceTarefa) {
             mensagem.textContent = `+${tarefas[indiceTarefa - 1].pontosGanhos} ponto${tarefas[indiceTarefa - 1].pontosGanhos === 1 ? '' : 's'}`;
         } else {
             pontuacao -= Math.abs(tarefas[indiceTarefa - 1].pontosPerdidos);
+            nenhumaTarefaFalha = false;
             pontuacao = Math.max(pontuacao, 0);
             mensagem.id = 'falha-t1';
             mensagem.textContent = `-${Math.abs(tarefas[indiceTarefa - 1].pontosPerdidos)} ponto${Math.abs(tarefas[indiceTarefa - 1].pontosPerdidos) === 1 ? '' : 's'}`;
@@ -2547,6 +2552,7 @@ function criarTelaTarefaTipo2(indiceTarefa) {
             mensagem.textContent = `+${tarefa['pontosGanhos']} ponto${tarefa['pontosGanhos'] === 1 ? '' : 's'}`;
         } else {
             pontuacao -= Math.abs(tarefa['pontosPerdidos']);
+            nenhumaTarefaFalha = false;
             pontuacao = Math.max(pontuacao, 0);
             mensagem.id = 'falha-t2';
             mensagem.textContent = `-${Math.abs(tarefa['pontosPerdidos'])} ponto${Math.abs(tarefa['pontosPerdidos']) === 1 ? '' : 's'}`;
@@ -2866,6 +2872,7 @@ function criarTelaTarefaTipo3(indiceTarefa) {
             linhaCodigo.style.textDecoration = 'line-through';
             linhaCodigo.style.color = '#00cf0a';
             pontuacao -= Math.abs(tarefa['pontosPerdidos']);
+            nenhumaTarefaFalha = false;
             pontuacao = Math.max(pontuacao, 0);
             mensagem.id = 'falha-t3';
             mensagem.textContent = `-${Math.abs(tarefa['pontosPerdidos'])} ponto${Math.abs(tarefa['pontosPerdidos']) === 1 ? '' : 's'}`;
@@ -3022,6 +3029,7 @@ function criarTelaTarefaTipo4(indiceTarefa) {
             } else {
                 const mensagem = document.createElement('div');
                 pontuacao -= Math.abs(tarefa.pontosPerdidos);
+                nenhumaTarefaFalha = false;
                 pontuacao = Math.max(pontuacao, 0);
                 mensagem.id = 'falha-t4';
                 mensagem.textContent = `-${Math.abs(tarefa.pontosPerdidos)}p.`;
@@ -3267,6 +3275,7 @@ function criarTelaTarefaTipo5(indiceTarefa) {
                 input.style.fontWeight = 'bold';
                 input.value = tarefa['resposta_correta'];
                 pontuacao -= Math.abs(tarefa['pontosPerdidos']);
+                nenhumaTarefaFalha = false;
                 pontuacao = Math.max(pontuacao, 0);
                 const mensagem = document.createElement('div');
                 mensagem.id = 'falha-t5';
@@ -3393,6 +3402,7 @@ function criarTelaTarefaTipo6(indiceTarefa) {
                     botaoCorreto.appendChild(certo);
 
                     pontuacao -= Math.abs(tarefa.pontosPerdidos);
+                    nenhumaTarefaFalha = false;
                     pontuacao = Math.max(pontuacao, 0);
                     const mensagem = document.createElement('div');
                     mensagem.id = 'falha-t6';
@@ -3561,6 +3571,7 @@ function criarTelaTarefaTipo7(indiceTarefa) {
                 botaoCorreto.appendChild(certo);
 
                 pontuacao -= Math.abs(tarefa.pontosPerdidos);
+                nenhumaTarefaFalha = false;
                 pontuacao = Math.max(pontuacao, 0);
                 const mensagem = document.createElement('div');
                 mensagem.id = 'falha-t7';
@@ -3629,8 +3640,8 @@ let felicidadeDesb9 = true;
 let contadorTarefas = [0, 0, 0, 0];
 let quantMicNinjaDesb14 = 0;
 let verifDesb14 = false;
-let quantCampCompDesb15 = 0;
 let verifDesb15 = false;
+let nenhumaTarefaFalha = true;
 
 function selecionaReuniao() {
     desselecionaAbas();
@@ -3721,7 +3732,13 @@ function selecionaReuniao() {
 
         const botaoConfirmar = document.createElement('div');
         botaoConfirmar.id = 'botao-confirmar-saida-reuniao';
-        botaoConfirmar.addEventListener('click', () => gameOver(2));
+        botaoConfirmar.addEventListener('click', () => {
+            let conquistasGO = [];
+            if (tempoRestante > 530) {
+                conquistasGO.push(18);
+            }
+            gameOver(2);
+        });
         game.appendChild(botaoConfirmar);
 
         const botaoCancelar = document.createElement('div');
@@ -5080,24 +5097,63 @@ async function atualizarTempo() {
     if (tempoRestante <= 0) {
         if (pontuacao >= pontuacaoMinima) {
             let conquistasGO = [];
+            if (advertencias.length === 0) {
+                Usuario.aumentarRunsConsecutivasSemAdvertencia(usuarioId, 1);
+                const usuario = await Usuario.getUsuario(usuarioId);
+                if (usuario.runsConsecutivasSemAdvertencia >= 5) {
+                    conquistasGO.push(17);
+                }
+            }
+
             if (energiaDesb8) {
-                await desbloquearConquista(8);
                 conquistasGO.push(8);
             }
+
             if (felicidadeDesb9) {
-                await desbloquearConquista(9);
                 conquistasGO.push(9);
             }
+
             if (verifDesb15) {
-                await desbloquearConquista(15);
                 conquistasGO.push(15);
             }
-            if (conquistasGO.length > 0) {
-                gameOver(0, conquistasGO);
-            } else {
-                gameOver(0);
+
+            const dificuldadeSelecionada = localStorage.getItem('dificuldadeSelecionada');
+            switch (dificuldadeSelecionada) {
+                case '1':
+                    conquistasGO.push(19);
+                    break;
+                case '2':
+                    conquistasGO.push(20);
+                    break;
+                case '3':
+                    conquistasGO.push(21);
+                    break;
+                default:
+                    conquistasGO.push(22);
             }
+
+            if (nenhumaTarefaFalha && advertencias.length === 0) {
+                switch (dificuldadeSelecionada) {
+                    case '1':
+                        conquistasGO.push(23);
+                        break;
+                    case '2':
+                        conquistasGO.push(24);
+                        break;
+                    case '3':
+                        conquistasGO.push(26);
+                        break;
+                    default:
+                        conquistasGO.push(27);
+                }
+            }
+
+            gameOver(0, conquistasGO);
         } else {
+            let conquistasGO = [];
+            if (tempoRestante > 530) {
+                conquistasGO.push(18);
+            }
             gameOver(6);
         }
     }
@@ -5113,12 +5169,16 @@ function atualizarDecaimento() {
     }
 
     if (energia <= 0 || felicidade <= 0) {
+        let conquistasGO = [];
+        if (tempoRestante > 530) {
+            conquistasGO.push(18);
+        }
         if (energia <= 0 && felicidade <= 0) {
-            gameOver(5);
+            gameOver(5, conquistasGO);
         } else if (energia <= 0) {
-            gameOver(3);
+            gameOver(3, conquistasGO);
         } else {
-            gameOver(4);
+            gameOver(4, conquistasGO);
         }
     }
 }
