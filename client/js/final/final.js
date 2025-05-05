@@ -309,7 +309,6 @@ async function vitoria() {
         if (dificuldade == dificuldadeMaxima && dificuldade > 1) {
             const novoUsuario = await Usuario.aumentarDificuldadeMaximaDesbloqueada(idUsuario);
             const novaDificuldade = dificuldadeMaxima + 1;
-            console.log(novaDificuldade)
             usuario.dificuldade_maxima_desbloqueada = novaDificuldade;
             localStorage.setItem('usuario', JSON.stringify(usuario));
         }
