@@ -1919,3 +1919,32 @@ button {
     padding-left: calc(45 * var(--un));
     padding-right: calc(25 * var(--un));
 }
+
+#confirmacao-saida-reuniao {
+    position: absolute;
+    background-image: url('../../assets/pc/reuniao/sair_reuniao.png');
+    height: calc(714 * var(--un));
+    width: calc(1285 * var(--un));
+    top: calc(140 * var(--un));
+    left: calc(58 * var(--un));
+}
+
+#botao-confirmar-saida-reuniao {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(81 * var(--un));
+    width: calc(325 * var(--un));
+    left: calc(363 * var(--un));
+    bottom: calc(379 * var(--un));
+    cursor: pointer;
+}
+
+#botao-cancelar-saida-reuniao {
+    position: absolute;
+    border-radius: calc(20 * var(--un));
+    height: calc(81 * var(--un));
+    width: calc(325 * var(--un));
+    right: calc(363 * var(--un));
+    bottom: calc(379 * var(--un));
+    cursor: pointer;
+}
