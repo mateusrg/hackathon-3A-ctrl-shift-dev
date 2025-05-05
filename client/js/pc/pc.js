@@ -1099,12 +1099,13 @@ function preencherTarefas() {
 preencherTarefas();
 
 // Resto do Código
-function gameOver(causaMorte) {
+function gameOver(causaMorte, conquistasDesbloqueadas = []) {
     let final = {
         "advertencias": advertencias,
         "causaMorte": causaMorte,
         "isGameOver": causaMorte !== 0,
         "pontuacao": pontuacao,
+        "conquistasDesbloqueadas": conquistasDesbloqueadas,
     };
 
     localStorage.setItem('final', JSON.stringify(final));
@@ -1215,6 +1216,9 @@ cafe.addEventListener('click', () => {
             monitor.style.pointerEvents = 'auto';
             seta.style.pointerEvents = 'auto';
 
+            if (energia <= 100 - energiaCafeRestaura) {
+                desbloquearConquista(16);
+            }
             energia = Math.min(100, energia + energiaCafeRestaura);
             nivelCafe--;
             atualizarCafe();
@@ -5075,13 +5079,24 @@ async function atualizarTempo() {
 
     if (tempoRestante <= 0) {
         if (pontuacao >= pontuacaoMinima) {
+            let conquistasGO = [];
             if (energiaDesb8) {
                 await desbloquearConquista(8);
+                conquistasGO.push(8);
             }
             if (felicidadeDesb9) {
                 await desbloquearConquista(9);
+                conquistasGO.push(9);
             }
-            gameOver(0);
+            if (verifDesb15) {
+                await desbloquearConquista(15);
+                conquistasGO.push(15);
+            }
+            if (conquistasGO.length > 0) {
+                gameOver(0, conquistasGO);
+            } else {
+                gameOver(0);
+            }
         } else {
             gameOver(6);
         }
@@ -5185,6 +5200,10 @@ function iniciarEventoCompartilharTela() {
         countdown--;
         if (textoNotificacaoCompartilharTela) {
             countdownNotificacaoCompartilharTela.textContent = `${countdown}s`;
+        }
+
+        if (countdown <= toleranciaCompartilhamento - 3) {
+            verifDesb15 = false;
         }
 
         if (countdown <= 0) {
