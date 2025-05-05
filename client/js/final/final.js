@@ -44,78 +44,67 @@ function comoEvitarTela() {
 
     advertencias.forEach((advertencia) => {
         numeroAdvertencia += 1;
+        const advertenciaTipo = document.createElement('p');
         switch (advertencia) {
             case 1:
-                const advertencia1 = document.createElement('p');
-                advertencia1.id = 'advertencia-como-evitar';
-                advertencia1.textContent = `${numeroAdvertencia}ª - Quando o chefe solicita, é preciso abrir o microfone antes que o tempo se esgote.`;
-                divTexto.appendChild(advertencia1);
+                advertenciaTipo.id = 'advertencia-como-evitar';
+                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando o chefe solicita, é preciso abrir o microfone antes que o tempo se esgote.`;
+                divTexto.appendChild(advertenciaTipo);
                 break;
             case 2:
-                const advertencia2 = document.createElement('p');
-                advertencia2.id = 'advertencia-como-evitar';
-                advertencia2.textContent = `${numeroAdvertencia}ª - Enquanto você está falando na reunião, você não deve fechar o microfone, ele fecha automaticamente ao final da ação.`;
-                divTexto.appendChild(advertencia2);
+                advertenciaTipo.id = 'advertencia-como-evitar';
+                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Enquanto você está falando na reunião, você não deve fechar o microfone, ele fecha automaticamente ao final da ação.`;
+                divTexto.appendChild(advertenciaTipo);
                 break;
             case 3:
-                const advertencia3 = document.createElement('p');
-                advertencia3.id = 'advertencia-como-evitar';
-                advertencia3.textContent = `${numeroAdvertencia}ª - Quando você desligar a câmera, você precisa ligar ela antes que o tempo se esgote.`;
-                divTexto.appendChild(advertencia3);
+                advertenciaTipo.id = 'advertencia-como-evitar';
+                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você desligar a câmera, você precisa ligar ela antes que o tempo se esgote.`;
+                divTexto.appendChild(advertenciaTipo);
                 break;
             case 4:
-                const advertencia4 = document.createElement('p');
-                advertencia4.id = 'advertencia-como-evitar';
-                advertencia4.textContent = `${numeroAdvertencia}ª - Quando você for até a cefeteira, você sempre deverá desligar a câmera, pois o chefe não pode ver que você saiu.`;
-                divTexto.appendChild(advertencia4);
+                advertenciaTipo.id = 'advertencia-como-evitar';
+                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você for até a cefeteira, você sempre deverá desligar a câmera, pois o chefe não pode ver que você saiu.`;
+                divTexto.appendChild(advertenciaTipo);
                 break;
             case 5:
-                const advertencia5 = document.createElement('p');
-                advertencia5.id = 'advertencia-como-evitar';
-                advertencia5.textContent = `${numeroAdvertencia}ª - Quando o chefe solicita, é preciso compartilhar a tela antes que o tempo se esgote.`;
-                divTexto.appendChild(advertencia5);
+                advertenciaTipo.id = 'advertencia-como-evitar';
+                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando o chefe solicita, é preciso compartilhar a tela antes que o tempo se esgote.`;
+                divTexto.appendChild(advertenciaTipo);
                 break;
             case 6:
-                const advertencia6 = document.createElement('p');
-                advertencia6.id = 'advertencia-como-evitar';
-                advertencia6.textContent = `${numeroAdvertencia}ª - Quando você for compartilhar a tela, deverá deixar aberto o documento solicitado pelo chefe.`;
-                divTexto.appendChild(advertencia6);
+                advertenciaTipo.id = 'advertencia-como-evitar';
+                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você for compartilhar a tela, deverá deixar aberto o documento solicitado pelo chefe.`;
+                divTexto.appendChild(advertenciaTipo);
                 break;
             case 7:
-                const advertencia7 = document.createElement('p');
-                advertencia7.id = 'advertencia-como-evitar';
-                advertencia7.textContent = `${numeroAdvertencia}ª - Você precisa compartilhar o documento solicitado pelo chefe.`;
-                divTexto.appendChild(advertencia7);
+                advertenciaTipo.id = 'advertencia-como-evitar';
+                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Você precisa compartilhar o documento solicitado pelo chefe.`;
+                divTexto.appendChild(advertenciaTipo);
                 break;
             case 8:
-                const advertencia8 = document.createElement('p');
-                advertencia8.id = 'advertencia-como-evitar';
-                advertencia8.textContent = `${numeroAdvertencia}ª - Quando você for compartilhar a tela, não esqueça de fechar todas as outras abas.`;
-                divTexto.appendChild(advertencia8);
+                advertenciaTipo.id = 'advertencia-como-evitar';
+                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você for compartilhar a tela, não esqueça de fechar todas as outras abas.`;
+                divTexto.appendChild(advertenciaTipo);
                 break;
             case 9:
-                const advertencia9 = document.createElement('p');
-                advertencia9.id = 'advertencia-como-evitar';
-                advertencia9.textContent = `${numeroAdvertencia}ª - Você só deve ligar o microfone quando o chefe solicitar.`;
-                divTexto.appendChild(advertencia9);
+                advertenciaTipo.id = 'advertencia-como-evitar';
+                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Você só deve ligar o microfone quando o chefe solicitar.`;
+                divTexto.appendChild(advertenciaTipo);
                 break;
             case 10:
-                const advertencia10 = document.createElement('p');
-                advertencia10.id = 'advertencia-como-evitar';
-                advertencia10.textContent = `${numeroAdvertencia}ª - Você só deve compartilhar a tela quando o chefe solicitar.`;
-                divTexto.appendChild(advertencia10);
+                advertenciaTipo.id = 'advertencia-como-evitar';
+                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Você só deve compartilhar a tela quando o chefe solicitar.`;
+                divTexto.appendChild(advertenciaTipo);
                 break;
             case 11:
-                const advertencia11 = document.createElement('p');
-                advertencia11.id = 'advertencia-como-evitar';
-                advertencia11.textContent = `${numeroAdvertencia}ª - Quando você for abrir o microfone, não se esqueça de fehcar ou pausar o jogo, caso contrário, o chefe irá ouvir.`;
-                divTexto.appendChild(advertencia11);
+                advertenciaTipo.id = 'advertencia-como-evitar';
+                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você for abrir o microfone, não se esqueça de fehcar ou pausar o jogo, caso contrário, o chefe irá ouvir.`;
+                divTexto.appendChild(advertenciaTipo);
                 break;
             case 12:
-                const advertencia12 = document.createElement('p');
-                advertencia12.id = 'advertencia-como-evitar';
-                advertencia12.textContent = `${numeroAdvertencia}ª - Enquanto estiver compartilhando a tela, não feche o documento.`;
-                divTexto.appendChild(advertencia12);
+                advertenciaTipo.id = 'advertencia-como-evitar';
+                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Enquanto estiver compartilhando a tela, não feche o documento.`;
+                divTexto.appendChild(advertenciaTipo);
                 break;
         }
     });
@@ -165,78 +154,67 @@ function gameOver() {
 
         advertencias.forEach((advertencia) => {
             numeroAdvertencia += 1;
+            const advertenciaTipo = document.createElement('p');
             switch (advertencia) {
                 case 1:
-                    const advertencia1 = document.createElement('p');
-                    advertencia1.id = 'advertencia';
-                    advertencia1.textContent = `${numeroAdvertencia}ª - Não ligou o microfone quando solicitado.`;
-                    divAdvertencias.appendChild(advertencia1);
+                    advertenciaTipo.id = 'advertencia';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Não ligou o microfone quando solicitado.`;
+                    divAdvertencias.appendChild(advertenciaTipo);
                     break;
                 case 2:
-                    const advertencia2 = document.createElement('p');
-                    advertencia2.id = 'advertencia';
-                    advertencia2.textContent = `${numeroAdvertencia}ª - Desligou o microfone enquanto estava falando.`;
-                    divAdvertencias.appendChild(advertencia2);
+                    advertenciaTipo.id = 'advertencia';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Desligou o microfone enquanto estava falando.`;
+                    divAdvertencias.appendChild(advertenciaTipo);
                     break;
                 case 3:
-                    const advertencia3 = document.createElement('p');
-                    advertencia3.id = 'advertencia';
-                    advertencia3.textContent = `${numeroAdvertencia}ª - Permaneceu com a câmera desligada.`;
-                    divAdvertencias.appendChild(advertencia3);
+                    advertenciaTipo.id = 'advertencia';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Permaneceu com a câmera desligada.`;
+                    divAdvertencias.appendChild(advertenciaTipo);
                     break;
                 case 4:
-                    const advertencia4 = document.createElement('p');
-                    advertencia4.id = 'advertencia';
-                    advertencia4.textContent = `${numeroAdvertencia}ª - Saiu do computador e esqueceu a câmera ligada.`;
-                    divAdvertencias.appendChild(advertencia4);
+                    advertenciaTipo.id = 'advertencia';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Saiu do computador e esqueceu a câmera ligada.`;
+                    divAdvertencias.appendChild(advertenciaTipo);
                     break;
                 case 5:
-                    const advertencia5 = document.createElement('p');
-                    advertencia5.id = 'advertencia';
-                    advertencia5.textContent = `${numeroAdvertencia}ª - Não compartilhou a tela quando solicitado.`;
-                    divAdvertencias.appendChild(advertencia5);
+                    advertenciaTipo.id = 'advertencia';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Não compartilhou a tela quando solicitado.`;
+                    divAdvertencias.appendChild(advertenciaTipo);
                     break;
                 case 6:
-                    const advertencia6 = document.createElement('p');
-                    advertencia6.id = 'advertencia';
-                    advertencia6.textContent = `${numeroAdvertencia}ª - Compartilhou a tela sem nenhum documento aberto.`;
-                    divAdvertencias.appendChild(advertencia6);
+                    advertenciaTipo.id = 'advertencia';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Compartilhou a tela sem nenhum documento aberto.`;
+                    divAdvertencias.appendChild(advertenciaTipo);
                     break;
                 case 7:
-                    const advertencia7 = document.createElement('p');
-                    advertencia7.id = 'advertencia';
-                    advertencia7.textContent = `${numeroAdvertencia}ª - Não compartilhou o documento correto.`;
-                    divAdvertencias.appendChild(advertencia7);
+                    advertenciaTipo.id = 'advertencia';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Não compartilhou o documento correto.`;
+                    divAdvertencias.appendChild(advertenciaTipo);
                     break;
                 case 8:
-                    const advertencia8 = document.createElement('p');
-                    advertencia8.id = 'advertencia';
-                    advertencia8.textContent = `${numeroAdvertencia}ª - Compartilhou a tela com outras abas abertas.`;
-                    divAdvertencias.appendChild(advertencia8);
+                    advertenciaTipo.id = 'advertencia';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Compartilhou a tela com outras abas abertas.`;
+                    divAdvertencias.appendChild(advertenciaTipo);
                     break;
                 case 9:
-                    const advertencia9 = document.createElement('p');
-                    advertencia9.id = 'advertencia';
-                    advertencia9.textContent = `${numeroAdvertencia}ª - Ligou o microfone sem ser solicitado.`;
-                    divAdvertencias.appendChild(advertencia9);
+                    advertenciaTipo.id = 'advertencia';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Ligou o microfone sem ser solicitado.`;
+                    divAdvertencias.appendChild(advertenciaTipo);
                     break;
                 case 10:
-                    const advertencia10 = document.createElement('p');
-                    advertencia10.id = 'advertencia';
-                    advertencia10.textContent = `${numeroAdvertencia}ª - Compartilhou a tela sem ser solicitado.`;
-                    divAdvertencias.appendChild(advertencia10);
+                    advertenciaTipo.id = 'advertencia';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Compartilhou a tela sem ser solicitado.`;
+                    divAdvertencias.appendChild(advertenciaTipo);
                     break;
                 case 11:
-                    const advertencia11 = document.createElement('p');
-                    advertencia11.id = 'advertencia';
-                    advertencia11.textContent = `${numeroAdvertencia}ª - Abriu o microfone com o jogo aberto ou despausado.`;
-                    divAdvertencias.appendChild(advertencia11);
+                    advertenciaTipo.id = 'advertencia';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Abriu o microfone com o jogo aberto ou despausado.`;
+                    divAdvertencias.appendChild(advertenciaTipo);
                     break;
                 case 12:
-                    const advertencia12 = document.createElement('p');
-                    advertencia12.id = 'advertencia';
-                    advertencia12.textContent = `${numeroAdvertencia}ª - Fechou o documento enquanto estava compartilhando a tela.`;
-                    divAdvertencias.appendChild(advertencia12);
+                    advertenciaTipo.id = 'advertencia';
+                    advertenciaTipo.textContent = `${numeroAdvertencia}ª - Fechou o documento enquanto estava compartilhando a tela.`;
+                    divAdvertencias.appendChild(advertenciaTipo);
                     break;
             }
         });
