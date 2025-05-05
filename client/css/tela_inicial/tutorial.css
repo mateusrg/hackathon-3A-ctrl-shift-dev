@@ -63,7 +63,7 @@
 #voltar {
     position: absolute;
     height: calc(100 * var(--un));
-    width: calc(380 * var(--un));
+    width: calc(400 * var(--un));
     top: calc(845 * var(--un));
     left: 50%;
     transform: translate(-50%, 0);

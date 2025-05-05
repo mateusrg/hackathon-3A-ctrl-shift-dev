@@ -24,9 +24,8 @@ localStorage.setItem('isRun', true);
 
 verificarLogin();
 
-// 🔁 Preload das 16 imagens do tutorial
 const imagensTutorial = [];
-for (let i = 1; i <= 16; i++) {
+for (let i = 1; i <= 17; i++) {
     const img = new Image();
     img.src = `../../assets/tutorial/tutorial${i}.png`;
     imagensTutorial.push(img);
@@ -61,7 +60,7 @@ function clicarSetaDireita() {
     game.appendChild(setaEsquerda);
     setaEsquerda.addEventListener('click', clicarSetaEsquerda);
 
-    if (tutorial === 16) {
+    if (tutorial === 17) {
         document.querySelector('#seta-direita')?.remove();
     }
 }
