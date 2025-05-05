@@ -5264,6 +5264,7 @@ selecionaReuniao();
 document.querySelector('#mesa').style.display = 'none';
 document.querySelector('#escritorio').style.display = 'none';
 document.querySelector('#cafeteira').style.display = 'none';
+document.querySelector('#tb-tarefa').style.display = 'none';
 
 document.addEventListener('keydown', (event) => {
     const pcSelecionado = document.querySelector('#escritorio').style.display == 'none' && document.querySelector('#cafeteira').style.display == 'none' && document.querySelector('#mesa').style.display == 'none';
@@ -5327,7 +5328,7 @@ document.addEventListener('keydown', (event) => {
             }
             break;
         case '5':
-            if (document.querySelector('#tb-tarefa') && pcSelecionado) {
+            if (document.querySelector('#tb-tarefa').style.display != 'none' && pcSelecionado) {
                 document.querySelector('#tb-tarefa')?.click();
             }
             break;
