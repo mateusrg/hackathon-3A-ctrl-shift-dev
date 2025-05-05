@@ -22,6 +22,165 @@ async function verificarLogin() {
 
 verificarLogin();
 
+async function isConquistaJaDesbloqueada(idConquista) {
+    const usuario = await Usuario.getUsuarioLogado();
+    return usuario.conquistas_desbloqueadas[idConquista - 1] != '0';
+}
+
+async function desbloquearConquista(idConquista) {
+    const conquistaJaDesbloqueada = await isConquistaJaDesbloqueada(idConquista);
+    if (conquistaJaDesbloqueada) {
+        return;
+    }
+
+    const usuario = await Usuario.getUsuarioLogado();
+    const usuarioId = usuario.id;
+
+    await Usuario.desbloquearConquista(usuarioId, idConquista);
+
+    const imagem = `url("../../assets/conquistas/icones/conquistas${idConquista < 10 ? `0${idConquista}` : idConquista}.png")`;
+    let texto;
+    switch (idConquista) {
+        case 1:
+            texto = 'Mestre do Compartilhamento';
+            break;
+        case 2:
+            texto = 'Relâmpago do Código';
+            break;
+        case 3:
+            texto = 'Task Slayer';
+            break;
+        case 4:
+            texto = 'Sem Condições';
+            break;
+        case 5:
+            texto = 'Café com Leite';
+            break;
+        case 6:
+            texto = 'Barista Desastrado';
+            break;
+        case 7:
+            texto = 'Equilíbrio Tóxico';
+            break;
+        case 8:
+            texto = 'Maratona de Energético';
+            break;
+        case 9:
+            texto = 'Zen Developer';
+            break;
+        case 10:
+            texto = 'Jogador Incansável';
+            break;
+        case 11:
+            texto = 'Dev Relâmpago';
+            break;
+        case 12:
+            texto = 'Testador Implacável';
+            break;
+        case 13:
+            texto = 'Quizmaníaco';
+            break;
+        case 14:
+            texto = 'Microfone Ninja';
+            break;
+        case 15:
+            texto = 'Campeão do Compartilhamento';
+            break;
+        case 16:
+            texto = 'Bebum Profissional';
+            break;
+        case 17:
+            texto = 'Advertência Zero';
+            break;
+        case 18:
+            texto = 'Incompetente';
+            break;
+        case 19:
+            texto = 'Promovido a Pleno';
+            break;
+        case 20:
+            texto = 'Promovido a Sênior';
+            break;
+        case 21:
+            texto = 'Promovido a Tech Lead';
+            break;
+        case 22:
+            texto = 'Sobrevivente Tech Lead';
+            break;
+        case 23:
+            texto = 'Júnior Competente';
+            break;
+        case 24:
+            texto = 'Pleno Superior';
+            break;
+        case 25:
+            texto = 'Easter Eggs';
+            break;
+        case 26:
+            texto = 'Sênior Absoluto';
+            break;
+        case 27:
+            texto = 'Tech Lead Perfeito';
+            break;
+        case 28:
+            texto = 'Amante do Caos';
+            break;
+        case 29:
+            texto = 'Chega';
+            break;
+        case 30:
+            texto = 'Mais café';
+            break;
+        case 31:
+            texto = 'Maratona de Runs';
+            break;
+        case 32:
+            texto = 'Diversão Equilibrada';
+            break;
+        case 33:
+            texto = 'Um Último Suspiro';
+            break;
+        case 34:
+            texto = 'Pós-Depressão';
+            break;
+        case 35:
+            texto = 'O Verdadeiro Deus Gamer';
+            break;
+        case 36:
+            texto = 'Ctrl+Shift+Dev';
+            break;
+    }
+
+    const conquista = document.createElement('div');
+    conquista.className = 'conquista';
+    const quantidadeConquistasNaTela = document.querySelectorAll('.conquista').length;
+    conquista.style.bottom = `calc(${189 + 140 * quantidadeConquistasNaTela} * var(--un))`;
+    conquista.addEventListener('click', () => {
+        conquista.remove();
+    });
+    game.appendChild(conquista);
+
+    const imagemConquista = document.createElement('div');
+    imagemConquista.className = 'imagem-conquista';
+    imagemConquista.style.backgroundImage = imagem;
+    conquista.appendChild(imagemConquista);
+
+    const textoConquista = document.createElement('div');
+    textoConquista.className = 'texto-conquista';
+    textoConquista.textContent = texto;
+    conquista.appendChild(textoConquista);
+
+    setTimeout(() => {
+        if (document.body.contains(conquista)) {
+            conquista.remove();
+        }
+    }, 5000);
+
+    if (usuario.conquistas_desbloqueadas == '111111111111111111111111111111111110') {
+        desbloquearConquista(36);
+    }
+}
+
 function comoEvitarTela() {
     const game = document.getElementById('game');
     const blur = document.createElement('div');
@@ -259,6 +418,13 @@ function gameOver() {
                 break;
         }
     }
+    if (final.conquistasDesbloqueadas.length != 0) {
+        const conquistas = final.conquistasDesbloqueadas;
+
+        conquistas.forEach((conquista) => {
+            desbloquearConquista(conquista);
+        })
+    }
 }
 
 async function vitoria() {
@@ -325,6 +491,14 @@ async function vitoria() {
             usuario.dificuldade_maxima_desbloqueada = novaDificuldade;
             localStorage.setItem('usuario', JSON.stringify(usuario));
         }
+    }
+
+    if (final.conquistasDesbloqueadas.length != 0) {
+        const conquistas = final.conquistasDesbloqueadas;
+
+        conquistas.forEach((conquista) => {
+            desbloquearConquista(conquista);
+        })
     }
 }
 

@@ -1265,7 +1265,7 @@ async function desbloquearConquista(idConquista) {
     const usuario = await Usuario.getUsuarioLogado();
     const usuarioId = usuario.id;
 
-    Usuario.desbloquearConquista(usuarioId, idConquista);
+    await Usuario.desbloquearConquista(usuarioId, idConquista);
 
     const imagem = `url("../../assets/conquistas/icones/conquistas${idConquista < 10 ? `0${idConquista}` : idConquista}.png")`;
     let texto;
