@@ -18,6 +18,16 @@ const contaVerificada = setInterval(verificarLogin, 1000);
 
 document.querySelector('#voltar').addEventListener('click', () => window.location.href = '../../html/tela_inicial/dificuldade.html');
 
+function conferirNome() {
+    const nomeStorage = JSON.parse(localStorage.getItem('usuario')).nome;
+    
+    if (nomeStorage != null) {
+        document.querySelector('#nome').value = nomeStorage;
+    }
+}
+
+conferirNome();
+
 document.querySelector('form').addEventListener('submit', async (e) => {
     if (!e.target.checkValidity()) {
         return;
@@ -28,5 +38,5 @@ document.querySelector('form').addEventListener('submit', async (e) => {
     usuario['nome'] = nome;
     localStorage.setItem('usuario', JSON.stringify(usuario));
     await Usuario.alterarNomeUsuario(usuario['id'], nome);
-    window.location.href = '../../html/pc/pc.html';
+    window.location.href = '../../html/tela_inicial/premissa.html';
 });
