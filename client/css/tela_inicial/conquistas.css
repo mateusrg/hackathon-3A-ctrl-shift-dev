@@ -134,39 +134,31 @@
     z-index: 1000;
 }
 
-#div-notificacao-conquista {
+.conquista-notificacao {
+    background-size: contain;
     position: absolute;
-    height: 100%;
-    width: calc(496 * var(--un));
-    padding-bottom: calc(20 * var(--un));
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    pointer-events: none;
+    height: calc(124 * var(--un));
+    width: calc(585 * var(--un));
+    left: calc(427 * var(--un));
+    bottom: calc(189 * var(--un));
+    background-image: url('../../assets/conquistas/conquista.png');
     z-index: 10000;
 }
 
-.conquista-notificacao {
-    height: calc(124 * var(--un));
-    width: calc(496 * var(--un));
-    background-image: url('../../assets/conquistas/amarelo-grande.png');
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: calc(25 * var(--un));
-    padding-left: calc(40 * var(--un));
-    z-index: 10000;
+.texto-conquista-notificacao {
+    position: absolute;
+    width: calc(405 * var(--un));
+    color: #fff;
+    font-size: calc(15 * var(--un));
+    top: calc(54 * var(--un));
+    right: calc(50 * var(--un));
 }
 
 .imagem-conquista-notificacao {
+    position: absolute;
+    background-size: contain;
     height: calc(50 * var(--un));
-    width: calc(50 * var(--un));
-}
-
-.nome-conquista-notificacao {
-    font-size: calc(20 * var(--un));
-    color: #fff;
+    aspect-ratio: 1/1;
+    top: calc(37 * var(--un));
+    left: calc(57 * var(--un));
 }

@@ -222,38 +222,165 @@ if (usuario.conquistas_desbloqueadas == '000000000000000000000000000000000000') 
     easterEggLiberado = true;
 }
 
-async function conquista24() {
-    easterEggLiberado = true;
+async function isConquistaJaDesbloqueada(idConquista) {
+    const usuario = await Usuario.getUsuarioLogado();
+    return usuario.conquistas_desbloqueadas[idConquista - 1] != '0';
+}
 
-    const usuarioStorage = JSON.parse(localStorage.getItem('usuario'));
-    const usuario = await Usuario.selecionarUsuarioPorId(usuarioStorage.id);
-    
-    const usuarioAtualizado = await Usuario.desbloquearConquista(usuario.id, 25);
+async function desbloquearConquista(idConquista) {
+    const conquistaJaDesbloqueada = await isConquistaJaDesbloqueada(idConquista);
+    if (conquistaJaDesbloqueada) {
+        return;
+    }
 
-    const secaoConquistaNotificacao = document.querySelector('#div-notificacao-conquista');
+    const usuario = await Usuario.getUsuarioLogado();
+    const usuarioId = usuario.id;
 
-    const conquistaNotificacao = document.createElement('div');
-    conquistaNotificacao.classList.add('conquista-notificacao');
-    // conquistaNotificacao.style.backgroundImage = `url('../../assets/conquistas/amarelo-grande.png')`;
-    secaoConquistaNotificacao.appendChild(conquistaNotificacao);
+    await Usuario.desbloquearConquista(usuarioId, idConquista);
+
+    const imagem = `url("../../assets/conquistas/icones/conquistas${idConquista < 10 ? `0${idConquista}` : idConquista}.png")`;
+    let texto;
+    switch (idConquista) {
+        case 1:
+            texto = 'Mestre do Compartilhamento';
+            break;
+        case 2:
+            texto = 'Relâmpago do Código';
+            break;
+        case 3:
+            texto = 'Task Slayer';
+            break;
+        case 4:
+            texto = 'Sem Condições';
+            break;
+        case 5:
+            texto = 'Café com Leite';
+            break;
+        case 6:
+            texto = 'Barista Desastrado';
+            break;
+        case 7:
+            texto = 'Equilíbrio Tóxico';
+            break;
+        case 8:
+            texto = 'Maratona de Energético';
+            break;
+        case 9:
+            texto = 'Zen Developer';
+            break;
+        case 10:
+            texto = 'Jogador Incansável';
+            break;
+        case 11:
+            texto = 'Dev Relâmpago';
+            break;
+        case 12:
+            texto = 'Testador Implacável';
+            break;
+        case 13:
+            texto = 'Quizmaníaco';
+            break;
+        case 14:
+            texto = 'Microfone Ninja';
+            break;
+        case 15:
+            texto = 'Campeão do Compartilhamento';
+            break;
+        case 16:
+            texto = 'Bebum Profissional';
+            break;
+        case 17:
+            texto = 'Advertência Zero';
+            break;
+        case 18:
+            texto = 'Incompetente';
+            break;
+        case 19:
+            texto = 'Promovido a Pleno';
+            break;
+        case 20:
+            texto = 'Promovido a Sênior';
+            break;
+        case 21:
+            texto = 'Promovido a Tech Lead';
+            break;
+        case 22:
+            texto = 'Sobrevivente Tech Lead';
+            break;
+        case 23:
+            texto = 'Júnior Competente';
+            break;
+        case 24:
+            texto = 'Pleno Superior';
+            break;
+        case 25:
+            texto = 'Easter Eggs';
+            break;
+        case 26:
+            texto = 'Sênior Absoluto';
+            break;
+        case 27:
+            texto = 'Tech Lead Perfeito';
+            break;
+        case 28:
+            texto = 'Amante do Caos';
+            break;
+        case 29:
+            texto = 'Chega';
+            break;
+        case 30:
+            texto = 'Mais café';
+            break;
+        case 31:
+            texto = 'Maratona de Runs';
+            break;
+        case 32:
+            texto = 'Diversão Equilibrada';
+            break;
+        case 33:
+            texto = 'Um Último Suspiro';
+            break;
+        case 34:
+            texto = 'Pós-Depressão';
+            break;
+        case 35:
+            texto = 'O Verdadeiro Deus Gamer';
+            break;
+        case 36:
+            texto = 'Ctrl+Shift+Dev';
+            break;
+    }
+
+    const conquista = document.createElement('div');
+    conquista.className = 'conquista-notificacao';
+    const quantidadeConquistasNaTela = document.querySelectorAll('.conquista').length;
+    conquista.style.bottom = `calc(${189 + 140 * quantidadeConquistasNaTela} * var(--un))`;
+    conquista.addEventListener('click', () => {
+        conquista.remove();
+    });
+    game.appendChild(conquista);
 
     const imagemConquista = document.createElement('div');
-    imagemConquista.classList.add('imagem-conquista-notificacao');
-    imagemConquista.style.backgroundImage = `url('../../assets/conquistas/icones/conquistas25.png')`;
-    conquistaNotificacao.appendChild(imagemConquista);
+    imagemConquista.className = 'imagem-conquista-notificacao';
+    imagemConquista.style.backgroundImage = imagem;
+    conquista.appendChild(imagemConquista);
 
-    const nomeConquista = document.createElement('h4');
-    nomeConquista.classList.add('nome-conquista-notificacao');
-    nomeConquista.innerText = "Easter Eggs";
-    conquistaNotificacao.appendChild(nomeConquista);
+    const textoConquista = document.createElement('div');
+    textoConquista.className = 'texto-conquista-notificacao';
+    textoConquista.textContent = texto;
+    conquista.appendChild(textoConquista);
+
+    await carregarConquistas(secaoConquista);
 
     setTimeout(() => {
-        conquistaNotificacao?.remove();
-        imagemConquista?.remove();
-        nomeConquista?.remove();
-        abrirModalConquista(24, true);
-        carregarConquistas(secaoConquista);
-    }, 3000);
+        if (document.body.contains(conquista)) {
+            conquista.remove();
+        }
+    }, 5000);
+
+    if (usuario.conquistas_desbloqueadas == '111111111111111111111111111111111110') {
+        desbloquearConquista(36);
+    }
 }
 
 function abrirModalConquista(index, desbloqueada) {
@@ -293,7 +420,9 @@ function abrirModalConquista(index, desbloqueada) {
         const cliqueAqui = document.createElement('div');
         cliqueAqui.id = 'clique-aqui';
         tela.appendChild(cliqueAqui);
-        cliqueAqui.addEventListener('click', conquista24)
+        cliqueAqui.addEventListener('click', () => {
+            desbloquearConquista(25);
+        });
     }
 
     const imagemConquista = document.createElement('div');
@@ -336,7 +465,9 @@ async function carregarConquistas(nivel) {
         if (conquistaIndividual[index] === '0') {
             desbloqueada = false;
             conquista.style.filter = 'brightness(0)';
-        };
+        } else {
+            console.log(`Conquista ${index+1} está desbloquada`)
+        }
 
         conquista.addEventListener('click', () => {
             abrirModalConquista(index, desbloqueada);

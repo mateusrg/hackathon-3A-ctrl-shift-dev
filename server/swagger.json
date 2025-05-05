@@ -40,7 +40,7 @@
           }
         }
       },
-      "/login": {
+      "/usuario/login": {
         "post": {
           "summary": "Login de usuário",
           "requestBody": {
@@ -51,19 +51,25 @@
                   "type": "object",
                   "properties": {
                     "email": { "type": "string" },
-                    "password": { "type": "string" }
+                    "senha": { "type": "string" }
                   },
-                  "required": ["email", "password"]
+                  "required": ["email", "senha"]
                 }
               }
             }
           },
           "responses": {
             "200": {
-              "description": "Login efetuado ou erro de credenciais"
+              "description": "Login bem-sucedido!"
+            },
+            "401": {
+              "description": "Senha incorreta."
+            },
+            "404": {
+              "description": "Usuário não encontrado."
             },
             "500": {
-              "description": "Erro no servidor"
+              "description": "Erro ao buscar usuário"
             }
           }
         }
