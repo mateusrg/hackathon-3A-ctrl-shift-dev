@@ -54,6 +54,7 @@ async function main() {
         window.location.href = '../../html/tela_inicial/nome.html';
     });
 
+    console.log(dificuldadeMaximaDesbloqueada)
     if (dificuldadeMaximaDesbloqueada < 3) {
         adicionarImagemSobreBotao('#botao-senior', '../../assets/dificuldade/dificuldade_bloqueada.png');
     } else {

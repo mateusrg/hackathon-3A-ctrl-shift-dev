@@ -1080,7 +1080,6 @@ preencherTarefas();
 
 // Resto do Código
 function gameOver(causaMorte) {
-    return; // temporário enquanto codo
     let final = {
         "advertencias": advertencias,
         "causaMorte": causaMorte,
@@ -1092,10 +1091,10 @@ function gameOver(causaMorte) {
     window.location.href = "../../html/final/final.html";
 }
 
-let tempoRestante = 600;
+let tempoRestante = 3;
 let energia = 100;
 let felicidade = 100;
-let pontuacao = 0;
+let pontuacao = 200000;
 
 let statusReuniao = 'fechado'; // "fechado", "aberto", "selecionado"
 let statusPasta = 'fechado'; // "fechado", "aberto", "selecionado"

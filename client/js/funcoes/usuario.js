@@ -77,6 +77,7 @@ export async function deletarUsuario(id) {
 }
 
 export async function aumentarDificuldadeMaximaDesbloqueada(id) {
+  console.log("Chamou")
   const res = await fetch(
     `${urlBase}/usuario/aumentarDificuldadeMaximaDesbloqueada/${id}`,
     { method: 'PUT' }

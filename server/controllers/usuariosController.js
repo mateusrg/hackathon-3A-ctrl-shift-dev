@@ -135,7 +135,7 @@ exports.aumentarDificuldadeMaximaDesbloqueada = (req, res) => {
         if (err) {
             return res.status(500).json({ success: false, message: 'Erro ao aumentar a dificuldade máxima desbloqueada.' });
         }
-        res.json({ success: true, message: 'Dificuldade máxima aumentada com sucesso!', data: req.body.dificuldade_maxima_desbloqueada });
+        res.json({ success: true, message: 'Dificuldade máxima aumentada com sucesso!' });
     });
 }
 

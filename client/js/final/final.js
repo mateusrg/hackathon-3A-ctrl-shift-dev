@@ -46,62 +46,62 @@ function comoEvitarTela() {
         numeroAdvertencia += 1;
         const advertenciaTipo = document.createElement('p');
         switch (advertencia) {
-            case 1:
+            case 4:
                 advertenciaTipo.id = 'advertencia-como-evitar';
                 advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando o chefe solicita, é preciso abrir o microfone antes que o tempo se esgote.`;
                 divTexto.appendChild(advertenciaTipo);
                 break;
-            case 2:
+            case 5:
                 advertenciaTipo.id = 'advertencia-como-evitar';
                 advertenciaTipo.textContent = `${numeroAdvertencia}ª - Enquanto você está falando na reunião, você não deve fechar o microfone, ele fecha automaticamente ao final da ação.`;
                 divTexto.appendChild(advertenciaTipo);
                 break;
-            case 3:
+            case 6:
                 advertenciaTipo.id = 'advertencia-como-evitar';
                 advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você desligar a câmera, você precisa ligar ela antes que o tempo se esgote.`;
                 divTexto.appendChild(advertenciaTipo);
                 break;
-            case 4:
-                advertenciaTipo.id = 'advertencia-como-evitar';
-                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você for até a cefeteira, você sempre deverá desligar a câmera, pois o chefe não pode ver que você saiu.`;
-                divTexto.appendChild(advertenciaTipo);
-                break;
-            case 5:
-                advertenciaTipo.id = 'advertencia-como-evitar';
-                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando o chefe solicita, é preciso compartilhar a tela antes que o tempo se esgote.`;
-                divTexto.appendChild(advertenciaTipo);
-                break;
-            case 6:
-                advertenciaTipo.id = 'advertencia-como-evitar';
-                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você for compartilhar a tela, deverá deixar aberto o documento solicitado pelo chefe.`;
-                divTexto.appendChild(advertenciaTipo);
-                break;
             case 7:
                 advertenciaTipo.id = 'advertencia-como-evitar';
-                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Você precisa compartilhar o documento solicitado pelo chefe.`;
+                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você for até a cafeteira, você sempre deverá desligar a câmera, pois o chefe não pode ver que você saiu.`;
                 divTexto.appendChild(advertenciaTipo);
                 break;
             case 8:
                 advertenciaTipo.id = 'advertencia-como-evitar';
-                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você for compartilhar a tela, não esqueça de fechar todas as outras abas.`;
+                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando o chefe solicita, é preciso compartilhar a tela antes que o tempo se esgote.`;
                 divTexto.appendChild(advertenciaTipo);
                 break;
             case 9:
                 advertenciaTipo.id = 'advertencia-como-evitar';
-                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Você só deve ligar o microfone quando o chefe solicitar.`;
+                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você for compartilhar a tela, deverá deixar aberto o documento solicitado pelo chefe.`;
                 divTexto.appendChild(advertenciaTipo);
                 break;
             case 10:
                 advertenciaTipo.id = 'advertencia-como-evitar';
-                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Você só deve compartilhar a tela quando o chefe solicitar.`;
+                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Você precisa compartilhar o documento solicitado pelo chefe.`;
                 divTexto.appendChild(advertenciaTipo);
                 break;
             case 11:
                 advertenciaTipo.id = 'advertencia-como-evitar';
-                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você for abrir o microfone, não se esqueça de fehcar ou pausar o jogo, caso contrário, o chefe irá ouvir.`;
+                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você for compartilhar a tela, não esqueça de fechar todas as outras abas.`;
                 divTexto.appendChild(advertenciaTipo);
                 break;
             case 12:
+                advertenciaTipo.id = 'advertencia-como-evitar';
+                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Você só deve ligar o microfone quando o chefe solicitar.`;
+                divTexto.appendChild(advertenciaTipo);
+                break;
+            case 13:
+                advertenciaTipo.id = 'advertencia-como-evitar';
+                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Você só deve compartilhar a tela quando o chefe solicitar.`;
+                divTexto.appendChild(advertenciaTipo);
+                break;
+            case 14:
+                advertenciaTipo.id = 'advertencia-como-evitar';
+                advertenciaTipo.textContent = `${numeroAdvertencia}ª - Quando você for abrir o microfone, não se esqueça de fehcar ou pausar o jogo, caso contrário, o chefe irá ouvir.`;
+                divTexto.appendChild(advertenciaTipo);
+                break;
+            case 15:
                 advertenciaTipo.id = 'advertencia-como-evitar';
                 advertenciaTipo.textContent = `${numeroAdvertencia}ª - Enquanto estiver compartilhando a tela, não feche o documento.`;
                 divTexto.appendChild(advertenciaTipo);
@@ -156,62 +156,62 @@ function gameOver() {
             numeroAdvertencia += 1;
             const advertenciaTipo = document.createElement('p');
             switch (advertencia) {
-                case 1:
+                case 4:
                     advertenciaTipo.id = 'advertencia';
                     advertenciaTipo.textContent = `${numeroAdvertencia}ª - Não ligou o microfone quando solicitado.`;
                     divAdvertencias.appendChild(advertenciaTipo);
                     break;
-                case 2:
+                case 5:
                     advertenciaTipo.id = 'advertencia';
                     advertenciaTipo.textContent = `${numeroAdvertencia}ª - Desligou o microfone enquanto estava falando.`;
                     divAdvertencias.appendChild(advertenciaTipo);
                     break;
-                case 3:
+                case 6:
                     advertenciaTipo.id = 'advertencia';
                     advertenciaTipo.textContent = `${numeroAdvertencia}ª - Permaneceu com a câmera desligada.`;
                     divAdvertencias.appendChild(advertenciaTipo);
                     break;
-                case 4:
+                case 7:
                     advertenciaTipo.id = 'advertencia';
                     advertenciaTipo.textContent = `${numeroAdvertencia}ª - Saiu do computador e esqueceu a câmera ligada.`;
                     divAdvertencias.appendChild(advertenciaTipo);
                     break;
-                case 5:
+                case 8:
                     advertenciaTipo.id = 'advertencia';
                     advertenciaTipo.textContent = `${numeroAdvertencia}ª - Não compartilhou a tela quando solicitado.`;
                     divAdvertencias.appendChild(advertenciaTipo);
                     break;
-                case 6:
+                case 9:
                     advertenciaTipo.id = 'advertencia';
                     advertenciaTipo.textContent = `${numeroAdvertencia}ª - Compartilhou a tela sem nenhum documento aberto.`;
                     divAdvertencias.appendChild(advertenciaTipo);
                     break;
-                case 7:
+                case 10:
                     advertenciaTipo.id = 'advertencia';
                     advertenciaTipo.textContent = `${numeroAdvertencia}ª - Não compartilhou o documento correto.`;
                     divAdvertencias.appendChild(advertenciaTipo);
                     break;
-                case 8:
+                case 11:
                     advertenciaTipo.id = 'advertencia';
                     advertenciaTipo.textContent = `${numeroAdvertencia}ª - Compartilhou a tela com outras abas abertas.`;
                     divAdvertencias.appendChild(advertenciaTipo);
                     break;
-                case 9:
+                case 12:
                     advertenciaTipo.id = 'advertencia';
                     advertenciaTipo.textContent = `${numeroAdvertencia}ª - Ligou o microfone sem ser solicitado.`;
                     divAdvertencias.appendChild(advertenciaTipo);
                     break;
-                case 10:
+                case 13:
                     advertenciaTipo.id = 'advertencia';
                     advertenciaTipo.textContent = `${numeroAdvertencia}ª - Compartilhou a tela sem ser solicitado.`;
                     divAdvertencias.appendChild(advertenciaTipo);
                     break;
-                case 11:
+                case 14:
                     advertenciaTipo.id = 'advertencia';
                     advertenciaTipo.textContent = `${numeroAdvertencia}ª - Abriu o microfone com o jogo aberto ou despausado.`;
                     divAdvertencias.appendChild(advertenciaTipo);
                     break;
-                case 12:
+                case 15:
                     advertenciaTipo.id = 'advertencia';
                     advertenciaTipo.textContent = `${numeroAdvertencia}ª - Fechou o documento enquanto estava compartilhando a tela.`;
                     divAdvertencias.appendChild(advertenciaTipo);
@@ -248,7 +248,7 @@ function gameOver() {
     }
 }
 
-function vitoria() {
+async function vitoria() {
     document.getElementById('tela-vitoria')?.remove();
     document.getElementById('voltar')?.remove();
     document.getElementById('como-evitar')?.remove();
@@ -300,6 +300,19 @@ function vitoria() {
     } else {
         game.style.backgroundImage = "url('../../assets/final/promocao.png')";
         pontuacao.style.top = 'calc(820 * var(--un))';
+
+        const usuarioStorage = localStorage.getItem('usuario')
+        const usuario = JSON.parse(usuarioStorage);
+        const idUsuario = usuario.id;
+        const dificuldadeMaxima = usuario.dificuldade_maxima_desbloqueada;
+
+        if (dificuldade == dificuldadeMaxima && dificuldade > 1) {
+            const novoUsuario = await Usuario.aumentarDificuldadeMaximaDesbloqueada(idUsuario);
+            const novaDificuldade = dificuldadeMaxima + 1;
+            console.log(novaDificuldade)
+            usuario.dificuldade_maxima_desbloqueada = novaDificuldade;
+            localStorage.setItem('usuario', JSON.stringify(usuario));
+        }
     }
 }
 
