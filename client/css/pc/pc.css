@@ -1024,6 +1024,15 @@ button {
     right: calc(360 * var(--un));
 }
 
+#fundo-jogo {
+    position: absolute;
+    background-image: url('../../assets/pc/jogo/fundo_jogo.png');
+    height: calc(714 * var(--un));
+    width: calc(1285 * var(--un));
+    top: calc(140 * var(--un));
+    left: calc(58 * var(--un));
+}
+
 #tela-jogo {
     position: absolute;
     background-image: url('../../assets/pc/jogo/inicio.png');

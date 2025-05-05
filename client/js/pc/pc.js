@@ -1892,6 +1892,7 @@ function destruirTelaTarefa() {
 }
 
 function destruirTelaJogo() {
+    document.querySelector('#fundo-jogo')?.remove();
     document.querySelector('#tela-jogo')?.remove();
     document.querySelector('#botao-iniciar-jogo')?.remove();
     document.querySelector('#xis-jogo')?.remove();
@@ -4815,6 +4816,10 @@ function criarTelaJogo() {
     destruirTelaTarefa();
     destruirTelaLista();
     destruirTelaJogo();
+
+    const fundoJogo = document.createElement('div');
+    fundoJogo.id = 'fundo-jogo';
+    game.appendChild(fundoJogo);
 
     const telaJogo = document.createElement('div');
     telaJogo.id = 'tela-jogo';
