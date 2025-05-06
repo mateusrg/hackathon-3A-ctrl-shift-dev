@@ -675,10 +675,10 @@ const questoesJson = {
         {
             "pergunta": "Em SQL, qual função substitui NULL por valor padrão?",
             "alternativas": [
+                "DEFAULT",
                 "COALESCE()",
                 "IFNULL()",
-                "NVL()",
-                "DEFAULT"
+                "NVL()"
             ]
         },
         {
