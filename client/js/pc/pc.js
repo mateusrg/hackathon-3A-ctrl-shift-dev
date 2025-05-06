@@ -864,6 +864,7 @@ const perguntasJson = {
             "alternativas": [
                 ["SELECT", "INSERT", "UPDATE", "DELETE"],
                 ["*", "idade", "nome", "id"],
+                ["FROM moradores", "FROM usuarios", "FROM clientes", "FROM dados"],
                 ["ORDER BY idade", "WHERE idade", "HAVING idade", "SORT idade"]
             ],
             "correta": ["SELECT", "*", "ORDER BY idade"]
@@ -1004,7 +1005,7 @@ function validarDesafioTipo2(desafio, respostaPlayer) {
             .filter(ch => vogais.includes(ch))
             .length;
         const produto = numVogais * respostaPlayer.length;
-        return produto === desafio.resposta_correta;
+        return produto == desafio['texto'].split(' ')[1];
     }
 
     return respostaPlayer == desafio.resposta_correta;
