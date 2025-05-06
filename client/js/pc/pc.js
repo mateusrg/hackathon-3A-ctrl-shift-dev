@@ -867,7 +867,7 @@ const perguntasJson = {
                 ["FROM moradores", "FROM usuarios", "FROM clientes", "FROM dados"],
                 ["ORDER BY idade", "WHERE idade", "HAVING idade", "SORT idade"]
             ],
-            "correta": ["SELECT", "*", "ORDER BY idade"]
+            "correta": ["SELECT", "*", "FROM moradores", "ORDER BY idade"]
         },
         {
             "titulo": "Insira um morador com nome Ana e idade 35",
@@ -5311,6 +5311,8 @@ document.addEventListener('keydown', (event) => {
 
     switch (event.key) {
         case 'ArrowUp':
+        case 'W':
+        case 'w':
             if (escritorioSelecionado) {
                 document.querySelector('#mesa-escritorio').click();
             } else if (mesaSelecionado) {
@@ -5318,6 +5320,8 @@ document.addEventListener('keydown', (event) => {
             }
             break;
         case 'ArrowDown':
+        case 'S':
+        case 's':
             if (pcSelecionado) {
                 document.querySelector('#seta-baixo-pc').click();
             } else if (mesaSelecionado) {
@@ -5325,6 +5329,8 @@ document.addEventListener('keydown', (event) => {
             }
             break;
         case 'ArrowLeft':
+        case 'A':
+        case 'a':
             if (cafeteiraSelecionado) {
                 document.querySelector('#seta-esquerda-cafeteira').click();
             } else if (pcSelecionado) {
@@ -5335,6 +5341,8 @@ document.addEventListener('keydown', (event) => {
             }
             break;
         case 'ArrowRight':
+        case 'D':
+        case 'd':
             if (escritorioSelecionado) {
                 document.querySelector('#seta-direita-escritorio').click();
             } else if (pcSelecionado) {
