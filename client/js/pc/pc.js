@@ -867,7 +867,7 @@ const perguntasJson = {
                 ["FROM moradores", "FROM usuarios", "FROM clientes", "FROM dados"],
                 ["ORDER BY idade", "WHERE idade", "HAVING idade", "SORT idade"]
             ],
-            "correta": ["SELECT", "*", "ORDER BY idade"]
+            "correta": ["SELECT", "*", "FROM moradores", "ORDER BY idade"]
         },
         {
             "titulo": "Insira um morador com nome Ana e idade 35",
