@@ -36,7 +36,7 @@ async function desbloquearConquista(idConquista) {
     const usuario = await Usuario.getUsuarioLogado();
     const usuarioId = usuario.id;
 
-    await Usuario.desbloquearConquista(usuarioId, idConquista);
+    const usuarioAtualizado = await Usuario.desbloquearConquista(usuarioId, idConquista);
 
     const imagem = `url("../../assets/conquistas/icones/conquistas${idConquista < 10 ? `0${idConquista}` : idConquista}.png")`;
     let texto;
@@ -177,7 +177,7 @@ async function desbloquearConquista(idConquista) {
     }, 5000);
 
     if (usuario.conquistas_desbloqueadas == '111111111111111111111111111111111110') {
-        desbloquearConquista(36);
+        await desbloquearConquista(36);
     }
 }
 
@@ -421,8 +421,8 @@ function gameOver() {
     if (final.conquistasDesbloqueadas.length != 0) {
         const conquistas = final.conquistasDesbloqueadas;
 
-        conquistas.forEach((conquista) => {
-            desbloquearConquista(conquista);
+        conquistas.forEach(async (conquista) => {
+            await desbloquearConquista(conquista);
         })
     }
 }
@@ -496,8 +496,8 @@ async function vitoria() {
     if (final.conquistasDesbloqueadas.length != 0) {
         const conquistas = final.conquistasDesbloqueadas;
 
-        conquistas.forEach((conquista) => {
-            desbloquearConquista(conquista);
+        conquistas.forEach(async (conquista) => {
+            await desbloquearConquista(conquista);
         })
     }
 }
