@@ -4875,7 +4875,6 @@ function criarTelaJogo() {
         botaoIniciarJogoJaClicado = true;
         criarMapaJogo();
     });
-
 }
 
 function selecionaJogo() {
@@ -4897,6 +4896,23 @@ function selecionaJogo() {
     jogoSelecionado.className = 'selecionado';
     game.appendChild(jogoSelecionado);
     criarTelaJogo();
+    const tela = document.querySelector('#tela-jogo');
+    if (tela) {
+        if (tela.style.backgroundImage === '../../assets/pc/jogo/inicio.png') {
+            if (!document.querySelector('#botao-iniciar-jogo')) {
+                const game = document.querySelector('#game');
+                const botaoIniciar = document.createElement('div');
+                botaoIniciar.id = 'botao-iniciar-jogo';
+                game.appendChild(botaoIniciar);
+
+                botaoIniciar.addEventListener('click', () => {
+                    botaoIniciarJogoJaClicado = true;
+                    criarMapaJogo();
+                });
+                game.appendChild(botaoIniciarJogo);
+            }
+        }
+    }
 }
 
 function selecionaTarefa(indiceTarefa) {
