@@ -4856,11 +4856,6 @@ function criarTelaJogo() {
         jogoAberto.remove();
     }
 
-    if (jogoEstavaSelecionado && botaoIniciarJogoJaClicado) {
-        criarMapaJogo();
-        return;
-    }
-
     const botaoIniciar = document.createElement('div');
     botaoIniciar.id = 'botao-iniciar-jogo';
     game.appendChild(botaoIniciar);
@@ -4869,6 +4864,11 @@ function criarTelaJogo() {
         botaoIniciarJogoJaClicado = true;
         criarMapaJogo();
     });
+
+    if (jogoEstavaSelecionado && botaoIniciarJogoJaClicado) {
+        criarMapaJogo();
+        return;
+    }
 }
 
 function selecionaJogo() {
