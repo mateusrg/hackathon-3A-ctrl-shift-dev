@@ -66,10 +66,10 @@ switch (dificuldade) {
         break;
     case 2:
         limiteAdvertencias = 2;
-        decaimentoEnergiaEFelicidadeEmS = 1 / 1;
+        decaimentoEnergiaEFelicidadeEmS = 1 / 0.8;
         aumentoTempoCafeteiraVazamento = 2;
-        toleranciaMicrofone = 5;
-        toleranciaCompartilhamento = 10;
+        toleranciaMicrofone = 7;
+        toleranciaCompartilhamento = 12;
         pontuacaoMinima = 25;
         energiaCafeRestaura = 50;
         felicidadeInimigoDerrotado = 5;
@@ -79,7 +79,7 @@ switch (dificuldade) {
         break;
     case 3:
         limiteAdvertencias = 1;
-        decaimentoEnergiaEFelicidadeEmS = 1 / 1.5;
+        decaimentoEnergiaEFelicidadeEmS = 1 / 1.1;
         aumentoTempoCafeteiraVazamento = 3;
         toleranciaMicrofone = 4;
         toleranciaCompartilhamento = 7;
@@ -93,7 +93,7 @@ switch (dificuldade) {
         break;
     default:
         limiteAdvertencias = 0;
-        decaimentoEnergiaEFelicidadeEmS = 1 / 2;
+        decaimentoEnergiaEFelicidadeEmS = 1 / 1.4;
         aumentoTempoCafeteiraVazamento = 5;
         toleranciaMicrofone = 3;
         toleranciaCompartilhamento = 5;
