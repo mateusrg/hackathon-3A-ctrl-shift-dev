@@ -1103,7 +1103,7 @@ async function gameOver(causaMorte, conquistasDesbloqueadas = []) {
         }
 
         Usuario.aumentarRunsJogadas(usuarioId, 1);
-        const usuario = await Usuario.getUsuario(usuarioId);
+        const usuario = await Usuario.getUsuarioLogado(usuarioId);
         if (usuario.runs_jogadas >= 50) {
             desbloquearConquista(31);
         }
@@ -5049,7 +5049,7 @@ async function atualizarTempo() {
             let conquistasGO = [];
             if (advertencias.length === 0) {
                 Usuario.aumentarRunsConsecutivasSemAdvertencia(usuarioId, 1);
-                const usuario = await Usuario.getUsuario(usuarioId);
+                const usuario = await Usuario.getUsuarioLogado(usuarioId);
                 if (usuario.runsConsecutivasSemAdvertencia >= 5) {
                     conquistasGO.push(17);
                 }
