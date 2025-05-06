@@ -4909,7 +4909,7 @@ function selecionaJogo() {
                     botaoIniciarJogoJaClicado = true;
                     criarMapaJogo();
                 });
-                game.appendChild(botaoIniciarJogo);
+                game.appendChild(botaoIniciar);
             }
         }
     }
