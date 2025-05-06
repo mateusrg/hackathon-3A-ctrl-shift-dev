@@ -4821,7 +4821,6 @@ function criarTelaJogo() {
     destruirTelaPasta();
     destruirTelaTarefa();
     destruirTelaLista();
-    destruirTelaJogo();
 
     const fundoJogo = document.createElement('div');
     fundoJogo.id = 'fundo-jogo';
