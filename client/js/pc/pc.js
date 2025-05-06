@@ -3321,6 +3321,12 @@ function criarTelaTarefaTipo6(indiceTarefa) {
         botao.textContent = alternativa.texto;
 
         botao.addEventListener('click', () => {
+            ['botao-verde-t6', 'botao-vermelho-t6', 'botao-azul-t6', 'botao-amarelo-t6'].forEach(id => {
+                const botao = document.querySelector(`#${id}`);
+                if (botao) {
+                    botao.style.pointerEvents = 'none';
+                }
+            });
             if (alternativa.correta) {
                 if (questaoAtual + 1 === totalQuestoes) {
                     pontuacao += tarefa.pontosGanhos;
