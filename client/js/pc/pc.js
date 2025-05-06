@@ -2820,10 +2820,6 @@ function criarTelaTarefaTipo3(indiceTarefa) {
 
         const mensagem = document.createElement('div');
         if (respostaCorreta) {
-
-            if (estadoTarefas[indiceTarefa].totalQuestoes == 3) {
-                verificarDesbloqueio13();
-            }
             pontuacao += tarefa['pontosGanhos'];
             try {
                 if (Date.now() - contadorTarefas[indiceTarefa - 1] < 3000) {
@@ -2869,14 +2865,6 @@ function criarTelaTarefaTipo3(indiceTarefa) {
         });
 
         setTimeout(destruirTela, 2000);
-
-        async function verificarDesbloqueio13() {
-            Usuario.aumentarQuantQuizzesGabaritados(usuarioId, 1);
-            const usuario = await Usuario.getUsuarioLogado();
-            if (usuario.quizzes_gabaritados >= 10) {
-                desbloquearConquista(13);
-            }
-        }
     });
     game.appendChild(botaoEntregar);
 }
@@ -3315,6 +3303,14 @@ function criarTelaTarefaTipo6(indiceTarefa) {
     progresso.textContent = `${questaoAtual + 1}/${totalQuestoes}`;
     game.appendChild(progresso);
 
+    async function verificarDesbloqueio13() {
+        Usuario.aumentarQuantQuizzesGabaritados(usuarioId, 1);
+        const usuario = await Usuario.getUsuarioLogado();
+        if (usuario.quizzes_gabaritados >= 10) {
+            desbloquearConquista(13);
+        }
+    }
+
     const cores = ['verde', 'vermelho', 'azul', 'amarelo'];
     tarefa[questaoAtual].alternativas.forEach((alternativa, index) => {
         const botao = document.createElement('button');
@@ -3330,6 +3326,9 @@ function criarTelaTarefaTipo6(indiceTarefa) {
             });
             if (alternativa.correta) {
                 if (questaoAtual + 1 === totalQuestoes) {
+                    if (totalQuestoes == 3) {
+                        verificarDesbloqueio13();
+                    }
                     pontuacao += tarefa.pontosGanhos;
                     try {
                         if (Date.now() - contadorTarefas[indiceTarefa - 1] < 3000) {
