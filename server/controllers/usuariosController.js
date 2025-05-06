@@ -142,24 +142,17 @@ exports.aumentarDificuldadeMaximaDesbloqueada = (req, res) => {
 exports.desbloquearConquista = async (req, res) => {
     const { idUsuario, idConquista } = req.params;
 
-    const queryS = 'SELECT conquistas_desbloqueadas FROM usuarios WHERE id = ?';
-    const paramsS = [idUsuario];
+    const query = `
+      UPDATE usuarios
+      SET conquistas_desbloqueadas = INSERT(conquistas_desbloqueadas, ?, 1, '1')
+      WHERE id = ?`;
+    const params = [idConquista, idUsuario];
 
-    connection.query(queryS, paramsS, (err, results) => {
-        if (err) {
-            return res.status(500).json({ success: false, message: 'Erro ao selecionar o usuário.' });
-        }
-        let conquistas_usuario = results[0]['conquistas_desbloqueadas'];
-        conquistas_usuario = conquistas_usuario.substring(0, idConquista - 1) + '1' + conquistas_usuario.substring(idConquista);
-        const query = 'UPDATE usuarios SET conquistas_desbloqueadas = ? WHERE id = ?';
-        const params = [conquistas_usuario, idUsuario];
-
-        connection.query(query, params, (err, results) => {
-            if (err || results.length == 0) {
-                return res.status(500).json({ success: false, message: 'Erro ao desbloquear a conquista.' });
-            }
-            res.json({ success: true, message: 'Conquista desbloqueada com sucesso!' });
-        });
+    connection.query(query, params, (err, results) => {
+      if (err || results.affectedRows === 0) {
+        return res.status(500).json({ success: false, message: 'Erro ao desbloquear a conquista.' });
+      }
+      res.json({ success: true, message: 'Conquista desbloqueada com sucesso!' });
     });
 }
 
