@@ -4856,6 +4856,11 @@ function criarTelaJogo() {
         jogoAberto.remove();
     }
 
+    if (jogoEstavaSelecionado && botaoIniciarJogoJaClicado) {
+        criarMapaJogo();
+        return;
+    }
+
     const botaoIniciar = document.createElement('div');
     botaoIniciar.id = 'botao-iniciar-jogo';
     game.appendChild(botaoIniciar);
@@ -4865,10 +4870,6 @@ function criarTelaJogo() {
         criarMapaJogo();
     });
 
-    if (jogoEstavaSelecionado && botaoIniciarJogoJaClicado) {
-        criarMapaJogo();
-        return;
-    }
 }
 
 function selecionaJogo() {
@@ -4889,7 +4890,7 @@ function selecionaJogo() {
     jogoSelecionado.id = 'tb-jogo-selecionado';
     jogoSelecionado.className = 'selecionado';
     game.appendChild(jogoSelecionado);
-    criarTelaJogo()
+    criarTelaJogo();
 }
 
 function selecionaTarefa(indiceTarefa) {
@@ -5114,8 +5115,12 @@ function atualizarDecaimento() {
     felicidade = Math.max(0, felicidade - 1);
     atualizarHUD();
 
-    if (energia <= 75) {
+    if (energia < 75) {
         energiaDesb8 = false;
+    }
+
+    if (felicidade < 80) {
+        felicidadeDesb9 = false;
     }
 
     if (energia <= 0 || felicidade <= 0) {
