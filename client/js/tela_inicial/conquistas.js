@@ -201,7 +201,7 @@ const conquistasDescricao = [
     },
     {
         nome: "O Verdadeiro Deus Gamer",
-        descricao: "Faça 60 pontos na dificuldade Tech Lead.",
+        descricao: "Faça 50 pontos na dificuldade Tech Lead.",
         imagem: "../../assets/conquistas/icones/conquistas35.png"
     },
     {
