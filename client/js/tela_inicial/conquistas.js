@@ -214,13 +214,8 @@ const conquistasDescricao = [
 let secaoConquista = 0;
 
 const usuarioStorage = JSON.parse(localStorage.getItem('usuario'));
-const usuario = await Usuario.selecionarUsuarioPorId(usuarioStorage.id);
-let easterEggLiberado;
-if (usuario.conquistas_desbloqueadas == '000000000000000000000000000000000000') {
-    easterEggLiberado = false;
-} else {
-    easterEggLiberado = true;
-}
+const usuario = await Usuario.getUsuarioLogado();
+let easterEggLiberado = usuario.conquistas_desbloqueadas[24] == '1';
 
 async function isConquistaJaDesbloqueada(idConquista) {
     const usuario = await Usuario.getUsuarioLogado();
@@ -416,6 +411,11 @@ function abrirModalConquista(index, desbloqueada) {
 
     voltar.style.top = 'calc(563 * var(--un))';
 
+    console.log(easterEggLiberado)
+    console.log(index)
+
+
+
     if (index == 24 && !easterEggLiberado) {
         const cliqueAqui = document.createElement('div');
         cliqueAqui.id = 'clique-aqui';
@@ -465,8 +465,6 @@ async function carregarConquistas(nivel) {
         if (conquistaIndividual[index] === '0') {
             desbloqueada = false;
             conquista.style.filter = 'brightness(0)';
-        } else {
-            console.log(`Conquista ${index+1} está desbloquada`)
         }
 
         conquista.addEventListener('click', () => {
