@@ -1100,13 +1100,13 @@ preencherTarefas();
 async function gameOver(causaMorte, conquistasDesbloqueadas = []) {
     try {
         if (pontuacao >= 50 && dificuldade === 4) {
-            desbloquearConquista(35);
+            conquistasDesbloqueadas.push(35);
         }
 
         Usuario.aumentarRunsJogadas(usuarioId, 1);
         const usuario = await Usuario.getUsuarioLogado(usuarioId);
         if (usuario.runs_jogadas >= 50) {
-            desbloquearConquista(31);
+            conquistasDesbloqueadas.push(31);
         }
     } finally {
         let final = {
@@ -3696,7 +3696,7 @@ function selecionaReuniao() {
             if (tempoRestante > 530) {
                 conquistasGO.push(18);
             }
-            gameOver(2);
+            gameOver(2, conquistasGO);
         });
         game.appendChild(botaoConfirmar);
 
