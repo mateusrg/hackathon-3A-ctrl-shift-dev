@@ -81,8 +81,8 @@ switch (dificuldade) {
         limiteAdvertencias = 1;
         decaimentoEnergiaEFelicidadeEmS = 1 / 1.1;
         aumentoTempoCafeteiraVazamento = 3;
-        toleranciaMicrofone = 4;
-        toleranciaCompartilhamento = 7;
+        toleranciaMicrofone = 6;
+        toleranciaCompartilhamento = 10;
         pontuacaoMinima = 30;
         energiaCafeRestaura = 40;
         felicidadeInimigoDerrotado = 4;
@@ -95,12 +95,12 @@ switch (dificuldade) {
         limiteAdvertencias = 0;
         decaimentoEnergiaEFelicidadeEmS = 1 / 1.4;
         aumentoTempoCafeteiraVazamento = 5;
-        toleranciaMicrofone = 3;
-        toleranciaCompartilhamento = 5;
+        toleranciaMicrofone = 6;
+        toleranciaCompartilhamento = 8;
         pontuacaoMinima = 35;
-        energiaCafeRestaura = 30;
-        felicidadeInimigoDerrotado = 3;
-        frequenciaEventosMinimo = 15;
+        energiaCafeRestaura = 35;
+        felicidadeInimigoDerrotado = 4;
+        frequenciaEventosMinimo = 20;
         frequenciaEventosMaximo = 35;
         document.querySelector('#adv_2').style.display = 'none';
         document.querySelector('#adv_3').style.display = 'none';
@@ -673,7 +673,7 @@ const questoesJson = {
             ]
         },
         {
-            "pergunta": "Em SQL, qual função substitui NULL por valor padrão?",
+            "pergunta": "Em MySQL, qual função substitui NULL por valor padrão?",
             "alternativas": [
                 "DEFAULT",
                 "COALESCE()",
