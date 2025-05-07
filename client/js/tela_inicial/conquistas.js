@@ -206,7 +206,7 @@ async function main() {
         },
         {
             nome: "Um Último Suspiro",
-            descricao: "Tomae café com menos de 5% de energia.",
+            descricao: "Tome café com menos de 5% de energia.",
             imagem: "../../assets/conquistas/icones/conquistas33.png"
         },
         {
