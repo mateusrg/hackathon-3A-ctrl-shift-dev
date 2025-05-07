@@ -1115,7 +1115,7 @@ async function gameOver(causaMorte, conquistasDesbloqueadas = []) {
             await Usuario.reiniciarRunsConsecutivasSemAdvertencia(usuarioId);
         }
 
-        if (usuario.runsConsecutivasSemAdvertencia >= 10) {
+        if (usuario.runs_consecutivas_sem_advertencia >= 10) {
             conquistasDesbloqueadas.push(17);
         }
     } finally {
