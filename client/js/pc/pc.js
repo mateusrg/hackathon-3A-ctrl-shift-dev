@@ -2341,7 +2341,7 @@ function criarTelaTarefaTipo1(indiceTarefa) {
             testarT1();
             Usuario.aumentarQuantTestesFeitos(usuarioId, 1);
             const usuario = await Usuario.getUsuarioLogado();
-            if (usuario.testes_feitos > 30) {
+            if (usuario.testes_feitos >= 30) {
                 desbloquearConquista(12);
             }
         }
@@ -2682,7 +2682,7 @@ function criarTelaTarefaTipo2(indiceTarefa) {
         iniciarCountdown();
         Usuario.aumentarQuantTestesFeitos(usuarioId, 1);
         const usuario = await Usuario.getUsuarioLogado();
-        if (usuario.testes_feitos > 30) {
+        if (usuario.testes_feitos >= 30) {
             desbloquearConquista(12);
         }
     });
