@@ -126,7 +126,7 @@ async function main() {
         },
         {
             nome: "Advertência Zero",
-            descricao: `Acumule 0 advertências em 5 partidas consecutivas.${i17 ? ` (${d17}/5)` : ''}`,
+            descricao: `Acumule 0 advertências em 10 partidas consecutivas; partidas ganhas valem por 2.${i17 ? ` (${d17}/10)` : ''}`,
             imagem: "../../assets/conquistas/icones/conquistas17.png"
         },
         {

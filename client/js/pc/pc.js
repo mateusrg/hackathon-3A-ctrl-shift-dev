@@ -1103,10 +1103,20 @@ async function gameOver(causaMorte, conquistasDesbloqueadas = []) {
             conquistasDesbloqueadas.push(35);
         }
 
-        Usuario.aumentarRunsJogadas(usuarioId, 1);
+        await Usuario.aumentarRunsJogadas(usuarioId, 1);
         const usuario = await Usuario.getUsuarioLogado(usuarioId);
         if (usuario.runs_jogadas >= 50) {
             conquistasDesbloqueadas.push(31);
+        }
+        
+        if (advertencias.length === 0) {
+            await Usuario.aumentarRunsConsecutivasSemAdvertencia(usuarioId, 1);
+        } else {
+            await Usuario.reiniciarRunsConsecutivasSemAdvertencia(usuarioId);
+        }
+
+        if (usuario.runsConsecutivasSemAdvertencia >= 10) {
+            conquistasDesbloqueadas.push(17);
         }
     } finally {
         let final = {
@@ -5069,13 +5079,6 @@ async function atualizarTempo() {
     if (tempoRestante <= 0) {
         if (pontuacao >= pontuacaoMinima) {
             let conquistasGO = [];
-            if (advertencias.length === 0) {
-                Usuario.aumentarRunsConsecutivasSemAdvertencia(usuarioId, 1);
-                const usuario = await Usuario.getUsuarioLogado(usuarioId);
-                if (usuario.runsConsecutivasSemAdvertencia >= 5) {
-                    conquistasGO.push(17);
-                }
-            }
 
             if (energiaDesb8) {
                 conquistasGO.push(8);
@@ -5120,13 +5123,17 @@ async function atualizarTempo() {
                 }
             }
 
+            if (advertencias.length === 0) {
+                await Usuario.aumentarRunsConsecutivasSemAdvertencia(usuarioId, 1);
+            }
+
             gameOver(0, conquistasGO);
         } else {
             let conquistasGO = [];
             if (tempoRestante > 530) {
                 conquistasGO.push(18);
             }
-            gameOver(6);
+            gameOver(6, conquistasGO);
         }
     }
 }
