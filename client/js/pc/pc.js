@@ -754,9 +754,10 @@ const perguntasJson = {
             "alternativas": [
                 ["SELECT", "UPDATE", "INSERT INTO", "DELETE FROM"],
                 ["*", "nome", "id", "idade"],
+                ["FROM moradores", "FROM usuarios", "FROM dados", "FROM clientes"],
                 ["WHERE id = 5", "WHERE nome = 'João'", "WHERE idade = 30", "WHERE altura = 1.75"]
             ],
-            "correta": ["SELECT", "*", "WHERE id = 5"]
+            "correta": ["SELECT", "*", "FROM moradores", "WHERE id = 5"]
         },
         {
             "titulo": "Selecione apenas o nome dos moradores",
@@ -3614,7 +3615,7 @@ let felicidadeDesb9 = true;
 let contadorTarefas = [0, 0, 0, 0];
 let quantMicNinjaDesb14 = 0;
 let verifDesb14 = false;
-let verifDesb15 = false;
+let verifDesb15 = true;
 let nenhumaTarefaFalha = true;
 
 function selecionaReuniao() {
