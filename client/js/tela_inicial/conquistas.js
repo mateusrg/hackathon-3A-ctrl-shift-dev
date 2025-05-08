@@ -234,7 +234,7 @@ async function main() {
         setaCimaBtn.style.display = 'none';
     }
 
-    
+
     setaBaixoBtn.addEventListener('click', setaBaixo);
     if (secaoConquista == 24) {
         setaBaixoBtn.style.display = 'none';
@@ -254,9 +254,10 @@ async function desbloquearConquista(idConquista) {
         return;
     }
 
+    let usuario = await Usuario.getUsuarioLogado();
     const usuarioId = usuario.id;
     await Usuario.desbloquearConquista(usuarioId, idConquista);
-    const usuario = await Usuario.getUsuarioLogado();
+    usuario = await Usuario.getUsuarioLogado();
 
     const imagem = `url("../../assets/conquistas/icones/conquistas${idConquista < 10 ? `0${idConquista}` : idConquista}.png")`;
     let texto;
@@ -375,9 +376,7 @@ async function desbloquearConquista(idConquista) {
     conquista.className = 'conquista-notificacao';
     const quantidadeConquistasNaTela = document.querySelectorAll('.conquista').length;
     conquista.style.bottom = `calc(${189 + 140 * quantidadeConquistasNaTela} * var(--un))`;
-    conquista.addEventListener('click', () => {
-        conquista.remove();
-    });
+    conquista.addEventListener('click', () => conquista.remove());
     game.appendChild(conquista);
 
     const imagemConquista = document.createElement('div');
@@ -390,6 +389,8 @@ async function desbloquearConquista(idConquista) {
     textoConquista.textContent = texto;
     conquista.appendChild(textoConquista);
 
+    console.log(usuario.conquistas_desbloqueadas);
+
     await carregarConquistas(secaoConquista);
 
     setTimeout(() => {
@@ -397,6 +398,8 @@ async function desbloquearConquista(idConquista) {
             conquista.remove();
         }
     }, 5000);
+
+    console.log(usuario.conquistas_desbloqueadas);
 
     if (usuario.conquistas_desbloqueadas == '111111111111111111111111111111111110') {
         desbloquearConquista(36);

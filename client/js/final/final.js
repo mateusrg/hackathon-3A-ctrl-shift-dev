@@ -33,9 +33,10 @@ async function desbloquearConquista(idConquista) {
         return;
     }
 
+    let usuario = await Usuario.getUsuarioLogado();
     const usuarioId = usuario.id;
-    const usuarioAtualizado = await Usuario.desbloquearConquista(usuarioId, idConquista);
-    const usuario = await Usuario.getUsuarioLogado();
+    await Usuario.desbloquearConquista(usuarioId, idConquista);
+    usuario = await Usuario.getUsuarioLogado();
 
     const imagem = `url("../../assets/conquistas/icones/conquistas${idConquista < 10 ? `0${idConquista}` : idConquista}.png")`;
     let texto;
@@ -211,7 +212,7 @@ function comoEvitarTela() {
         semAdvertencia.textContent = 'Você não teve nenhuma advertência';
     } else {
         let numeroAdvertencia = 0;
-    
+
         advertencias.forEach((advertencia) => {
             numeroAdvertencia += 1;
             const advertenciaTipo = document.createElement('p');
@@ -501,7 +502,7 @@ async function vitoria() {
     }
 }
 
-function definirTelaFundo () {
+function definirTelaFundo() {
     const finalJSON = localStorage.getItem('final');
     const final = JSON.parse(finalJSON);
 
