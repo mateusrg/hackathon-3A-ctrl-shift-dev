@@ -38,8 +38,8 @@ button {
 #icone-energia {
     position: absolute;
     background-image: url('../../assets/hud/energia.png');
-    height: calc(100 * var(--un));
-    width: calc(100 * var(--un));
+    height: calc(90 * var(--un));
+    width: calc(90 * var(--un));
     top: calc(10 * var(--un));
     left: calc(10 * var(--un));
 }
@@ -135,7 +135,7 @@ button {
 
 #tb-windows {
     position: absolute;
-    background-image: url('../../assets/pc/taskbar/windows.png');
+    background-image: url('../../assets/pc/taskbar/os.png');
     height: calc(55 * var(--un));
     width: calc(55 * var(--un));
     bottom: calc(73 * var(--un));
@@ -148,7 +148,7 @@ button {
     height: calc(55 * var(--un));
     width: calc(55 * var(--un));
     bottom: calc(73 * var(--un));
-    left: calc(151 * var(--un));
+    left: calc(146.5 * var(--un));
     z-index: 1;
 }
 
@@ -188,9 +188,9 @@ button {
     position: absolute;
     background-image: url('../../assets/pc/taskbar/tarefa.png');
     height: calc(50 * var(--un));
-    width: calc(50 * var(--un));
+    width: calc(53 * var(--un));
     bottom: calc(73 * var(--un));
-    left: calc(477 * var(--un));
+    left: calc(471 * var(--un));
     z-index: 1;
 }
 
@@ -199,7 +199,7 @@ button {
     background-image: url('../../assets/pc/taskbar/selecionado.png');
     height: calc(62 * var(--un));
     width: calc(80 * var(--un));
-    bottom: calc(68 * var(--un));
+    bottom: calc(69 * var(--un));
     pointer-events: none;
 }
 
@@ -225,7 +225,7 @@ button {
 }
 
 #tb-jogo-selecionado {
-    left: calc(376 * var(--un));
+    left: calc(380 * var(--un));
 }
 
 #tb-tarefa-selecionado {
@@ -245,7 +245,7 @@ button {
 }
 
 #tb-jogo-aberto {
-    left: calc(409 * var(--un));
+    left: calc(412 * var(--un));
 }
 
 #tb-tarefa-aberto {
@@ -267,7 +267,7 @@ button {
     height: calc(72 * var(--un));
     width: calc(104 * var(--un));
     top: calc(285 * var(--un));
-    right: calc(140 * var(--un));
+    right: calc(146 * var(--un));
 }
 
 #camera-fechado {
@@ -276,7 +276,7 @@ button {
     height: calc(88 * var(--un));
     width: calc(104 * var(--un));
     top: calc(472 * var(--un));
-    right: calc(136 * var(--un));
+    right: calc(143 * var(--un));
 }
 
 #camera-aberto {
@@ -285,7 +285,7 @@ button {
     height: calc(72 * var(--un));
     width: calc(104 * var(--un));
     top: calc(480 * var(--un));
-    right: calc(136 * var(--un));
+    right: calc(143 * var(--un));
 }
 
 #microfone-fechado {
@@ -294,7 +294,7 @@ button {
     height: calc(88 * var(--un));
     width: calc(104 * var(--un));
     top: calc(648 * var(--un));
-    right: calc(140 * var(--un));
+    right: calc(146 * var(--un));
 }
 
 #microfone-aberto {
@@ -303,7 +303,7 @@ button {
     height: calc(88 * var(--un));
     width: calc(104 * var(--un));
     top: calc(648 * var(--un));
-    right: calc(140 * var(--un));
+    right: calc(146 * var(--un));
 }
 
 #minimizar-reuniao {
@@ -1094,109 +1094,109 @@ button {
 
 #inimigo-1-esquerda {
     position: absolute;
-    height: calc(210 * var(--un));
-    width: calc(80 * var(--un));
-    bottom: calc(340 * var(--un));
-    left: calc(370 * var(--un));
+    height: calc(260 * var(--un));
+    width: calc(150 * var(--un));
+    bottom: calc(300 * var(--un));
+    left: calc(312 * var(--un));
     cursor: pointer;
 }
 
 #inimigo-1-meio {
     position: absolute;
-    height: calc(150 * var(--un));
-    width: calc(90 * var(--un));
-    bottom: calc(400 * var(--un));
-    left: calc(560 * var(--un));
+    height: calc(80 * var(--un));
+    width: calc(150 * var(--un));
+    bottom: calc(445 * var(--un));
+    left: calc(630 * var(--un));
     cursor: pointer;
 }
 
 #inimigo-1-direita {
     position: absolute;
-    height: calc(120 * var(--un));
-    width: calc(140 * var(--un));
-    bottom: calc(390 * var(--un));
-    left: calc(820 * var(--un));
+    height: calc(340 * var(--un));
+    width: calc(130 * var(--un));
+    bottom: calc(195 * var(--un));
+    left: calc(955 * var(--un));
     cursor: pointer;
 }
 
 #inimigo-2-esquerda {
     position: absolute;
-    height: calc(120 * var(--un));
-    width: calc(140 * var(--un));
-    bottom: calc(580 * var(--un));
+    height: calc(225 * var(--un));
+    width: calc(110 * var(--un));
+    bottom: calc(180 * var(--un));
     left: calc(400 * var(--un));
     cursor: pointer;
 }
 
 #inimigo-2-meio {
     position: absolute;
-    height: calc(180 * var(--un));
-    width: calc(90 * var(--un));
-    bottom: calc(460 * var(--un));
-    left: calc(690 * var(--un));
+    height: calc(85 * var(--un));
+    width: calc(150 * var(--un));
+    bottom: calc(680 * var(--un));
+    left: calc(565 * var(--un));
     cursor: pointer;
 }
 
 #inimigo-2-direita {
     position: absolute;
-    height: calc(140 * var(--un));
-    width: calc(120 * var(--un));
-    bottom: calc(520 * var(--un));
-    left: calc(1050 * var(--un));
+    height: calc(255 * var(--un));
+    width: calc(90 * var(--un));
+    bottom: calc(205 * var(--un));
+    left: calc(900 * var(--un));
     cursor: pointer;
 }
 
 #inimigo-3-esquerda {
     position: absolute;
-    height: calc(200 * var(--un));
-    width: calc(110 * var(--un));
-    bottom: calc(290 * var(--un));
-    left: calc(300 * var(--un));
+    height: calc(308 * var(--un));
+    width: calc(155 * var(--un));
+    bottom: calc(235 * var(--un));
+    left: calc(388 * var(--un));
     cursor: pointer;
 }
 
 #inimigo-3-meio {
     position: absolute;
-    height: calc(210 * var(--un));
-    width: calc(150 * var(--un));
-    bottom: calc(240 * var(--un));
-    left: calc(720 * var(--un));
+    height: calc(160 * var(--un));
+    width: calc(160 * var(--un));
+    bottom: calc(345 * var(--un));
+    left: calc(680 * var(--un));
     cursor: pointer;
 }
 
 #inimigo-3-direita {
     position: absolute;
-    height: calc(140 * var(--un));
-    width: calc(100 * var(--un));
-    bottom: calc(550 * var(--un));
-    left: calc(900 * var(--un));
+    height: calc(340 * var(--un));
+    width: calc(130 * var(--un));
+    bottom: calc(210 * var(--un));
+    left: calc(955 * var(--un));
     cursor: pointer;
 }
 
 #inimigo-4-esquerda {
     position: absolute;
-    height: calc(210 * var(--un));
-    width: calc(140 * var(--un));
-    bottom: calc(420 * var(--un));
-    left: calc(250 * var(--un));
+    height: calc(90 * var(--un));
+    width: calc(150 * var(--un));
+    bottom: calc(550 * var(--un));
+    left: calc(253 * var(--un));
     cursor: pointer;
 }
 
 #inimigo-4-meio {
     position: absolute;
-    height: calc(170 * var(--un));
-    width: calc(90 * var(--un));
-    bottom: calc(320 * var(--un));
-    left: calc(620 * var(--un));
+    height: calc(245 * var(--un));
+    width: calc(85 * var(--un));
+    bottom: calc(290 * var(--un));
+    left: calc(685 * var(--un));
     cursor: pointer;
 }
 
 #inimigo-4-direita {
     position: absolute;
-    height: calc(120 * var(--un));
-    width: calc(100 * var(--un));
-    bottom: calc(555 * var(--un));
-    left: calc(760 * var(--un));
+    height: calc(170 * var(--un));
+    width: calc(112 * var(--un));
+    bottom: calc(360 * var(--un));
+    left: calc(980 * var(--un));
     cursor: pointer;
 }
 
@@ -1703,19 +1703,20 @@ button {
     border-radius: calc(50 * var(--un));
     height: calc(255 * var(--un));
     width: calc(275 * var(--un));
-    right: calc(150 * var(--un));
-    bottom: calc(98 * var(--un));
+    right: calc(20 * var(--un));
+    bottom: calc(45 * var(--un));
     cursor: pointer;
 }
 
 #monitor {
     position: absolute;
     border-radius: 0 0 calc(50 * var(--un)) 0;
-    height: calc(592 * var(--un));
-    width: calc(837 * var(--un));
-    top: calc(49 * var(--un));
-    left: calc(269 * var(--un));
+    height: calc(630 * var(--un));
+    width: calc(878 * var(--un));
+    top: calc(116 * var(--un));
+    left: calc(249 * var(--un));
     cursor: pointer;
+    z-index: 10;
 }
 
 #bebendo {
@@ -1742,11 +1743,39 @@ button {
 #mesa-escritorio {
     position: absolute;
     height: calc(696 * var(--un));
-    width: calc(1032 * var(--un));
+    width: calc(770 * var(--un));
     bottom: 0;
-    right: calc(194 * var(--un));
+    right: calc(295 * var(--un));
     z-index: 10;
     cursor: pointer;
+}
+
+#nome-usuario-escritorio {
+    position: absolute;
+    height: calc(18 * var(--un));
+    width: calc(333 * var(--un));
+    font-size: calc(17.5 * var(--un));
+    text-align: center;
+    color: #fff;
+    bottom: calc(503 * var(--un));
+    left: calc(744 * var(--un));
+    transform: translateX(-50%);
+    white-space: nowrap;
+    user-select: none;
+}
+
+#nome-usuario-mesa {
+    position: absolute;
+    height: calc(40 * var(--un));
+    width: calc(760 * var(--un));
+    font-size: calc(40 * var(--un));
+    text-align: center;
+    color: #fff;
+    bottom: calc(440 * var(--un));
+    left: calc(688 * var(--un));
+    transform: translateX(-50%);
+    white-space: nowrap;
+    user-select: none;
 }
 
 #seta-direita-escritorio {
@@ -1791,29 +1820,30 @@ button {
     position: absolute;
     width: calc(800 * var(--un));
     font-size: calc(50 * var(--un));
-    top: calc(225 * var(--un));
+    top: calc(155 * var(--un));
     left: calc(320 * var(--un));
     text-align: center;
+    color: #fff;
 }
 
 #cafeteira-ligada {
     display: none;
     position: absolute;
     background-color: #14ce02;
-    height: calc(47.6 * var(--un));
-    width: calc(62.8 * var(--un));
-    top: calc(368 * var(--un));
-    right: calc(559.3 * var(--un));
+    height: calc(39 * var(--un));
+    width: calc(77.5 * var(--un));
+    top: calc(295 * var(--un));
+    right: calc(578.6 * var(--un));
 }
 
 #cafe-cafeteira {
     display: none;
     pointer-events: none;
     position: absolute;
-    height: calc(150 * var(--un));
+    height: calc(200 * var(--un));
     aspect-ratio: 182/169;
-    left: calc(600 * var(--un));
-    bottom: calc(157 * var(--un));
+    left: calc(603 * var(--un));
+    bottom: calc(150 * var(--un));
 }
 
 .notificacao {
@@ -1891,6 +1921,11 @@ button {
     padding: calc(15 * var(--un));
 }
 
+#balao-escritorio {
+    left: calc(110 * var(--un));
+    bottom: calc(60 * var(--un));
+}
+
 #balao-cafeteira {
     background-image: url('../../assets/pc/baloes/balao_cafeteira.png');
     height: calc(340 * var(--un));
@@ -1913,8 +1948,8 @@ button {
     background-image: url('../../assets/pc/baloes/balao_espetado_escritorio.png');
     height: calc(364 * var(--un));
     width: calc(464 * var(--un));
-    top: calc(140 * var(--un));
-    right: calc(166 * var(--un));  
+    top: calc(100 * var(--un));
+    right: calc(100 * var(--un));  
     padding: 0 calc(45 * var(--un));
 }
 

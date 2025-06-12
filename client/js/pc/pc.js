@@ -1611,6 +1611,7 @@ function carregarMesa() {
     mesa.style.display = 'block';
     document.querySelector('body').style.backgroundImage = 'url("../../assets/entorno/bg/escritorio.png")';
     document.querySelector('.frame').style.borderImageSource = "url('../../assets/entorno/borda/escritorio.png')";
+    document.querySelector('#nome-usuario-mesa').textContent = JSON.parse(localStorage.getItem('usuario'))['nome'];
     if (cafeteiraLigada) {
         document.querySelector('#cafe').style.display = 'none';
     } else {
@@ -1625,6 +1626,7 @@ function carregarEscritorio() {
     document.querySelector('#cafeteira').style.display = 'none';
     document.querySelector('body').style.backgroundImage = 'url("../../assets/entorno/bg/escritorio.png")';
     document.querySelector('.frame').style.borderImageSource = "url('../../assets/entorno/borda/escritorio.png')";
+    document.querySelector('#nome-usuario-escritorio').textContent = JSON.parse(localStorage.getItem('usuario'))['nome'];
     escritorio.style.display = 'block';
 }
 
@@ -1698,7 +1700,7 @@ function desligarCafeteira() {
     document.querySelector('#cafe-cafeteira').style.display = 'none';
     document.querySelector('#cafeteira-ligada').style.display = 'none';
     document.querySelector('#texto-cafeteira').textContent = '';
-    document.querySelector('#texto-cafeteira').style.color = 'black';
+    document.querySelector('#texto-cafeteira').style.color = 'white';
     clearInterval(intervaloCafeteira);
 }
 
