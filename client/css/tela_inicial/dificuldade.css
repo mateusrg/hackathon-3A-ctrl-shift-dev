@@ -58,13 +58,19 @@
 
 #linha-1 {
     display: flex;
-    margin: calc(98 * var(--un)) calc(77 * var(--un)) 0 calc(77 * var(--un));
-    gap: calc(35 * var(--un));
+    justify-content: center;
+    margin: calc(38 * var(--un)) calc(77 * var(--un)) 0 calc(77 * var(--un));
 }
 
 #linha-2 {
     display: flex;
-    margin: calc(75 * var(--un)) calc(77 * var(--un)) 0 calc(77 * var(--un));
+    margin: calc(29 * var(--un)) calc(77 * var(--un)) 0 calc(77 * var(--un));
+    gap: calc(35 * var(--un));
+}
+
+#linha-3 {
+    display: flex;
+    margin: calc(55 * var(--un)) calc(77 * var(--un)) 0 calc(77 * var(--un));
     gap: calc(35 * var(--un));
 }
 
@@ -88,9 +94,17 @@
     padding: 0 calc(90 * var(--un));
 }
 
+#botao-treinamento {
+    color: #000;
+    background-image: url('../../assets/dificuldade/treinamento.png');
+    padding: 0 calc(140 * var(--un));
+    height: calc(100 * var(--un));
+    width: calc(480 * var(--un));
+}
+
 #voltar {
     margin: 0 auto;
-    margin-top: calc(132 * var(--un));
+    margin-top: calc(72 * var(--un));
     background-image: url('../../assets/dificuldade/voltar.png');
     color: #fff;
     display: flex;

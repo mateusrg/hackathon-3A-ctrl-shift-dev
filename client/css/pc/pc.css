@@ -2021,3 +2021,26 @@ button {
     top: calc(37 * var(--un));
     left: calc(57 * var(--un));
 }
+
+#adv_treinamento {
+    display: none;
+}
+
+#img_adv_treinamento {
+    position: absolute;
+    background-image: url('../../assets/pc/advertencia_cheia.png');
+    height: calc(66 * var(--un));
+    width: calc(62 * var(--un));
+    top: calc(30 * var(--un));
+    left: calc(637 * var(--un));
+    z-index: 10000;
+}
+
+#num_adv_treinamento {
+    position: absolute;
+    color: #fff;
+    font-size: calc(30 * var(--un));
+    top: calc(50 * var(--un));
+    left: calc(707 * var(--un));
+    z-index: 10000;
+}

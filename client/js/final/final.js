@@ -1,43 +1,9 @@
-import Usuario from '../funcoes/usuario.js';
-
-async function verificarLogin() {
-    const usuarioStorage = JSON.parse(localStorage.getItem('usuario'));
-
-    if (!usuarioStorage || usuarioStorage.length === 0) {
-        window.location.href = '../../html/login/pagina_inicial_deslogado.html';
-        return;
-    }
-
-    try {
-        const usuario = await Usuario.selecionarUsuarioPorId(usuarioStorage.id);
-
-        if (!usuario || usuario.email !== usuarioStorage.email) {
-            window.location.href = '../../html/login/pagina_inicial_deslogado.html';
-        }
-    } catch (error) {
-        console.error("Erro ao acessar o servidor:", error);
-        window.location.href = '../../html/login/pagina_inicial_deslogado.html';
-    }
+function isConquistaJaDesbloqueada(idConquista) {
+    return localStorage.getItem('conquistas_desbloqueadas')[idConquista - 1] != '0';
 }
-
-verificarLogin();
-
-async function isConquistaJaDesbloqueada(idConquista) {
-    const usuario = await Usuario.getUsuarioLogado();
-    return usuario.conquistas_desbloqueadas[idConquista - 1] != '0';
-}
-
-async function desbloquearConquista(idConquista) {
-    const conquistaJaDesbloqueada = await isConquistaJaDesbloqueada(idConquista);
-    if (conquistaJaDesbloqueada) {
-        return;
-    }
-
-    let usuario = await Usuario.getUsuarioLogado();
-    const usuarioId = usuario.id;
-    await Usuario.desbloquearConquista(usuarioId, idConquista);
-    usuario = await Usuario.getUsuarioLogado();
-
+function desbloquearConquista(idConquista) {
+    if (isConquistaJaDesbloqueada(idConquista)) return;
+    localStorage.setItem('conquistas_desbloqueadas', localStorage.getItem('conquistas_desbloqueadas').substring(0, idConquista - 1) + '1' + localStorage.getItem('conquistas_desbloqueadas').substring(idConquista));
     const imagem = `url("../../assets/conquistas/icones/conquistas${idConquista < 10 ? `0${idConquista}` : idConquista}.png")`;
     let texto;
     switch (idConquista) {
@@ -176,9 +142,7 @@ async function desbloquearConquista(idConquista) {
         }
     }, 5000);
 
-    if (usuario.conquistas_desbloqueadas == '111111111111111111111111111111111110') {
-        await desbloquearConquista(36);
-    }
+    if (localStorage.getItem('conquistas_desbloqueadas') == '111111111111111111111111111111111110') desbloquearConquista(36);
 }
 
 function comoEvitarTela() {
@@ -421,13 +385,11 @@ function gameOver() {
     if (final.conquistasDesbloqueadas.length != 0) {
         const conquistas = final.conquistasDesbloqueadas;
 
-        conquistas.forEach(async (conquista) => {
-            await desbloquearConquista(conquista);
-        })
+        conquistas.forEach((conquista) => desbloquearConquista(conquista));
     }
 }
 
-async function vitoria() {
+function vitoria() {
     document.getElementById('tela-vitoria')?.remove();
     document.getElementById('voltar')?.remove();
     document.getElementById('como-evitar')?.remove();
@@ -479,26 +441,14 @@ async function vitoria() {
     } else {
         game.style.backgroundImage = "url('../../assets/final/promocao.png')";
         pontuacao.style.top = 'calc(820 * var(--un))';
+        const dificuldadeMaxima = localStorage.getItem('dificuldade_maxima_desbloqueada');
 
-        const usuarioStorage = localStorage.getItem('usuario')
-        const usuario = JSON.parse(usuarioStorage);
-        const idUsuario = usuario.id;
-        const dificuldadeMaxima = usuario.dificuldade_maxima_desbloqueada;
-
-        if (dificuldade == dificuldadeMaxima && dificuldade > 1) {
-            const novoUsuario = await Usuario.aumentarDificuldadeMaximaDesbloqueada(idUsuario);
-            const novaDificuldade = dificuldadeMaxima + 1;
-            usuario.dificuldade_maxima_desbloqueada = novaDificuldade;
-            localStorage.setItem('usuario', JSON.stringify(usuario));
-        }
+        if (dificuldade == dificuldadeMaxima && dificuldade > 1) localStorage.setItem('dificuldade_maxima_desbloqueada', parseInt(dificuldadeMaxima) + 1);
     }
 
     if (final.conquistasDesbloqueadas.length != 0) {
         const conquistas = final.conquistasDesbloqueadas;
-
-        conquistas.forEach(async (conquista) => {
-            await desbloquearConquista(conquista);
-        })
+        conquistas.forEach((conquista) => desbloquearConquista(conquista));
     }
 }
 

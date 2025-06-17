@@ -1,23 +1,46 @@
-import Usuario from '../funcoes/usuario.js';
+let audio0 = new Audio('../../assets/audios/soundtrack/0.mp3');
+let audio1 = new Audio('../../assets/audios/soundtrack/1.mp3');
+let audio2 = new Audio('../../assets/audios/soundtrack/2.mp3');
+let audio3 = new Audio('../../assets/audios/soundtrack/3.mp3');
+audio0.volume = ler('dificuldadeSelecionada') == 4 ? 0 : 1;
+audio1.volume = 0;
+audio2.volume = 0;
+audio3.volume = ler('dificuldadeSelecionada') == 4 ? 1 : 0;
+audio0.loop = true;
+audio1.loop = true;
+audio2.loop = true;
+audio3.loop = true;
+audio0.play();
+audio1.play();
+audio2.play();
+audio3.play();
 
-async function verificarLogin() {
-    const usuarioStorage = JSON.parse(localStorage.getItem('usuario'));
+if (!localStorage.getItem('conquistas_desbloqueadas')) localStorage.setItem('conquistas_desbloqueadas', '000000000000000000000000000000000000');
+['quant_tela_compartilhada', 'quant_tarefas_concluidas', 'quant_inimigos_derrotados', 'quant_testes_feitos', 'quant_quizzes_gabaritados', 'runs_consecutivas_sem_advertencia', 'runs_jogadas'].forEach(chave => {
+    if (!localStorage.getItem(chave)) localStorage.setItem(chave, '0');
+});
 
-    if (!usuarioStorage || usuarioStorage.length === 0) {
-        window.location.href = '../../html/login/pagina_inicial_deslogado.html';
-        return;
+function salvar(chave, item) {
+    localStorage.setItem(chave, JSON.stringify(item));
+}
+
+function ler(chave) {
+    if (chave != 'nome' && chave != 'conquistas_desbloqueadas') {
+        if (localStorage.getItem(chave) === null) localStorage.setItem(chave, '0');
+        return Number(localStorage.getItem(chave));
     }
+    if (chave == 'conquistas_desbloqueadas')
+        if (localStorage.getItem(chave) === null) localStorage.setItem(chave, '000000000000000000000000000000000000');
+    return localStorage.getItem(chave);
+}
 
-    try {
-        const usuario = await Usuario.selecionarUsuarioPorId(usuarioStorage.id);
+function deletar(chave) {
+    localStorage.removeItem(chave);
+}
 
-        if (!usuario || usuario.email !== usuarioStorage.email) {
-            window.location.href = '../../html/login/pagina_inicial_deslogado.html';
-        }
-    } catch (error) {
-        console.error("Erro ao acessar o servidor:", error);
-        window.location.href = '../../html/login/pagina_inicial_deslogado.html';
-    }
+function aumentar(chave) {
+    if (ler('dificuldadeSelecionada') == 0) return;
+    salvar(chave, ler(chave) + 1);
 }
 
 if (localStorage.getItem('isRun') == null) {
@@ -30,10 +53,6 @@ if (localStorage.getItem('isRun') == 'false') {
 
 localStorage.setItem('isRun', false);
 
-verificarLogin();
-
-const usuarioParaObterId = await Usuario.getUsuarioLogado();
-const usuarioId = usuarioParaObterId.id;
 const abasCT = ['#tb-reuniao', '#tb-pasta', '#tb-lista', '#tb-jogo', '#tb-tarefa', '#xis-pasta', '#minimizar-pasta', '#documento-aberto-fechar', '#documento-aberto-minimizar', '#doc-1', '#doc-2', '#doc-3', '#doc-4', '#doc-5'];
 let handleClick;
 
@@ -52,6 +71,20 @@ let frequenciaEventosMaximo;
 let toleranciaCamera = 15;
 
 switch (dificuldade) {
+    case 0:
+        limiteAdvertencias = 0;
+        decaimentoEnergiaEFelicidadeEmS = 1 / 0.5;
+        aumentoTempoCafeteiraVazamento = 1;
+        toleranciaMicrofone = 7;
+        toleranciaCompartilhamento = 15;
+        pontuacaoMinima = 0;
+        energiaCafeRestaura = 70;
+        felicidadeInimigoDerrotado = 6;
+        frequenciaEventosMinimo = 40;
+        frequenciaEventosMaximo = 60;
+        [1, 2, 3, 4].forEach(i => document.querySelector(`#adv_${i}`).style.display = 'none');
+        document.querySelector('#adv_treinamento').style.display = 'block';
+        break;
     case 1:
         limiteAdvertencias = 3;
         decaimentoEnergiaEFelicidadeEmS = 1 / 0.5;
@@ -1098,25 +1131,26 @@ function preencherTarefas() {
 }
 preencherTarefas();
 
-async function gameOver(causaMorte, conquistasDesbloqueadas = []) {
+function gameOver(causaMorte, conquistasDesbloqueadas = []) {
+    if (ler('dificuldadeSelecionada') == 0 && causaMorte != 0 && causaMorte != 2) return;
+    if (ler('dificuldadeSelecionada') == 0 && causaMorte == 2) window.location.href = "../../html/final/final.html";
     try {
         if (pontuacao >= 50 && dificuldade === 4) {
             conquistasDesbloqueadas.push(35);
         }
 
-        await Usuario.aumentarRunsJogadas(usuarioId, 1);
-        const usuario = await Usuario.getUsuarioLogado(usuarioId);
-        if (usuario.runs_jogadas >= 50) {
+        aumentar('runs_jogadas');
+        if (ler('runs_jogadas') >= 50) {
             conquistasDesbloqueadas.push(31);
         }
-        
+
         if (advertencias.length === 0) {
-            await Usuario.aumentarRunsConsecutivasSemAdvertencia(usuarioId, 1);
+            aumentar('runs_consecutivas_sem_advertencia');
         } else {
-            await Usuario.reiniciarRunsConsecutivasSemAdvertencia(usuarioId);
+            salvar('runs_consecutivas_sem_advertencia', 0);
         }
 
-        if (usuario.runs_consecutivas_sem_advertencia >= 10) {
+        if (ler('runs_consecutivas_sem_advertencia') >= 10) {
             conquistasDesbloqueadas.push(17);
         }
     } finally {
@@ -1128,7 +1162,7 @@ async function gameOver(causaMorte, conquistasDesbloqueadas = []) {
             "conquistasDesbloqueadas": conquistasDesbloqueadas,
         };
 
-        localStorage.setItem('final', JSON.stringify(final));
+        salvar('final', final);
         window.location.href = "../../html/final/final.html";
     }
 }
@@ -1258,21 +1292,19 @@ document.querySelector('#monitor').addEventListener('click', () => {
 
 document.querySelector('#mesa-escritorio').addEventListener('click', carregarMesa);
 
-async function isConquistaJaDesbloqueada(idConquista) {
-    const usuario = await Usuario.getUsuarioLogado();
-    return usuario.conquistas_desbloqueadas[idConquista - 1] != '0';
+function isConquistaJaDesbloqueada(idConquista) {
+    return ler("conquistas_desbloqueadas")[idConquista - 1] != '0';
 }
 
-async function desbloquearConquista(idConquista) {
-    const conquistaJaDesbloqueada = await isConquistaJaDesbloqueada(idConquista);
-    if (conquistaJaDesbloqueada) {
+function desbloquearConquista(idConquista) {
+    const conquistaJaDesbloqueada = isConquistaJaDesbloqueada(idConquista);
+    if (conquistaJaDesbloqueada || ler('dificuldadeSelecionada') == 0) {
         return;
     }
 
-    let usuario = await Usuario.getUsuarioLogado();
-    const usuarioId = usuario.id;
-    await Usuario.desbloquearConquista(usuarioId, idConquista);
-    usuario = await Usuario.getUsuarioLogado();
+    const conquistasDesbloqueadas = ler("conquistas_desbloqueadas").split('');
+    ler("conquistas_desbloqueadas")[idConquista - 1] = '1';
+    salvar("conquistas_desbloqueadas", conquistasDesbloqueadas.join(''));
 
     const imagem = `url("../../assets/conquistas/icones/conquistas${idConquista < 10 ? `0${idConquista}` : idConquista}.png")`;
     let texto;
@@ -1412,14 +1444,14 @@ async function desbloquearConquista(idConquista) {
         }
     }, 5000);
 
-    if (usuario.conquistas_desbloqueadas == '111111111111111111111111111111111110') {
+    if (ler('conquistas_desbloqueadas') == '111111111111111111111111111111111110') {
         desbloquearConquista(36);
     }
 }
 
 let advertencias = [];
 function notificar(id) {
-    const nomeJogador = JSON.parse(localStorage.getItem('usuario'))['nome'];
+    const nomeJogador = ler('nome');
     let advertencia = true;
     let imagem;
     let texto;
@@ -1486,12 +1518,40 @@ function notificar(id) {
             texto = `Erro desconhecido.`;
     }
 
+    advertencias.push(id);
+
     if (advertencia) {
+        audio0.volume = 0;
+        audio1.volume = 0;
+        audio2.volume = 0;
+        audio3.volume = 0;
+        switch (ler('dificuldadeSelecionada')) {
+            case 0:
+                audio0.volume = 1;
+                break;
+            case 1:
+                if (advertencias.length == 1) audio1.volume = 1;
+                else if (advertencias.length == 2) audio2.volume = 1;
+                else if (advertencias.length == 3) audio3.volume = 1;
+                break;
+            case 2:
+                if (advertencias.length == 1) audio1.volume = 1;
+                else if (advertencias.length == 2) audio2.volume = 1;
+                break;
+            default:
+                audio3.volume = 1;
+        }
+
+        console.log(`Áudio 0: ${audio0.volume}`);
+        console.log(`Áudio 1: ${audio1.volume}`);
+        console.log(`Áudio 2: ${audio2.volume}`);
+        console.log(`Áudio 3: ${audio3.volume}`);
+
         imagem = 'url("../../assets/pc/notificacoes/info.png")';
-        advertencias.push(id);
         const advertenciaElement = document.querySelector(`#adv_${advertencias.length}`);
         advertenciaElement?.classList.remove('advertencia_vazia');
         advertenciaElement?.classList.add('advertencia_cheia');
+        document.querySelector('#num_adv_treinamento').textContent = advertencias.length;
 
         if (advertencias.length > limiteAdvertencias) {
             let conquistasGO = [28];
@@ -1611,7 +1671,7 @@ function carregarMesa() {
     mesa.style.display = 'block';
     document.querySelector('body').style.backgroundImage = 'url("../../assets/entorno/bg/escritorio.png")';
     document.querySelector('.frame').style.borderImageSource = "url('../../assets/entorno/borda/escritorio.png')";
-    document.querySelector('#nome-usuario-mesa').textContent = JSON.parse(localStorage.getItem('usuario'))['nome'];
+    document.querySelector('#nome-usuario-mesa').textContent = ler('nome');
     if (cafeteiraLigada) {
         document.querySelector('#cafe').style.display = 'none';
     } else {
@@ -1626,7 +1686,7 @@ function carregarEscritorio() {
     document.querySelector('#cafeteira').style.display = 'none';
     document.querySelector('body').style.backgroundImage = 'url("../../assets/entorno/bg/escritorio.png")';
     document.querySelector('.frame').style.borderImageSource = "url('../../assets/entorno/borda/escritorio.png')";
-    document.querySelector('#nome-usuario-escritorio').textContent = JSON.parse(localStorage.getItem('usuario'))['nome'];
+    document.querySelector('#nome-usuario-escritorio').textContent = ler('nome');
     escritorio.style.display = 'block';
 }
 
@@ -1935,7 +1995,11 @@ function porTarefasNaTelaLista() {
     const game = document.querySelector('#game');
     const pontuacaoJogador = document.createElement('div');
     pontuacaoJogador.id = 'pontuacao-jogador';
-    pontuacaoJogador.innerHTML = `Pontuação: ${pontuacao}/${pontuacaoMinima}`;
+    if (ler('dificuldadeSelecionada') == 0) {
+        pontuacaoJogador.innerHTML = `Pontuação: ${pontuacao}`;
+    } else {
+        pontuacaoJogador.innerHTML = `Pontuação: ${pontuacao}${ler('dificuldadeSelecionada') == 0 ? '' : '/' + pontuacaoMinima}`;
+    }
     game.appendChild(pontuacaoJogador);
 
     if (tarefas.length < 4) {
@@ -2339,12 +2403,11 @@ function criarTelaTarefaTipo1(indiceTarefa) {
         }, 1000);
     }
 
-    botaoTestar.addEventListener('click', async () => {
+    botaoTestar.addEventListener('click', () => {
         if (estadoTarefas[indiceTarefa]['selecionados'].length === 1) {
             testarT1();
-            Usuario.aumentarQuantTestesFeitos(usuarioId, 1);
-            const usuario = await Usuario.getUsuarioLogado();
-            if (usuario.testes_feitos >= 30) {
+            aumentar('quant_testes_feitos');
+            if (ler('testes_feitos') >= 30) {
                 desbloquearConquista(12);
             }
         }
@@ -2402,7 +2465,7 @@ function criarTelaTarefaTipo1(indiceTarefa) {
     game.appendChild(minimizarTarefa);
 }
 
-async function aumentarTarefasConcluidas() {
+function aumentarTarefasConcluidas() {
     tarefasConcluidasUltimosDoisMin++;
 
     setTimeout(() => {
@@ -2413,12 +2476,10 @@ async function aumentarTarefasConcluidas() {
         desbloquearConquista(2);
     }
 
-    Usuario.aumentarQuantTarefasConcluidas(usuarioId, 1);
-    const usuario = await Usuario.getUsuarioLogado();
-    if (usuario.tarefas_concluidas >= 50) {
+    aumentar('quant_tarefas_concluidas');
+    if (ler('quant_tarefas_concluidas') >= 50) {
         desbloquearConquista(3);
     }
-
 }
 
 function criarTelaTarefaTipo2(indiceTarefa) {
@@ -2674,7 +2735,7 @@ function criarTelaTarefaTipo2(indiceTarefa) {
         game.appendChild(resultadoDiv);
     };
 
-    botaoTestar.addEventListener('click', async () => {
+    botaoTestar.addEventListener('click', () => {
         const existingResult = document.querySelector('#resultado-t2');
         if (existingResult) {
             existingResult.remove();
@@ -2683,9 +2744,8 @@ function criarTelaTarefaTipo2(indiceTarefa) {
         estadoTarefas[indiceTarefa]['resultado'] = null;
 
         iniciarCountdown();
-        Usuario.aumentarQuantTestesFeitos(usuarioId, 1);
-        const usuario = await Usuario.getUsuarioLogado();
-        if (usuario.testes_feitos >= 30) {
+        aumentar('quant_testes_feitos');
+        if (ler('quant_testes_feitos') >= 30) {
             desbloquearConquista(12);
         }
     });
@@ -3316,10 +3376,9 @@ function criarTelaTarefaTipo6(indiceTarefa) {
     progresso.textContent = `${questaoAtual + 1}/${totalQuestoes}`;
     game.appendChild(progresso);
 
-    async function verificarDesbloqueio13() {
-        Usuario.aumentarQuantQuizzesGabaritados(usuarioId, 1);
-        const usuario = await Usuario.getUsuarioLogado();
-        if (usuario.quizzes_gabaritados >= 10) {
+    function verificarDesbloqueio13() {
+        aumentar('quant_quizzes_gabaritados');
+        if (ler('quant_quizzes_gabaritados') >= 10) {
             desbloquearConquista(13);
         }
     }
@@ -3742,7 +3801,7 @@ function selecionaReuniao() {
     reuniaoSelecionado.className = 'selecionado';
     game.appendChild(reuniaoSelecionado);
 
-    document.querySelector('#compartilhar-tela').addEventListener('click', async () => {
+    document.querySelector('#compartilhar-tela').addEventListener('click', () => {
         const notificacaoCompartilharTela = Array.from(document.querySelectorAll('.notificacao')).find(n =>
             n.querySelector('.texto-notificacao')?.textContent.startsWith('Compartilhe ')
         );
@@ -3870,11 +3929,8 @@ function selecionaReuniao() {
             notificar(13);
             setTimeout(selecionaReuniao, 500);
         }
-        const usuario = await Usuario.getUsuarioLogado();
-        const usuarioId = usuario.id;
-        await Usuario.aumentarQuantTelaCompartilhada(usuarioId, 1);
-        const quantTelaCompartilhada = usuario.quant_tela_compartilhada;
-        if (quantTelaCompartilhada >= 30) {
+        aumentar('quant_tela_compartilhada');
+        if (ler('quant_tela_compartilhada') >= 30) {
             desbloquearConquista(1);
         }
     });
@@ -4221,7 +4277,7 @@ const mataInimigo = {
     ],
 }
 
-async function eliminarInimigo(ladoInimigo) {
+function eliminarInimigo(ladoInimigo) {
     const telaJogo = document.querySelector('#tela-jogo');
     const inimigo = document.querySelector(`#inimigo-${posicaoAtual}-${ladoInimigo}`);
 
@@ -4297,9 +4353,8 @@ async function eliminarInimigo(ladoInimigo) {
         telaJogo.style.backgroundImage = `url(${imagensPrecarregadas[srcMapa].src})`;
     }
 
-    Usuario.aumentarQuantInimigosDerrotados(usuarioId, 1);
-    const usuario = await Usuario.getUsuarioLogado();
-    if (usuario.inimigos_derrotados >= 100) {
+    aumentar('quant_inimigos_derrotados');
+    if (ler('quant_inimigos_derrotados') >= 100) {
         desbloquearConquista(10);
     }
 }
@@ -5064,7 +5119,13 @@ document.querySelector('#tb-jogo').addEventListener('click', () => clicaAba('jog
 document.querySelector('#tb-tarefa').addEventListener('click', () => clicaAba('tarefa'));
 
 let countdownDesb32 = 0;
-async function atualizarTempo() {
+
+function atualizarTempoTreinamento() {
+    tempoRestante++;
+    atualizarHUD();
+}
+
+function atualizarTempo() {
     if (Math.abs(energia - felicidade) < 10) {
         countdownDesb32++;
         if (countdownDesb32 >= 300) {
@@ -5097,6 +5158,8 @@ async function atualizarTempo() {
 
             const dificuldadeSelecionada = localStorage.getItem('dificuldadeSelecionada');
             switch (dificuldadeSelecionada) {
+                case '0':
+                    break;
                 case '1':
                     conquistasGO.push(19);
                     break;
@@ -5112,6 +5175,8 @@ async function atualizarTempo() {
 
             if (nenhumaTarefaFalha && advertencias.length === 0) {
                 switch (dificuldadeSelecionada) {
+                    case '0':
+                        break;
                     case '1':
                         conquistasGO.push(23);
                         break;
@@ -5127,7 +5192,7 @@ async function atualizarTempo() {
             }
 
             if (advertencias.length === 0) {
-                await Usuario.aumentarRunsConsecutivasSemAdvertencia(usuarioId, 1);
+                aumentar('runs_consecutivas_sem_advertencia');
             }
 
             gameOver(0, conquistasGO);
@@ -5173,16 +5238,26 @@ function atualizarDecaimento() {
 }
 
 function atualizarHUD() {
-    const minutos = Math.floor(tempoRestante / 60).toString().padStart(2, '0');
-    const segundos = Math.floor(tempoRestante % 60).toString().padStart(2, '0');
-    document.querySelector('#tempo').textContent = `${minutos}:${segundos}`;
+    if (tempoRestante > 3599) {
+        document.querySelector('#tempo').textContent = `+59:59`;
+    } else {
+        const minutos = Math.floor(tempoRestante / 60).toString().padStart(2, '0');
+        const segundos = Math.floor(tempoRestante % 60).toString().padStart(2, '0');
+        document.querySelector('#tempo').textContent = `${minutos}:${segundos}`;
+    }
 
     document.querySelector('#energia').textContent = `${Math.round(energia)}%`;
     document.querySelector('#felicidade').textContent = `${Math.round(felicidade)}%`
     document.querySelector('#icone-felicidade').style.backgroundImage = `url("../../assets/hud/felicidade/${Math.max(1, Math.ceil(felicidade / 25))}.png")`;
 }
 
-const intervaloTempo = setInterval(atualizarTempo, 1000);
+if (ler('dificuldadeSelecionada') === 0) {
+    document.querySelector('#tempo').textContent = '00:00';
+    tempoRestante = 0;
+    setInterval(atualizarTempoTreinamento, 1000);
+} else {
+    setInterval(atualizarTempo, 1000);
+}
 const intervaloDecaimento = setInterval(atualizarDecaimento, decaimentoEnergiaEFelicidadeEmS * 1000);
 
 const intervaloInimigo = setInterval(gerarInimigo, 1000);
@@ -5384,6 +5459,32 @@ document.addEventListener('keydown', (event) => {
         case '5':
             if (document.querySelector('#tb-tarefa').style.display != 'none' && pcSelecionado) {
                 document.querySelector('#tb-tarefa')?.click();
+            }
+            break;
+        case 'P':
+        case 'p':
+            if (document.querySelector('#tela-jogo')?.style.display != 'none' && pcSelecionado) {
+                if (document.querySelector('#pause-jogo')) {
+                    document.querySelector('#pause-jogo')?.click();
+                } else {
+                    document.querySelector('#play-jogo')?.click();
+                }
+            }
+            break;
+        case 'Escape':
+            document.querySelector('#xis-tarefa')?.click();
+            if (document.querySelector('#documento-aberto') != null && pcSelecionado) {
+                document.querySelector('#documento-aberto-fechar')?.click();
+            } else if (document.querySelector('#tela-pasta') != null && pcSelecionado) {
+                document.querySelector('#xis-pasta')?.click();
+            } else if (document.querySelector('#tela-jogo') != null && pcSelecionado) {
+                document.querySelector('#xis-jogo')?.click();
+            } else if (document.querySelector('#tela-lista') != null && pcSelecionado) {
+                document.querySelector('#xis-lista')?.click();
+            } else if (document.querySelector('#tela-tarefa') != null && pcSelecionado) {
+                document.querySelector('#xis-tarefa')?.click();
+            } else if (document.querySelector('#tela-reuniao') != null && pcSelecionado) {
+                document.querySelector('#xis-reuniao')?.click();
             }
             break;
         default:

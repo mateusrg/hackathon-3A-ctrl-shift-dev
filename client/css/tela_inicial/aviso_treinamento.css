@@ -1,0 +1,29 @@
+#game {
+    background-image: url('../../assets/aviso_treinamento.png');
+    background-size: contain;
+    position: relative;
+}
+
+#sim {
+    position: absolute;
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+    border-radius: calc(20 * var(--un));
+    height: calc(105 * var(--un));
+    width: calc(422 * var(--un));
+    bottom: calc(292 * var(--un));
+    left: calc(255 * var(--un));
+}
+
+#nao {
+    position: absolute;
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+    border-radius: calc(20 * var(--un));
+    height: calc(105 * var(--un));
+    width: calc(422 * var(--un));
+    bottom: calc(292 * var(--un));
+    right: calc(270 * var(--un));
+}

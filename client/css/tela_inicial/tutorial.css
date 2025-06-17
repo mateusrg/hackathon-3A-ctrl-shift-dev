@@ -62,13 +62,18 @@
 
 #voltar {
     position: absolute;
-    height: calc(100 * var(--un));
-    width: calc(400 * var(--un));
-    top: calc(845 * var(--un));
+    height: calc(102 * var(--un));
+    width: calc(405 * var(--un));
+    top: calc(842 * var(--un));
     left: 50%;
     transform: translate(-50%, 0);
     cursor: pointer;
-    border-radius: calc(20 * var(--un));
     background-color: transparent;
+    background-size: contain;
     border: none;
+    color: #fff;
+    display: flex;
+    font-size: calc(30 * var(--un));
+    justify-content: center;
+    align-items: center;
 }

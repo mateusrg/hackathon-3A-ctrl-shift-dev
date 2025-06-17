@@ -1,28 +1,4 @@
-import Usuario from '../funcoes/usuario.js';
-
-async function verificarLogin() {
-    const usuarioStorage = JSON.parse(localStorage.getItem('usuario'));
-
-    if (!usuarioStorage || usuarioStorage.length === 0) {
-        window.location.href = '../../html/login/pagina_inicial_deslogado.html';
-        return;
-    }
-
-    try {
-        const usuario = await Usuario.selecionarUsuarioPorId(usuarioStorage.id);
-
-        if (!usuario || usuario.email !== usuarioStorage.email) {
-            window.location.href = '../../html/login/pagina_inicial_deslogado.html';
-        }
-    } catch (error) {
-        console.error("Erro ao acessar o servidor:", error);
-        window.location.href = '../../html/login/pagina_inicial_deslogado.html';
-    }
-}
-
 localStorage.setItem('isRun', true);
-
-verificarLogin();
 
 const imagensTutorial = [];
 for (let i = 1; i <= 17; i++) {
@@ -32,6 +8,15 @@ for (let i = 1; i <= 17; i++) {
 }
 
 let tutorial = 1;
+
+const determinanteTela = localStorage.getItem('iniciarJogo') != 'true';
+
+if (localStorage.getItem('iniciarJogo') != 'true') {
+    localStorage.setItem('iniciarJogo', true);
+    mostrarTutorial();
+    document.querySelector('#voltar').style.backgroundImage = "url('../../assets/dificuldade/vermelho.png')";
+    document.querySelector('#voltar').textContent = 'Voltar';
+}
 
 function clicarSetaEsquerda() {
     document.querySelector('#seta-direita')?.remove();
@@ -81,11 +66,28 @@ function mostrarTutorial() {
     voltar.id = 'voltar';
     game.appendChild(voltar);
     voltar.addEventListener('click', () => {
-        window.location.href = '../../html/pc/pc.html';
+        localStorage.setItem('iniciarJogo', true);
+        window.location.href = `../../html/${determinanteTela ? 'tela_inicial/pagina_inicial.html' : 'pc/pc.html'}`;
     });
 }
 
-document.querySelector('#sim').addEventListener('click', mostrarTutorial);
-document.querySelector('#nao').addEventListener('click', () => {
-    window.location.href = '../../html/pc/pc.html';
+document.querySelector('#sim')?.addEventListener('click', mostrarTutorial);
+document.querySelector('#nao')?.addEventListener('click', () => window.location.href = '../../html/pc/pc.html');
+
+document.addEventListener('keydown', (event) => {
+    switch (event.key.toLowerCase()) {
+        case 'arrowleft':
+        case 'a':
+            document.querySelector('#seta-esquerda')?.click();
+            break;
+        case 'arrowright':
+        case 'd':
+            document.querySelector('#seta-direita')?.click();
+            break;
+        case 'enter':
+        case ' ':
+            localStorage.setItem('iniciarJogo', false);
+            window.location.href = `../../html/${determinanteTela ? 'tela_inicial/pagina_inicial.html' : 'pc/pc.html'}`;
+            break;
+    }
 });

@@ -1,27 +1,3 @@
-import Usuario from '../funcoes/usuario.js';
-
-async function verificarLogin() {
-    const usuarioStorage = JSON.parse(localStorage.getItem('usuario'));
-
-    if (!usuarioStorage || usuarioStorage.length === 0) {
-        window.location.href = '../../html/login/pagina_inicial_deslogado.html';
-        return;
-    }
-
-    try {
-        const usuario = await Usuario.selecionarUsuarioPorId(usuarioStorage.id);
-
-        if (!usuario || usuario.email !== usuarioStorage.email) {
-            window.location.href = '../../html/login/pagina_inicial_deslogado.html';
-        }
-    } catch (error) {
-        console.error("Erro ao acessar o servidor:", error);
-        window.location.href = '../../html/login/pagina_inicial_deslogado.html';
-    }
-}
-
-verificarLogin();
-
 function voltar() {
     window.location.href = '../../html/tela_inicial/pagina_inicial.html';
 }
@@ -45,10 +21,11 @@ function adicionarImagemSobreBotao(botaoId, imagemSrc) {
 }
 
 
-async function main() {
-    const id = JSON.parse(localStorage.getItem('usuario'))['id'];
-    const usuario = await Usuario.selecionarUsuarioPorId(id);
-    const dificuldadeMaximaDesbloqueada = usuario['dificuldade_maxima_desbloqueada'];
+function main() {
+    if (!localStorage.getItem('dificuldade_maxima_desbloqueada')) localStorage.setItem('dificuldade_maxima_desbloqueada', '2');
+    const dificuldadeMaximaDesbloqueada = Number(localStorage.getItem('dificuldade_maxima_desbloqueada'));
+    
+    document.querySelector('#botao-treinamento').addEventListener('click', () => window.location.href = '../../html/tela_inicial/aviso_treinamento.html');
     
     document.querySelector('#botao-junior').addEventListener('click', () => {
         localStorage.setItem('dificuldadeSelecionada', '1');

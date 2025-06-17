@@ -1,26 +1,3 @@
-import Usuario from '../funcoes/usuario.js';
-
-async function verificarLogin() {
-    const usuarioStorage = JSON.parse(localStorage.getItem('usuario'));
-
-    if (!usuarioStorage || usuarioStorage.length === 0) {
-        window.location.href = '../../html/login/pagina_inicial_deslogado.html';
-        return;
-    }
-
-    try {
-        const usuario = await Usuario.selecionarUsuarioPorId(usuarioStorage.id);
-
-        if (!usuario || usuario.email !== usuarioStorage.email) {
-            window.location.href = '../../html/login/pagina_inicial_deslogado.html';
-        }
-    } catch (error) {
-        console.error("Erro ao acessar o servidor:", error);
-        window.location.href = '../../html/login/pagina_inicial_deslogado.html';
-    }
-}
-
-verificarLogin();
 const setaCimaBtn = document.querySelector('#seta-cima');
 const setaBaixoBtn = document.querySelector('#seta-baixo');
 
@@ -31,17 +8,20 @@ function voltar() {
 let conquistasDescricao;
 let easterEggLiberado;
 
-async function main() {
-    const usuario = await Usuario.getUsuarioLogado();
+function main() {
+    if (!localStorage.getItem('conquistas_desbloqueadas')) localStorage.setItem('conquistas_desbloqueadas', '000000000000000000000000000000000000');
+    ['quant_tela_compartilhada', 'quant_tarefas_concluidas', 'quant_inimigos_derrotados', 'quant_testes_feitos', 'quant_quizzes_gabaritados', 'runs_consecutivas_sem_advertencia', 'runs_jogadas'].forEach(chave => {
+        if (!localStorage.getItem(chave)) localStorage.setItem(chave, '0');
+    });
     document.querySelector('#voltar').addEventListener('click', voltar);
-    const d1 = usuario.quant_tela_compartilhada;
-    const d3 = usuario.tarefas_concluidas;
-    const d10 = usuario.inimigos_derrotados;
-    const d12 = usuario.testes_feitos;
-    const d13 = usuario.quizzes_gabaritados;
-    const i17 = usuario.conquistas_desbloqueadas[16] == '0';
-    const d17 = usuario.runs_consecutivas_sem_advertencia;
-    const d31 = usuario.runs_jogadas;
+    const d1 = Number(localStorage.getItem('quant_tela_compartilhada'));
+    const d3 = Number(localStorage.getItem('quant_tarefas_concluidas'));
+    const d10 = Number(localStorage.getItem('quant_inimigos_derrotados'));
+    const d12 = Number(localStorage.getItem('quant_testes_feitos'));
+    const d13 = Number(localStorage.getItem('quant_quizzes_gabaritados'));
+    const i17 = localStorage.getItem('conquistas_desbloqueadas')[16] == '0';
+    const d17 = Number(localStorage.getItem('runs_consecutivas_sem_advertencia'));
+    const d31 = Number(localStorage.getItem('runs_jogadas'));
 
     conquistasDescricao = [
         {
@@ -226,39 +206,24 @@ async function main() {
         }
     ];
 
-    easterEggLiberado = usuario.conquistas_desbloqueadas[24] == '1';
+    easterEggLiberado = localStorage.getItem('conquistas_desbloqueadas')[24] === '1';
     carregarConquistas(secaoConquista);
 
     setaCimaBtn.addEventListener('click', setaCima);
-    if (secaoConquista == 0) {
-        setaCimaBtn.style.display = 'none';
-    }
-
-
     setaBaixoBtn.addEventListener('click', setaBaixo);
-    if (secaoConquista == 24) {
-        setaBaixoBtn.style.display = 'none';
-    }
+    if (secaoConquista == 0) setaCimaBtn.style.display = 'none';
+    if (secaoConquista == 24) setaBaixoBtn.style.display = 'none';
 }
 
 let secaoConquista = 0;
 
-async function isConquistaJaDesbloqueada(idConquista) {
-    const usuario = await Usuario.getUsuarioLogado();
-    return usuario.conquistas_desbloqueadas[idConquista - 1] != '0';
+function isConquistaJaDesbloqueada(idConquista) {
+    return localStorage.getItem('conquistas_desbloqueadas')[idConquista - 1] != '0';
 }
 
-async function desbloquearConquista(idConquista) {
-    const conquistaJaDesbloqueada = await isConquistaJaDesbloqueada(idConquista);
-    if (conquistaJaDesbloqueada) {
-        return;
-    }
-
-    let usuario = await Usuario.getUsuarioLogado();
-    const usuarioId = usuario.id;
-    await Usuario.desbloquearConquista(usuarioId, idConquista);
-    usuario = await Usuario.getUsuarioLogado();
-
+function desbloquearConquista(idConquista) {
+    if (isConquistaJaDesbloqueada(idConquista)) return;
+    localStorage.setItem('conquistas_desbloqueadas', localStorage.getItem('conquistas_desbloqueadas').substring(0, idConquista - 1) + '1' + localStorage.getItem('conquistas_desbloqueadas').substring(idConquista));
     const imagem = `url("../../assets/conquistas/icones/conquistas${idConquista < 10 ? `0${idConquista}` : idConquista}.png")`;
     let texto;
     switch (idConquista) {
@@ -389,9 +354,7 @@ async function desbloquearConquista(idConquista) {
     textoConquista.textContent = texto;
     conquista.appendChild(textoConquista);
 
-    console.log(usuario.conquistas_desbloqueadas);
-
-    await carregarConquistas(secaoConquista);
+    carregarConquistas(secaoConquista);
 
     setTimeout(() => {
         if (document.body.contains(conquista)) {
@@ -399,11 +362,7 @@ async function desbloquearConquista(idConquista) {
         }
     }, 5000);
 
-    console.log(usuario.conquistas_desbloqueadas);
-
-    if (usuario.conquistas_desbloqueadas == '111111111111111111111111111111111110') {
-        desbloquearConquista(36);
-    }
+    if (localStorage.getItem('conquistas_desbloqueadas') == '111111111111111111111111111111111110') desbloquearConquista(36);
 }
 
 function abrirModalConquista(index, desbloqueada) {
@@ -469,10 +428,8 @@ function abrirModalConquista(index, desbloqueada) {
     tela.appendChild(descricaoConquista);
 }
 
-async function carregarConquistas(nivel) {
-    const usuarioStorage = JSON.parse(localStorage.getItem('usuario'));
-    const usuario = await Usuario.selecionarUsuarioPorId(usuarioStorage.id);
-    const conquistas = usuario.conquistas_desbloqueadas;
+function carregarConquistas(nivel) {
+    const conquistas = localStorage.getItem('conquistas_desbloqueadas');
     const conquistaIndividual = conquistas.split('');
 
     document.querySelectorAll(".conquista-item").forEach(el => el.remove());
