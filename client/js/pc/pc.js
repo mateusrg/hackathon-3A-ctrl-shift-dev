@@ -1518,9 +1518,9 @@ function notificar(id) {
             texto = `Erro desconhecido.`;
     }
 
-    advertencias.push(id);
-
+    
     if (advertencia) {
+        advertencias.push(id);
         audio0.volume = 0;
         audio1.volume = 0;
         audio2.volume = 0;
@@ -1541,11 +1541,6 @@ function notificar(id) {
             default:
                 audio3.volume = 1;
         }
-
-        console.log(`Áudio 0: ${audio0.volume}`);
-        console.log(`Áudio 1: ${audio1.volume}`);
-        console.log(`Áudio 2: ${audio2.volume}`);
-        console.log(`Áudio 3: ${audio3.volume}`);
 
         imagem = 'url("../../assets/pc/notificacoes/info.png")';
         const advertenciaElement = document.querySelector(`#adv_${advertencias.length}`);
