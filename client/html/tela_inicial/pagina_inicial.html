@@ -15,12 +15,40 @@
 <body>
     <div class="frame">
         <div id="game">
-            <div id="logo"></div>
-            <div id="entorno-botoes">
-                <div class="botao" id="iniciar">Iniciar</div>
-                <div class="botao" id="conquistas">Conquistas</div>
-                <div class="botao" id="tutorial">Tutorial</div>
-            </div>
+            <section id="pagina-inicial">
+                <div id="logo"></div>
+                <div id="entorno-botoes">
+                    <div class="botao" id="iniciar">Iniciar</div>
+                    <div class="botao" id="conquistas">Conquistas</div>
+                    <div class="botao" id="tutorial">Tutorial</div>
+                </div>
+            </section>
+            <section id="iniciar-jogo">
+                <div class="esmaecedor">
+                    <p id="texto-iniciar-jogo">Iniciar Jogo</p>
+                    <div id="modal">
+                        <div class="aux">
+                            <div class="dificuldade-opcao" id="dif-treinamento"></div>
+                            <div class="dificuldade-opcao" id="dif-junior"></div>
+                            <div class="dificuldade-opcao" id="dif-pleno"></div>
+                            <div class="dificuldade-opcao" id="dif-senior"></div>
+                            <div class="dificuldade-opcao" id="dif-tech-lead"></div>
+                            <div id="bloqueador-senior"></div>
+                            <div id="bloqueador-tech-lead"></div>
+                            <div id="dificuldade-selecionada">Nenhuma dificuldade selecionada</div>
+                            <div id="ainda-nao-venceu-dif"><img src="../../assets/pc/advertencia_cheia.png" alt="xis" style="height: calc(25 * var(--un)); margin-right: calc(16 * var(--un));">Ainda não venceu</div>
+                            <div id="ja-venceu-dif"><img src="../../assets/pagina_inicial/iniciar_jogo/certo.png" alt="certo" style="height: calc(25 * var(--un)); margin-right: calc(16 * var(--un));">Já venceu</div>
+                            <input type="text" id="nome" autocomplete="off">
+                            <div id="checkbox-tutorial"></div>
+                            <div id="check-tutorial"></div>
+                            <div id="checkbox-premissa"></div>
+                            <div id="check-premissa"></div>
+                            <div id="jogar"></div>
+                            <div id="voltar"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
 </body>

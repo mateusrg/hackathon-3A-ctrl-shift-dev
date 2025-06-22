@@ -11,6 +11,10 @@
 
 #game {
     background-image: url('../../assets/pagina_inicial/pagina_inicial_bg.png');
+}
+
+#pagina-inicial {
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -48,4 +52,175 @@
     bottom: calc(18 * var(--un));
     right: calc(18 * var(--un));
     cursor: pointer;
+}
+
+.esmaecedor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(calc(10 * var(--un)));
+}
+
+#iniciar-jogo {
+    display: none;
+}
+
+#texto-iniciar-jogo {
+    font-size: calc(50 * var(--un));
+    color: #fff;
+    position: absolute;
+    top: calc(56 * var(--un));
+    left: calc(420 * var(--un));
+}
+
+.aux {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+#modal {
+    background-image: url('../../assets/pagina_inicial/iniciar_jogo/modal.png');
+    height: calc(722 * var(--un));
+    width: calc(1256 * var(--un));
+    position: absolute;
+    left: calc(75 * var(--un));
+    bottom: calc(126 * var(--un));
+}
+
+#dificuldade-selecionada {
+    font-size: calc(32 * var(--un));
+    color: #c80303;
+    width: calc(730 * var(--un));
+    position: absolute;
+    top: calc(68 * var(--un));
+    left: calc(557 * var(--un));
+}
+
+#bloqueador-senior, #bloqueador-tech-lead {
+    background-image: url('../../assets/pagina_inicial/iniciar_jogo/bloqueador.png');
+    height: calc(95 * var(--un));
+    width: calc(382 * var(--un));
+    position: absolute;
+    left: calc(79 *  var(--un));
+    bottom: calc(185 * var(--un));
+    cursor: not-allowed;
+}
+
+#bloqueador-tech-lead {
+    bottom: calc(78 * var(--un));
+}
+
+#check-tutorial, #check-premissa {
+    height: calc(32 * var(--un));
+    width: calc(40 * var(--un));
+    right: calc(650 * var(--un));
+    bottom: calc(299 * var(--un));
+    position: absolute;
+    background-image: url('../../assets/pagina_inicial/iniciar_jogo/check.png');
+    pointer-events: none;
+}
+
+#check-premissa {
+    bottom: calc(228 * var(--un));
+}
+
+#dif-treinamento, #dif-junior, #dif-pleno, #dif-senior, #dif-tech-lead {
+    height: calc(95 * var(--un));
+    width: calc(382 * var(--un));
+    position: absolute;
+    left: calc(79 *  var(--un));
+    border-radius: calc(20 * var(--un));
+    cursor: pointer;
+}
+
+#dif-treinamento {
+    top: calc(120 * var(--un));
+}
+
+#dif-junior {
+    top: calc(227 * var(--un));
+}
+
+#dif-pleno {
+    top: calc(334 * var(--un));
+}
+
+#dif-senior {
+    top: calc(442 * var(--un));
+}
+
+#dif-tech-lead {
+    top: calc(549 * var(--un));
+}
+
+#checkbox-tutorial, #checkbox-premissa {
+    height: calc(60 * var(--un));
+    width: calc(60 * var(--un));
+    position: absolute;
+    right: calc(640 * var(--un));
+    bottom: calc(285 * var(--un));
+    border-radius: calc(10 * var(--un));
+    cursor: pointer;
+}
+
+#checkbox-premissa {
+    bottom: calc(215 * var(--un));
+}
+
+#jogar, #voltar {
+    height: calc(104 * var(--un));
+    width: calc(262 * var(--un));
+    position: absolute;
+    right: calc(144 *  var(--un));
+    bottom: calc(78 * var(--un));
+    border-radius: calc(15 * var(--un));
+    cursor: pointer;
+}
+
+#jogar {
+    right: calc(437 *  var(--un));
+}
+
+#nome {
+    position: absolute;
+    top: calc(265 * var(--un));
+    right: calc(90 * var(--un));
+    width: calc(590 * var(--un));
+    height: calc(67 * var(--un));
+    font-size: calc(31 * var(--un));
+    color: #fff;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+#nome::placeholder {
+    color: #c80303;
+    opacity: 0.6;
+}
+
+#ainda-nao-venceu-dif {
+    color: #c80303;
+    display: flex;
+    align-items: center;
+    font-size: calc(25 * var(--un));
+    position: absolute;
+    top: calc(120 * var(--un));
+    left: calc(560 * var(--un));
+    display: none;
+}
+
+#ja-venceu-dif {
+    color: #00cf0a;
+    display: flex;
+    align-items: center;
+    font-size: calc(25 * var(--un));
+    position: absolute;
+    top: calc(120 * var(--un));
+    left: calc(560 * var(--un));
+    display: none;
 }
