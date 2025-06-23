@@ -1,8 +1,33 @@
 const audio = new Audio('../../assets/audios/soundtrack/menu.mp3');
 audio.loop = true;
 audio.volume = 1;
-try { audio.play() } catch { }
+audio.play().catch(() => {
+    document.querySelector('#entorno-botoes').style.display = 'none';
+    document.querySelector('#pagina-inicial').style.flexDirection = 'column';
+    document.querySelector('#logo').style.marginTop = 'calc(-50 * var(--un))';
+    const startButton = document.createElement('button');
+    startButton.textContent = 'Começar';
+    startButton.style.marginTop = 'calc(-50 * var(--un)';
+    startButton.className = 'botao';
+    startButton.style.backgroundColor = 'transparent';
+    startButton.style.border = 'none';
+
+    const logo = document.querySelector('#logo');
+    logo.insertAdjacentElement('afterend', startButton);
+
+    startButton.addEventListener('click', () => {
+        startButton.remove();
+        document.querySelector('#logo').style.marginTop = '0';
+        document.querySelector('#entorno-botoes').style.display = 'flex';
+        document.querySelector('#pagina-inicial').style.flexDirection = 'row';
+        audio.play();
+    });
+});
 const game = document.querySelector('#game');
+
+if (!localStorage.getItem('conquistas_desbloqueadas')) {
+    localStorage.setItem('conquistas_desbloqueadas', '000000000000000000000000000000000000');
+}
 
 document.querySelector('#conquistas').addEventListener('click', () => window.location.href = '../tela_inicial/conquistas.html');
 
@@ -106,6 +131,7 @@ document.querySelector('#jogar').addEventListener('click', () => {
         nomeInput.focus();
         return;
     }
+    if (document.querySelector('#dificuldade-selecionada').textContent === 'Nenhuma dificuldade selecionada') return;
     localStorage.setItem('isRun', 'true');
     window.location.href = '../../html/pc/pc.html';
 });
